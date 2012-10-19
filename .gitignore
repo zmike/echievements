@@ -1,8 +1,11 @@
 *~
 *.swo
 *.swp
+*.o
+*.lo
 *.la
 ABOUT-NLS
+INSTALL
 Makefile
 Makefile.in
 aclocal.m4
