@@ -6,7 +6,7 @@
  * 4) Add Echievement_Strings
  * 5) Add Echievement_Descs
  * 6) Add Echievement_Callbacks
- * 7)
+ * 7) Add related ECH_INIT and ECH_EH functions in echievements.c
  */
 
 static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
