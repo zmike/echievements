@@ -38,7 +38,7 @@ _e_mod_ech_config_load(void)
 }
 
 EAPI void *
-e_modapi_init(E_Module *m) 
+e_modapi_init(E_Module *m)
 {
    char buf[4096];
 
@@ -48,9 +48,9 @@ e_modapi_init(E_Module *m)
 
    snprintf(buf, sizeof(buf), "%s/e-module-echievements.edj", m->dir);
 
-   e_configure_registry_category_add("extensions", 80, D_("Extensions"), 
+   e_configure_registry_category_add("extensions", 80, D_("Extensions"),
                                      NULL, "preferences-extensions");
-   e_configure_registry_item_add("extensions/echievements", 110, D_("Echievements"), 
+   e_configure_registry_item_add("extensions/echievements", 110, D_("Echievements"),
                                  NULL, buf, e_int_config_echievements);
 
    etrophy_init();
@@ -64,8 +64,8 @@ e_modapi_init(E_Module *m)
    return m;
 }
 
-EAPI int 
-e_modapi_shutdown(E_Module *m EINA_UNUSED) 
+EAPI int
+e_modapi_shutdown(E_Module *m EINA_UNUSED)
 {
    e_configure_registry_item_del("extensions/echievements");
 
@@ -81,9 +81,10 @@ e_modapi_shutdown(E_Module *m EINA_UNUSED)
    return 1;
 }
 
-EAPI int 
+EAPI int
 e_modapi_save(E_Module *m EINA_UNUSED)
 {
    e_config_domain_save("module.echievements", conf_edd, ech_config);
    return 1;
 }
+

@@ -18,13 +18,13 @@ _basic_apply(E_Config_Dialog *cfd EINA_UNUSED, E_Config_Dialog_Data *cfdata)
 }
 
 static int
-_basic_check_changed(E_Config_Dialog *cfd  EINA_UNUSED, E_Config_Dialog_Data *cfdata)
+_basic_check_changed(E_Config_Dialog *cfd EINA_UNUSED, E_Config_Dialog_Data *cfdata)
 {
    return 0;
 }
 
 static Evas_Object *
-_basic_create(E_Config_Dialog *cfd  EINA_UNUSED, Evas *evas, E_Config_Dialog_Data *cfdata)
+_basic_create(E_Config_Dialog *cfd EINA_UNUSED, Evas *evas, E_Config_Dialog_Data *cfdata)
 {
    return NULL;
 }
@@ -47,10 +47,11 @@ e_int_config_echievements(E_Container *con, const char *params EINA_UNUSED)
 
    snprintf(buf, sizeof(buf), "%s/e-module-echievements.edj", mod->module->dir);
 
-   cfd = e_config_dialog_new(con, D_("Echievements Module"), "Echievements", 
+   cfd = e_config_dialog_new(con, D_("Echievements Module"), "Echievements",
                              "extensions/echievements", buf, 0, v, NULL);
 
    e_dialog_resizable_set(cfd->dia, 1);
    mod->cfd = cfd;
    return cfd;
 }
+

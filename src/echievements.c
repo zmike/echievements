@@ -1,8 +1,8 @@
 #include "e_mod_main.h"
 #include "echievements.x"
 
-#define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
-#define ECH_EH_NAME(NAME) echievement_##NAME##_handler_cb
+#define ECH_INIT(NAME)     void echievement_init_cb_##NAME(Echievement *ec)
+#define ECH_EH_NAME(NAME)  echievement_##NAME##_handler_cb
 #define ECH_EH(NAME, TYPE) static Eina_Bool echievement_##NAME##_handler_cb(Echievement *ec, int type EINA_UNUSED, TYPE *ev)
 
 static Ecore_Idler *_ech_idler = NULL;
@@ -17,7 +17,7 @@ _ech_list_add(Etrophy_Trophy *et)
    ec->trophy = et;
    ec->id = eina_hash_population(mod->trophies);
    eina_hash_add(mod->trophies, &ec->id, ec);
-   mod->trophies_list = (Echievement*)eina_inlist_append(EINA_INLIST_GET(mod->trophies_list), EINA_INLIST_GET(ec));
+   mod->trophies_list = (Echievement *)eina_inlist_append(EINA_INLIST_GET(mod->trophies_list), EINA_INLIST_GET(ec));
    Echievement_Callbacks[ec->id](ec);
 }
 
@@ -26,7 +26,7 @@ _ech_add(Echievement_Id id)
 {
    Etrophy_Trophy *et;
 
-   et = etrophy_trophy_new(Echievement_Strings[id], Echievement_Descs[id], Echievement_Hide_State[id], 0);
+   et = etrophy_trophy_new(Echievement_Strings[id], Echievement_Descs[id], Echievement_Hide_States[id], 0);
    _ech_list_add(et);
 }
 
@@ -62,7 +62,7 @@ _ech_hook(Echievement_Id id, Echievement *ec)
    else
      et = _ech_lookup(id);
    if (!et) return;
-   etrophy_trophy_counter_increment(et, Echievement_Goals[id]);
+   etrophy_trophy_counter_set(et, Echievement_Goals[id]);
    INF("TROPHY EARNED: %s - %s", etrophy_trophy_name_get(et), etrophy_trophy_description_get(et));
    /* FIXME: popup here */
 }
@@ -74,7 +74,7 @@ _ech_init_check_idler(void *d EINA_UNUSED)
    unsigned int count = 0;
    Eina_Inlist *l;
 
-   l = mod->itr ?: EINA_INLIST_GET(mod->trophies_list);
+   l = mod->itr ? : EINA_INLIST_GET(mod->trophies_list);
    EINA_INLIST_FOREACH(l, ec)
      {
         if (count > 20)
@@ -102,7 +102,7 @@ _ech_init_add_idler(void *d EINA_UNUSED)
         ec = EINA_INLIST_CONTAINER_GET(EINA_INLIST_GET(mod->trophies_list)->last, Echievement);
         id = ec->id + 1;
      }
-   for (; id < ECHIEVEMENT_LAST; count++, id++)
+   for (; id < ECHIEVEMENT_ID_LAST; count++, id++)
      {
         if (count > 20) return EINA_TRUE;
         _ech_add(id);
@@ -112,23 +112,45 @@ _ech_init_add_idler(void *d EINA_UNUSED)
    return EINA_FALSE;
 }
 
+///////////////////////////////////////////////////////////////////////////////////
+
+/* Echievement event handler callbacks:
+ *
+ * appended in related ECH_INIT, data param is the echievement
+ *
+ * check conditions, increment/set counter, delete handlers if trophy acquired
+ */
+
 ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
 {
-   if (eina_list_count(e_shelf_list()) != Echievement_Goals[ec->id]) return ECORE_CALLBACK_RENEW;
+   if (eina_list_count(e_shelf_list()) != Echievement_Goals[ec->id])
+     {
+        etrophy_trophy_counter_set(ec->trophy, Echievement_Goals[ec->id]);
+        return ECORE_CALLBACK_RENEW;
+     }
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
    return ECORE_CALLBACK_RENEW;
 }
 
-ECB(SHELF_POSITIONS)
+///////////////////////////////////////////////////////////////////////////////////
+
+/* Echievement init callbacks:
+ *
+ * called every time the module loads upon loading a trophy if the trophy has not been acquired
+ *
+ * ** check trophy status
+ *  a. if goal met, hook echievement
+ *  b. else add handlers
+ */
+
+ECH_INIT(SHELF_POSITIONS)
 {
    if (eina_list_count(e_shelf_list()) == Echievement_Goals[ec->id])
-     {
-        /* number of shelves equals goal, grant trophy */
-        _ech_hook(ec->id, ec);
-        return;
-     }
-   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_SHELF_ADD, ECH_EH_NAME(SHELF_POSITIONS), ec);
+     /* number of shelves equals goal, grant trophy and return */
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_SHELF_ADD, ECH_EH_NAME(SHELF_POSITIONS), ec);
 }
 
 void
@@ -154,3 +176,4 @@ ech_shutdown(void)
    mod->itr = NULL;
    if (_ech_idler) _ech_idler = ecore_idler_del(_ech_idler);
 }
+

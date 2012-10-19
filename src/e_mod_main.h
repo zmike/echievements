@@ -18,10 +18,12 @@
 #define MOD_CONFIG_FILE_VERSION \
    ((MOD_CONFIG_FILE_EPOCH << 16) | MOD_CONFIG_FILE_GENERATION)
 
+
+/* See instructions in echievements.x for adding new ones */
 typedef enum
 {
-   ECHIEVEMENT_SHELF_POSITIONS,
-   ECHIEVEMENT_LAST
+   ECHIEVEMENT_ID_SHELF_POSITIONS,
+   ECHIEVEMENT_ID_LAST
 } Echievement_Id;
 
 typedef struct Echievement
