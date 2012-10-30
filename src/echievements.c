@@ -68,28 +68,6 @@ _ech_hook(Echievement_Id id, Echievement *ec)
 }
 
 static Eina_Bool
-_ech_init_check_idler(void *d EINA_UNUSED)
-{
-   Echievement *ec;
-   unsigned int count = 0;
-   Eina_Inlist *l;
-
-   l = mod->itr ? : EINA_INLIST_GET(mod->trophies_list);
-   EINA_INLIST_FOREACH(l, ec)
-     {
-        if (count > 20)
-          {
-             mod->itr = EINA_INLIST_GET(ec);
-             return EINA_TRUE;
-          }
-        if (etrophy_trophy_earned_get(ec->trophy)) continue;
-        count++;
-     }
-   _ech_idler = ecore_idler_del(_ech_idler);
-   return EINA_FALSE;
-}
-
-static Eina_Bool
 _ech_init_add_idler(void *d EINA_UNUSED)
 {
    Echievement_Id id = 0;
@@ -108,7 +86,6 @@ _ech_init_add_idler(void *d EINA_UNUSED)
         _ech_add(id);
      }
    ecore_idler_del(_ech_idler);
-   _ech_idler = ecore_idler_add(_ech_init_check_idler, NULL);
    return EINA_FALSE;
 }
 
@@ -159,10 +136,7 @@ ech_init(void)
    /* FIXME: delay this */
    mod->trophies = eina_hash_int32_new((Eina_Free_Cb)_ech_free);
    if (ech_config->gs)
-     {
-        E_LIST_FOREACH(etrophy_gamescore_trophies_list_get(ech_config->gs), _ech_list_add);
-        _ech_idler = ecore_idler_add(_ech_init_check_idler, NULL);
-     }
+     E_LIST_FOREACH(etrophy_gamescore_trophies_list_get(ech_config->gs), _ech_list_add);
    else
      _ech_idler = ecore_idler_add(_ech_init_add_idler, NULL);
 }
@@ -176,4 +150,3 @@ ech_shutdown(void)
    mod->itr = NULL;
    if (_ech_idler) _ech_idler = ecore_idler_del(_ech_idler);
 }
-
