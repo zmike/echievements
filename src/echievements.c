@@ -59,7 +59,7 @@ _ech_notify(const char *name, const char *description)
    E_Notification *n;
    char summary[128];
 
-   snprintf(summary, sizeof(summary), "Trophy earned: %s", name);
+   snprintf(summary, sizeof(summary), "Echievement: %s", name);
    n = e_notification_full_new("echievements", 0, PACKAGE_DATA_DIR"/trophy.png",
                                summary, description, -1);
    e_notification_hint_urgency_set(n, E_NOTIFICATION_URGENCY_NORMAL);
