@@ -37,7 +37,7 @@ AM_CONDITIONAL([HAVE_PO], [false])
 ])
 AC_SUBST(LTLIBINTL)
 
-PKG_CHECK_MODULES(E, [edje edbus etrophy enlightenment])
+PKG_CHECK_MODULES(E, [edje enotify etrophy enlightenment])
 release=$(pkg-config --variable=release enlightenment)
 MODULE_ARCH="$host_os-$host_cpu-$release"
 AC_SUBST(MODULE_ARCH)
