@@ -54,6 +54,7 @@ e_modapi_init(E_Module *m)
                                  NULL, buf, e_int_config_echievements);
 
    etrophy_init();
+   e_notification_init();
 
    mod = E_NEW(Mod, 1);
    mod->module = m;
@@ -77,6 +78,7 @@ e_modapi_shutdown(E_Module *m EINA_UNUSED)
    _e_mod_ech_config_free();
    E_CONFIG_DD_FREE(conf_edd);
    E_FREE(mod);
+   e_notification_shutdown();
    etrophy_shutdown();
    return 1;
 }

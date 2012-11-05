@@ -23,7 +23,7 @@ static unsigned int Echievement_Goals[] =
 
 static const char *const Echievement_Strings[] =
 {
-   [ECHIEVEMENT_ID_SHELF_POSITIONS] = "shelf_positions",
+   [ECHIEVEMENT_ID_SHELF_POSITIONS] = "Shelves everywhere",
 };
 
 static const char *const Echievement_Descs[] =

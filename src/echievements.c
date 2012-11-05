@@ -48,8 +48,27 @@ _ech_lookup(Echievement_Id id)
    ec = eina_hash_find(mod->trophies, &id);
    EINA_SAFETY_ON_NULL_RETURN_VAL(ec, NULL);
    if (!etrophy_trophy_earned_get(ec->trophy)) return ec->trophy;
-   INF("TROPHY PREVIOUSLY EARNED: %s - %s", etrophy_trophy_name_get(ec->trophy), etrophy_trophy_description_get(ec->trophy));
+   INF("TROPHY PREVIOUSLY EARNED: %s - %s",
+       etrophy_trophy_name_get(ec->trophy),
+       etrophy_trophy_description_get(ec->trophy));
    return NULL;
+}
+
+static void
+_ech_notify(const char *name, const char *description)
+{
+   E_Notification *n;
+   char summary[128];
+
+   n = e_notification_new();
+   e_notification_app_name_set(n, "echievements");
+   e_notification_app_icon_set(n, PACKAGE_DATA_DIR"/trophy.png");
+   snprintf(summary, sizeof(summary), "Trophy earned: %s", name);
+   e_notification_summary_set(n, summary);
+   e_notification_body_set(n, description);
+   e_notification_hint_urgency_set(n, E_NOTIFICATION_URGENCY_NORMAL);
+   e_notification_send(n, NULL, NULL);
+   e_notification_unref(n);
 }
 
 /* call whenever new echievement is earned, ec may be NULL */
@@ -64,8 +83,11 @@ _ech_hook(Echievement_Id id, Echievement *ec)
      et = _ech_lookup(id);
    if (!et) return;
    etrophy_trophy_counter_set(et, Echievement_Goals[id]);
-   INF("TROPHY EARNED: %s - %s", etrophy_trophy_name_get(et), etrophy_trophy_description_get(et));
-   /* FIXME: popup here */
+   INF("TROPHY EARNED: %s - %s",
+       etrophy_trophy_name_get(et),
+       etrophy_trophy_description_get(et));
+   _ech_notify(etrophy_trophy_name_get(et),
+               etrophy_trophy_description_get(et));
 }
 
 static Eina_Bool

@@ -15,7 +15,7 @@ EDJE_FLAGS = -v \
 	     -id $(top_srcdir)/images
 
 filesdir = $(datadir)
-files_DATA = module.desktop e-module-echievements.edj
+files_DATA = module.desktop e-module-echievements.edj images/trophy.png
 
 EXTRA_DIST = module.desktop.in \
 	     e_modules-echievements.spec.in \

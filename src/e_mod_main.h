@@ -3,6 +3,7 @@
 
 #include <e.h>
 #include <Etrophy.h>
+#include <E_Notify.h>
 
 #ifdef ENABLE_NLS
 # include <libintl.h>
