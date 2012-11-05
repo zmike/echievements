@@ -74,7 +74,7 @@ _basic_create(E_Config_Dialog *cfd EINA_UNUSED, Evas *evas, E_Config_Dialog_Data
 
    EINA_INLIST_FOREACH(EINA_INLIST_GET(mod->trophies_list), ec)
      {
-        int goal, counter;
+        unsigned int goal, counter;
         etrophy_trophy_goal_get(ec->trophy, &goal, &counter);
         item = _item_create(evas, etrophy_trophy_name_get(ec->trophy),
                             etrophy_trophy_description_get(ec->trophy),
