@@ -26,7 +26,8 @@ _ech_add(Echievement_Id id)
 {
    Etrophy_Trophy *et;
 
-   et = etrophy_trophy_new(Echievement_Strings[id], Echievement_Descs[id], Echievement_Hide_States[id], 0);
+   et = etrophy_trophy_new(Echievement_Strings[id], Echievement_Descs[id],
+                           Echievement_Hide_States[id], Echievement_Goals[id]);
    _ech_list_add(et);
 }
 
@@ -102,12 +103,13 @@ ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
 {
    if (eina_list_count(e_shelf_list()) != Echievement_Goals[ec->id])
      {
-        etrophy_trophy_counter_set(ec->trophy, Echievement_Goals[ec->id]);
+        etrophy_trophy_counter_set(ec->trophy,
+                                   eina_list_count(e_shelf_list()));
         return ECORE_CALLBACK_RENEW;
      }
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   return ECORE_CALLBACK_RENEW;
+   return ECORE_CALLBACK_CANCEL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
