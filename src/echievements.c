@@ -18,7 +18,6 @@ _ech_list_add(Etrophy_Trophy *et)
    ec->id = eina_hash_population(mod->trophies);
    eina_hash_add(mod->trophies, &ec->id, ec);
    mod->trophies_list = (Echievement *)eina_inlist_append(EINA_INLIST_GET(mod->trophies_list), EINA_INLIST_GET(ec));
-   Echievement_Callbacks[ec->id](ec);
 }
 
 static void
@@ -103,6 +102,7 @@ _ech_init_check_idler(void *d EINA_UNUSED)
              return EINA_TRUE;
           }
         if (etrophy_trophy_earned_get(ec->trophy)) continue;
+        Echievement_Callbacks[ec->id](ec);
         count++;
      }
    _ech_idler = ecore_idler_del(_ech_idler);
