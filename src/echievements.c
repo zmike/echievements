@@ -60,12 +60,9 @@ _ech_notify(const char *name, const char *description)
    E_Notification *n;
    char summary[128];
 
-   n = e_notification_new();
-   e_notification_app_name_set(n, "echievements");
-   e_notification_app_icon_set(n, PACKAGE_DATA_DIR"/trophy.png");
    snprintf(summary, sizeof(summary), "Trophy earned: %s", name);
-   e_notification_summary_set(n, summary);
-   e_notification_body_set(n, description);
+   n = e_notification_full_new("echievements", 0, PACKAGE_DATA_DIR"/trophy.png",
+                               summary, description, -1);
    e_notification_hint_urgency_set(n, E_NOTIFICATION_URGENCY_NORMAL);
    e_notification_send(n, NULL, NULL);
    e_notification_unref(n);
