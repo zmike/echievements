@@ -2,6 +2,8 @@
 
 EAPI E_Module_Api e_modapi = {E_MODULE_API_VERSION, "Echievements"};
 static E_Config_DD *conf_edd = NULL;
+static Ecore_Event_Handler *handler = NULL;
+
 Mod *mod = NULL;
 Config *ech_config = NULL;
 
@@ -37,6 +39,14 @@ _e_mod_ech_config_load(void)
      }
 }
 
+static Eina_Bool
+_e_mod_ech_mod_init_end_cb(void *d EINA_UNUSED, int type EINA_UNUSED, void *ev EINA_UNUSED)
+{
+   if (handler) handler = ecore_event_handler_del(handler);
+   mod->module_init_end = 1;
+   return ECORE_CALLBACK_RENEW;
+}
+
 EAPI void *
 e_modapi_init(E_Module *m)
 {
@@ -59,6 +69,8 @@ e_modapi_init(E_Module *m)
    mod = E_NEW(Mod, 1);
    mod->module = m;
 
+   handler = ecore_event_handler_add(E_EVENT_MODULE_INIT_END, _e_mod_ech_mod_init_end_cb, NULL);
+
    _e_mod_ech_config_load();
    ech_init();
 
@@ -78,6 +90,7 @@ e_modapi_shutdown(E_Module *m EINA_UNUSED)
    _e_mod_ech_config_free();
    E_CONFIG_DD_FREE(conf_edd);
    E_FREE(mod);
+   if (handler) handler = ecore_event_handler_del(handler);
    e_notification_shutdown();
    etrophy_shutdown();
    return 1;

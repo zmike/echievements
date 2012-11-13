@@ -47,6 +47,7 @@ typedef struct Mod
    Eina_Hash *trophies; // for fast lookups
    Echievement *trophies_list; // head for iterating
    Eina_Inlist *itr; // current iterator position if needed
+   Eina_Bool module_init_end : 1;
 } Mod;
 
 typedef struct Config
