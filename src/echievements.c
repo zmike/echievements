@@ -231,6 +231,14 @@ ECH_INIT(CAVE_DWELLER)
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BACKLIGHT_CHANGE, ECH_EH_NAME(CAVE_DWELLER), ec);
 }
 
+ECH_INIT(WINDOW_STALKER)
+{
+   /* only count windows opened while e is running to prevent cheating
+    * reuse same handler
+    */
+   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BORDER_ADD, ECH_EH_NAME(WINDOW_ENTHUSIAST), ec);
+}
+
 ECH_INIT(WINDOW_LOVER)
 {
    /* only count windows opened while e is running to prevent cheating

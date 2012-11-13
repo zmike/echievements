@@ -29,6 +29,7 @@ typedef enum
    ECH(CAVE_DWELLER),
    ECH(WINDOW_ENTHUSIAST),
    ECH(WINDOW_LOVER),
+   ECH(WINDOW_STALKER),
    ECH(LAST)
 } Echievement_Id;
 
