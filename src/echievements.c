@@ -122,7 +122,7 @@ _ech_init_add_idler(void *d EINA_UNUSED)
         ec = EINA_INLIST_CONTAINER_GET(EINA_INLIST_GET(mod->trophies_list)->last, Echievement);
         id = ec->id + 1;
      }
-   for (; id < ECHIEVEMENT_ID_LAST; count++, id++)
+   for (; id < ECH(LAST); count++, id++)
      {
         if (count > 20) return EINA_TRUE;
         _ech_add(id);
