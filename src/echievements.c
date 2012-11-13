@@ -141,6 +141,15 @@ _ech_init_add_idler(void *d EINA_UNUSED)
  * check conditions, increment/set counter, delete handlers if trophy acquired
  */
 
+ECH_EH(NOTHING_ELSE_MATTERS, E_Event_Shelf EINA_UNUSED)
+{
+   if (eina_list_count(e_shelf_list()) != Echievement_Goals[ec->id])
+     return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   return ECORE_CALLBACK_CANCEL;
+}
+
 ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
 {
    if (eina_list_count(e_shelf_list()) != Echievement_Goals[ec->id])
@@ -164,6 +173,15 @@ ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
  *  a. if goal met, hook echievement
  *  b. else add handlers
  */
+
+ECH_INIT(NOTHING_ELSE_MATTERS)
+{
+   if (eina_list_count(e_shelf_list()) == Echievement_Goals[ec->id])
+     /* number of shelves equals goal, grant trophy and return */
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_SHELF_DEL, ECH_EH_NAME(NOTHING_ELSE_MATTERS), ec);
+}
 
 ECH_INIT(SHELF_POSITIONS)
 {
