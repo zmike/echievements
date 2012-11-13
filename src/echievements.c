@@ -150,6 +150,15 @@ ECH_EH(NOTHING_ELSE_MATTERS, E_Event_Shelf EINA_UNUSED)
    return ECORE_CALLBACK_CANCEL;
 }
 
+ECH_EH(CAVE_DWELLER, void EINA_UNUSED)
+{
+   if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) >= 1.)
+     return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   return ECORE_CALLBACK_CANCEL;
+}
+
 ECH_EH(AFRAID_OF_THE_DARK, void EINA_UNUSED)
 {
    if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) <= 99.)
@@ -197,6 +206,14 @@ ECH_INIT(AFRAID_OF_THE_DARK)
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BACKLIGHT_CHANGE, ECH_EH_NAME(AFRAID_OF_THE_DARK), ec);
+}
+
+ECH_INIT(CAVE_DWELLER)
+{
+   if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) < 1.)
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BACKLIGHT_CHANGE, ECH_EH_NAME(CAVE_DWELLER), ec);
 }
 
 ECH_INIT(SHELF_POSITIONS)

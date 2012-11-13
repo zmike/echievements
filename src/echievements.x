@@ -14,6 +14,7 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(SHELF_POSITIONS)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(NOTHING_ELSE_MATTERS)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(AFRAID_OF_THE_DARK)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(CAVE_DWELLER)] = ETROPHY_TROPHY_STATE_VISIBLE,
 };
 
 /* ec may be NULL */
@@ -23,6 +24,7 @@ static unsigned int Echievement_Goals[] =
    [ECH(SHELF_POSITIONS)] = E_GADCON_ORIENT_LAST - E_GADCON_ORIENT_LEFT,
    [ECH(NOTHING_ELSE_MATTERS)] = 1,
    [ECH(AFRAID_OF_THE_DARK)] = 1,
+   [ECH(CAVE_DWELLER)] = 1,
 };
 
 static const char *const Echievement_Strings[] =
@@ -30,6 +32,7 @@ static const char *const Echievement_Strings[] =
    [ECH(SHELF_POSITIONS)] = "Shelves Everywhere",
    [ECH(NOTHING_ELSE_MATTERS)] = "Nothing Else Matters",
    [ECH(AFRAID_OF_THE_DARK)] = "Afraid Of The Dark",
+   [ECH(CAVE_DWELLER)] = "Cave Dweller",
 };
 
 static const char *const Echievement_Descs[] =
@@ -37,6 +40,7 @@ static const char *const Echievement_Descs[] =
    [ECH(SHELF_POSITIONS)] = "Have a shelf in every position",
    [ECH(NOTHING_ELSE_MATTERS)] = "Use E17 with no shelves",
    [ECH(AFRAID_OF_THE_DARK)] = "Set backlight level to 100%",
+   [ECH(CAVE_DWELLER)] = "Set backlight level to 0%",
 };
 
 #define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
@@ -44,6 +48,7 @@ static const char *const Echievement_Descs[] =
 ECB(SHELF_POSITIONS);
 ECB(NOTHING_ELSE_MATTERS);
 ECB(AFRAID_OF_THE_DARK);
+ECB(CAVE_DWELLER);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -52,7 +57,7 @@ Echievement_Init_Cb Echievement_Callbacks[] =
 {
    ECB(SHELF_POSITIONS),
    ECB(NOTHING_ELSE_MATTERS),
-   ECB(AFRAID_OF_THE_DARK),
+   ECB(CAVE_DWELLER),
    NULL
 };
 
