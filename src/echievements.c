@@ -174,6 +174,15 @@ ECH_EH(WINDOW_ENTHUSIAST, void EINA_UNUSED)
    return ECORE_CALLBACK_CANCEL;
 }
 
+static void
+ECH_EH_NAME(WINDOW_MOVER)(Echievement *ec, void *bd EINA_UNUSED)
+{
+   etrophy_trophy_counter_increment(ec->trophy, 1);
+   if (!etrophy_trophy_earned_get(ec->trophy)) return;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, e_border_hook_del);
+}
+
 ECH_EH(AFRAID_OF_THE_DARK, void EINA_UNUSED)
 {
    if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) <= 99.)
@@ -251,6 +260,20 @@ ECH_INIT(WINDOW_ENTHUSIAST)
 {
    /* only count windows opened while e is running to prevent cheating */
    E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BORDER_ADD, ECH_EH_NAME(WINDOW_ENTHUSIAST), ec);
+}
+
+ECH_INIT(WINDOW_OCD)
+{
+   /* only count windows moved while e is running to prevent cheating */
+   ec->handlers = eina_list_append(ec->handlers,
+     e_border_hook_add(E_BORDER_HOOK_MOVE_END, (void*)ECH_EH_NAME(WINDOW_MOVER), ec));
+}
+
+ECH_INIT(WINDOW_MOVER)
+{
+   /* only count windows moved while e is running to prevent cheating */
+   ec->handlers = eina_list_append(ec->handlers,
+     e_border_hook_add(E_BORDER_HOOK_MOVE_END, (void*)ECH_EH_NAME(WINDOW_MOVER), ec));
 }
 
 ECH_INIT(SHELF_POSITIONS)

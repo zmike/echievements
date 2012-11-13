@@ -18,6 +18,8 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(WINDOW_ENTHUSIAST)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(WINDOW_LOVER)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(WINDOW_STALKER)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(WINDOW_MOVER)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(WINDOW_OCD)] = ETROPHY_TROPHY_STATE_VISIBLE,
 };
 
 /* ec may be NULL */
@@ -31,6 +33,8 @@ static unsigned int Echievement_Goals[] =
    [ECH(WINDOW_ENTHUSIAST)] = 100,
    [ECH(WINDOW_LOVER)] = 1000,
    [ECH(WINDOW_STALKER)] = 10000,
+   [ECH(WINDOW_MOVER)] = 50,
+   [ECH(WINDOW_OCD)] = 200,
 };
 
 static const char *const Echievement_Strings[] =
@@ -42,6 +46,8 @@ static const char *const Echievement_Strings[] =
    [ECH(WINDOW_ENTHUSIAST)] = "Window Enthusiast",
    [ECH(WINDOW_LOVER)] = "Window Lover",
    [ECH(WINDOW_STALKER)] = "Window Stalker",
+   [ECH(WINDOW_MOVER)] = "Window Mover",
+   [ECH(WINDOW_OCD)] = "Window OCD",
 };
 
 static const char *const Echievement_Descs[] =
@@ -53,6 +59,8 @@ static const char *const Echievement_Descs[] =
    [ECH(WINDOW_ENTHUSIAST)] = "Open 100 windows",
    [ECH(WINDOW_LOVER)] = "Open 1000 windows",
    [ECH(WINDOW_STALKER)] = "Open 10000 windows",
+   [ECH(WINDOW_MOVER)] = "Move 50 windows",
+   [ECH(WINDOW_OCD)] = "Move 250 windows",
 };
 
 #define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
@@ -64,6 +72,8 @@ ECB(CAVE_DWELLER);
 ECB(WINDOW_ENTHUSIAST);
 ECB(WINDOW_LOVER);
 ECB(WINDOW_STALKER);
+ECB(WINDOW_MOVER);
+ECB(WINDOW_OCD);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -76,6 +86,8 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB(WINDOW_ENTHUSIAST),
    ECB(WINDOW_LOVER),
    ECB(WINDOW_STALKER),
+   ECB(WINDOW_MOVER),
+   ECB(WINDOW_OCD),
    NULL
 };
 

@@ -30,6 +30,8 @@ typedef enum
    ECH(WINDOW_ENTHUSIAST),
    ECH(WINDOW_LOVER),
    ECH(WINDOW_STALKER),
+   ECH(WINDOW_MOVER),
+   ECH(WINDOW_OCD),
    ECH(LAST)
 } Echievement_Id;
 
