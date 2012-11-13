@@ -25,6 +25,7 @@ typedef enum
 {
    ECH(SHELF_POSITIONS),
    ECH(NOTHING_ELSE_MATTERS),
+   ECH(AFRAID_OF_THE_DARK),
    ECH(LAST)
 } Echievement_Id;
 

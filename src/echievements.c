@@ -150,6 +150,15 @@ ECH_EH(NOTHING_ELSE_MATTERS, E_Event_Shelf EINA_UNUSED)
    return ECORE_CALLBACK_CANCEL;
 }
 
+ECH_EH(AFRAID_OF_THE_DARK, void EINA_UNUSED)
+{
+   if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) >= 1.)
+     return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   return ECORE_CALLBACK_CANCEL;
+}
+
 ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
 {
    if (eina_list_count(e_shelf_list()) != Echievement_Goals[ec->id])
@@ -181,6 +190,15 @@ ECH_INIT(NOTHING_ELSE_MATTERS)
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_SHELF_DEL, ECH_EH_NAME(NOTHING_ELSE_MATTERS), ec);
+}
+
+ECH_INIT(AFRAID_OF_THE_DARK)
+{
+   if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) < 1.)
+     /* number of shelves equals goal, grant trophy and return */
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BACKLIGHT_CHANGE, ECH_EH_NAME(AFRAID_OF_THE_DARK), ec);
 }
 
 ECH_INIT(SHELF_POSITIONS)
