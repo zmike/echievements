@@ -159,6 +159,21 @@ ECH_EH(CAVE_DWELLER, void EINA_UNUSED)
    return ECORE_CALLBACK_CANCEL;
 }
 
+ECH_EH(WINDOW_ENTHUSIAST, void EINA_UNUSED)
+{
+   /* ignore all windows added before modules are loaded:
+    * these are previously-placed windows
+    */
+   if (!mod->module_init_end) return ECORE_CALLBACK_RENEW;
+
+   etrophy_trophy_counter_increment(ec->trophy, 1);
+   if (!etrophy_trophy_earned_get(ec->trophy))
+     return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   return ECORE_CALLBACK_CANCEL;
+}
+
 ECH_EH(AFRAID_OF_THE_DARK, void EINA_UNUSED)
 {
    if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) <= 99.)
@@ -214,6 +229,20 @@ ECH_INIT(CAVE_DWELLER)
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BACKLIGHT_CHANGE, ECH_EH_NAME(CAVE_DWELLER), ec);
+}
+
+ECH_INIT(WINDOW_LOVER)
+{
+   /* only count windows opened while e is running to prevent cheating
+    * reuse same handler
+    */
+   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BORDER_ADD, ECH_EH_NAME(WINDOW_ENTHUSIAST), ec);
+}
+
+ECH_INIT(WINDOW_ENTHUSIAST)
+{
+   /* only count windows opened while e is running to prevent cheating */
+   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BORDER_ADD, ECH_EH_NAME(WINDOW_ENTHUSIAST), ec);
 }
 
 ECH_INIT(SHELF_POSITIONS)

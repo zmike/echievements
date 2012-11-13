@@ -15,6 +15,8 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(NOTHING_ELSE_MATTERS)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(AFRAID_OF_THE_DARK)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(CAVE_DWELLER)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(WINDOW_ENTHUSIAST)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(WINDOW_LOVER)] = ETROPHY_TROPHY_STATE_VISIBLE,
 };
 
 /* ec may be NULL */
@@ -25,6 +27,8 @@ static unsigned int Echievement_Goals[] =
    [ECH(NOTHING_ELSE_MATTERS)] = 1,
    [ECH(AFRAID_OF_THE_DARK)] = 1,
    [ECH(CAVE_DWELLER)] = 1,
+   [ECH(WINDOW_ENTHUSIAST)] = 100,
+   [ECH(WINDOW_LOVER)] = 100,
 };
 
 static const char *const Echievement_Strings[] =
@@ -33,6 +37,8 @@ static const char *const Echievement_Strings[] =
    [ECH(NOTHING_ELSE_MATTERS)] = "Nothing Else Matters",
    [ECH(AFRAID_OF_THE_DARK)] = "Afraid Of The Dark",
    [ECH(CAVE_DWELLER)] = "Cave Dweller",
+   [ECH(WINDOW_ENTHUSIAST)] = "Window Enthusiast",
+   [ECH(WINDOW_LOVER)] = "Window Lover",
 };
 
 static const char *const Echievement_Descs[] =
@@ -41,6 +47,8 @@ static const char *const Echievement_Descs[] =
    [ECH(NOTHING_ELSE_MATTERS)] = "Use E17 with no shelves",
    [ECH(AFRAID_OF_THE_DARK)] = "Set backlight level to 100%",
    [ECH(CAVE_DWELLER)] = "Set backlight level to 0%",
+   [ECH(WINDOW_ENTHUSIAST)] = "Open 100 windows",
+   [ECH(WINDOW_LOVER)] = "Open 1000 windows",
 };
 
 #define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
@@ -49,6 +57,8 @@ ECB(SHELF_POSITIONS);
 ECB(NOTHING_ELSE_MATTERS);
 ECB(AFRAID_OF_THE_DARK);
 ECB(CAVE_DWELLER);
+ECB(WINDOW_ENTHUSIAST);
+ECB(WINDOW_LOVER);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -58,6 +68,8 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB(SHELF_POSITIONS),
    ECB(NOTHING_ELSE_MATTERS),
    ECB(CAVE_DWELLER),
+   ECB(WINDOW_ENTHUSIAST),
+   ECB(WINDOW_LOVER),
    NULL
 };
 
