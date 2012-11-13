@@ -28,7 +28,7 @@ static unsigned int Echievement_Goals[] =
    [ECH(AFRAID_OF_THE_DARK)] = 1,
    [ECH(CAVE_DWELLER)] = 1,
    [ECH(WINDOW_ENTHUSIAST)] = 100,
-   [ECH(WINDOW_LOVER)] = 100,
+   [ECH(WINDOW_LOVER)] = 1000,
 };
 
 static const char *const Echievement_Strings[] =
