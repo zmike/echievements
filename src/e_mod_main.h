@@ -45,6 +45,7 @@ typedef struct Echievement
    Etrophy_Trophy *trophy;
    Eina_List *handlers;
    Ecore_Cb mouse_hook;
+   Eina_Bool bh_handlers : 1; //handlers are border hooks
 } Echievement;
 
 typedef void (*Echievement_Init_Cb)(Echievement*);
