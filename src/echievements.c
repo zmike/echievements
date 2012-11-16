@@ -229,6 +229,13 @@ ECH_EH(PHYSICIST, E_Event_Module_Update)
    return ECORE_CALLBACK_RENEW;
 }
 
+ECH_EH(QUICKDRAW, E_Event_Module_Update)
+{
+   if ((!ev->enabled) || e_util_strcmp(ev->name, "Quickaccess")) return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   return ECORE_CALLBACK_RENEW;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////
 
 /* Echievement mouse hook callbacks:
@@ -373,6 +380,14 @@ ECH_INIT(PHYSICIST)
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(PHYSICIST), ec);
+}
+
+ECH_INIT(QUICKDRAW)
+{
+   if (e_module_find("Quickaccess"))
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(QUICKDRAW), ec);
 }
 
 ECH_INIT(SHELF_POSITIONS)
