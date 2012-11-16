@@ -4,6 +4,11 @@
 #define ECH_INIT(NAME)     void echievement_init_cb_##NAME(Echievement *ec)
 #define ECH_EH_NAME(NAME)  echievement_##NAME##_handler_cb
 #define ECH_EH(NAME, TYPE) static Eina_Bool ECH_EH_NAME(NAME)(Echievement *ec, int type EINA_UNUSED, TYPE *ev)
+#define ECH_BH_NAME(NAME, TYPE)  echievement_##NAME##_border_hook##TYPE
+#define ECH_BH(NAME, TYPE) static void ECH_BH_NAME(NAME, TYPE)(Echievement *ec, E_Border *bd)
+#define ECH_BH_ADD(NAME, TYPE) \
+   ec->handlers = eina_list_append(ec->handlers, \
+     e_border_hook_add(E_BORDER_HOOK_##TYPE, (Ecore_End_Cb)ECH_BH_NAME(WINDOW_MOVER, TYPE), ec))
 #define ECH_MH_NAME(NAME) _ech_##NAME##_mouse_hook
 #define ECH_MH(NAME) static void ECH_MH_NAME(NAME)(Echievement *ec)
 #define ECH_MH_ADD(NAME) \
@@ -182,15 +187,6 @@ ECH_EH(WINDOW_ENTHUSIAST, void EINA_UNUSED)
    return ECORE_CALLBACK_CANCEL;
 }
 
-static void
-ECH_EH_NAME(WINDOW_MOVER)(Echievement *ec, void *bd EINA_UNUSED)
-{
-   etrophy_trophy_counter_increment(ec->trophy, 1);
-   if (!etrophy_trophy_earned_get(ec->trophy)) return;
-   _ech_hook(ec->id, ec);
-   E_FREE_LIST(ec->handlers, e_border_hook_del);
-}
-
 ECH_EH(AFRAID_OF_THE_DARK, void EINA_UNUSED)
 {
    if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) <= 99.)
@@ -211,6 +207,19 @@ ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
    return ECORE_CALLBACK_CANCEL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+/* Echievement border hook callbacks */
+
+ECH_BH(WINDOW_MOVER, MOVE_END)
+{
+   etrophy_trophy_counter_increment(ec->trophy, 1);
+   if (!etrophy_trophy_earned_get(ec->trophy)) return;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, e_border_hook_del);
+   (void)bd;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -284,21 +293,19 @@ ECH_INIT(WINDOW_LOVER)
 ECH_INIT(WINDOW_ENTHUSIAST)
 {
    /* only count windows opened while e is running to prevent cheating */
-   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BORDER_ADD, ECH_EH_NAME(WINDOW_ENTHUSIAST), ec);
+   ECH_BH_ADD(WINDOW_MOVER, MOVE_END);
 }
 
 ECH_INIT(WINDOW_OCD)
 {
    /* only count windows moved while e is running to prevent cheating */
-   ec->handlers = eina_list_append(ec->handlers,
-     e_border_hook_add(E_BORDER_HOOK_MOVE_END, (void*)ECH_EH_NAME(WINDOW_MOVER), ec));
+   ECH_BH_ADD(WINDOW_MOVER, MOVE_END);
 }
 
 ECH_INIT(WINDOW_MOVER)
 {
    /* only count windows moved while e is running to prevent cheating */
-   ec->handlers = eina_list_append(ec->handlers,
-     e_border_hook_add(E_BORDER_HOOK_MOVE_END, (void*)ECH_EH_NAME(WINDOW_MOVER), ec));
+   ECH_BH_ADD(WINDOW_MOVER, MOVE_END);
 }
 
 ECH_INIT(SHELF_POSITIONS)
