@@ -236,6 +236,13 @@ ECH_EH(QUICKDRAW, E_Event_Module_Update)
    return ECORE_CALLBACK_RENEW;
 }
 
+ECH_EH(OPAQUE, E_Event_Module_Update)
+{
+   if ((ev->enabled) || e_util_strcmp(ev->name, "Composite")) return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   return ECORE_CALLBACK_RENEW;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////
 
 /* Echievement mouse hook callbacks:
@@ -388,6 +395,14 @@ ECH_INIT(QUICKDRAW)
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(QUICKDRAW), ec);
+}
+
+ECH_INIT(OPAQUE)
+{
+   if (!e_module_find("Composite"))
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(OPAQUE), ec);
 }
 
 ECH_INIT(SHELF_POSITIONS)

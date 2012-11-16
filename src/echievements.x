@@ -28,6 +28,7 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(WINDOW_SHERPA)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(PHYSICIST)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(QUICKDRAW)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(OPAQUE)] = ETROPHY_TROPHY_STATE_VISIBLE,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -50,6 +51,7 @@ static unsigned int Echievement_Goals[] =
    [ECH(WINDOW_SHERPA)] = 250000,
    [ECH(PHYSICIST)] = 1,
    [ECH(QUICKDRAW)] = 1,
+   [ECH(OPAQUE)] = 1,
 };
 
 static const char *const Echievement_Strings[] =
@@ -71,6 +73,7 @@ static const char *const Echievement_Strings[] =
    [ECH(WINDOW_SHERPA)] = "Window Sherpa",
    [ECH(PHYSICIST)] = "Physicist",
    [ECH(QUICKDRAW)] = "Quickdraw",
+   [ECH(OPAQUE)] = "Opaque",
 };
 
 static const char *const Echievement_Descs[] =
@@ -92,6 +95,7 @@ static const char *const Echievement_Descs[] =
    [ECH(WINDOW_SHERPA)] = "Move windows 250,000 pixels",
    [ECH(PHYSICIST)] = "Load the Physics module",
    [ECH(QUICKDRAW)] = "Load the Quickaccess module",
+   [ECH(OPAQUE)] = "Unload the Composite module",
 };
 
 #define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
@@ -113,6 +117,7 @@ ECB(WINDOW_SLINGER);
 ECB(WINDOW_SHERPA);
 ECB(PHYSICIST);
 ECB(QUICKDRAW);
+ECB(OPAQUE);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -135,6 +140,7 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB(WINDOW_SHERPA),
    ECB(PHYSICIST),
    ECB(QUICKDRAW),
+   ECB(OPAQUE),
    NULL
 };
 

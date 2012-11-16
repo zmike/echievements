@@ -40,6 +40,7 @@ typedef enum
    ECH(WINDOW_SHERPA),
    ECH(PHYSICIST),
    ECH(QUICKDRAW),
+   ECH(OPAQUE),
    ECH(LAST)
 } Echievement_Id;
 
