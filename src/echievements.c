@@ -7,8 +7,11 @@
 #define ECH_BH_NAME(NAME, TYPE)  echievement_##NAME##_border_hook##TYPE
 #define ECH_BH(NAME, TYPE) static void ECH_BH_NAME(NAME, TYPE)(Echievement *ec, E_Border *bd)
 #define ECH_BH_ADD(NAME, TYPE) \
-   ec->handlers = eina_list_append(ec->handlers, \
-     e_border_hook_add(E_BORDER_HOOK_##TYPE, (Ecore_End_Cb)ECH_BH_NAME(WINDOW_MOVER, TYPE), ec))
+   do { \
+     if (!etrophy_trophy_earned_get(ec->trophy)) \
+     ec->handlers = eina_list_append(ec->handlers, \
+       e_border_hook_add(E_BORDER_HOOK_##TYPE, (Ecore_End_Cb)ECH_BH_NAME(WINDOW_MOVER, TYPE), ec)); \
+   } while (0)
 #define ECH_MH_NAME(NAME) _ech_##NAME##_mouse_hook
 #define ECH_MH(NAME) static void ECH_MH_NAME(NAME)(Echievement *ec)
 #define ECH_MH_ADD(NAME) \
