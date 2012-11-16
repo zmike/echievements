@@ -3,7 +3,7 @@
 
 #define ECH_INIT(NAME)     void echievement_init_cb_##NAME(Echievement *ec)
 #define ECH_EH_NAME(NAME)  echievement_##NAME##_handler_cb
-#define ECH_EH(NAME, TYPE) static Eina_Bool ECH_EH_NAME(NAME)(Echievement *ec, int type EINA_UNUSED, TYPE *ev)
+#define ECH_EH(NAME, TYPE) static Eina_Bool ECH_EH_NAME(NAME)(Echievement *ec, int type, TYPE *ev)
 #define ECH_BH_NAME(NAME, TYPE)  echievement_##NAME##_border_hook_##TYPE
 #define ECH_BH(NAME, TYPE) static void ECH_BH_NAME(NAME, TYPE)(Echievement *ec, E_Border *bd)
 #define ECH_BH_ADD(NAME, TYPE) \
@@ -173,6 +173,7 @@ ECH_EH(NOTHING_ELSE_MATTERS, E_Event_Shelf EINA_UNUSED)
      return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
    return ECORE_CALLBACK_RENEW;
 }
 
@@ -182,6 +183,7 @@ ECH_EH(CAVE_DWELLER, void EINA_UNUSED)
      return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
    return ECORE_CALLBACK_RENEW;
 }
 
@@ -197,6 +199,7 @@ ECH_EH(WINDOW_ENTHUSIAST, void EINA_UNUSED)
      return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
    return ECORE_CALLBACK_RENEW;
 }
 
@@ -206,6 +209,7 @@ ECH_EH(AFRAID_OF_THE_DARK, void EINA_UNUSED)
      return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
    return ECORE_CALLBACK_RENEW;
 }
 
@@ -219,6 +223,7 @@ ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
      }
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
    return ECORE_CALLBACK_RENEW;
 }
 
@@ -226,6 +231,8 @@ ECH_EH(PHYSICIST, E_Event_Module_Update)
 {
    if ((!ev->enabled) || e_util_strcmp(ev->name, "Physics")) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
    return ECORE_CALLBACK_RENEW;
 }
 
@@ -233,13 +240,24 @@ ECH_EH(QUICKDRAW, E_Event_Module_Update)
 {
    if ((!ev->enabled) || e_util_strcmp(ev->name, "Quickaccess")) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
    return ECORE_CALLBACK_RENEW;
 }
 
 ECH_EH(OPAQUE, E_Event_Module_Update)
 {
-   if ((ev->enabled) || e_util_strcmp(ev->name, "Composite")) return ECORE_CALLBACK_RENEW;
+   if (type == E_EVENT_MODULE_INIT_END)
+     {
+        if (e_module_find("Composite")) return ECORE_CALLBACK_RENEW;
+     }
+   else
+     {
+        if ((ev->enabled) || e_util_strcmp(ev->name, "Composite"))
+          return ECORE_CALLBACK_RENEW;
+     }
    _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
    return ECORE_CALLBACK_RENEW;
 }
 
@@ -399,10 +417,8 @@ ECH_INIT(QUICKDRAW)
 
 ECH_INIT(OPAQUE)
 {
-   if (!e_module_find("Composite"))
-     _ech_hook(ec->id, ec);
-   else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(OPAQUE), ec);
+   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(OPAQUE), ec);
+   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_INIT_END, ECH_EH_NAME(OPAQUE), ec);
 }
 
 ECH_INIT(SHELF_POSITIONS)
