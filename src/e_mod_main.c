@@ -2,7 +2,7 @@
 
 EAPI E_Module_Api e_modapi = {E_MODULE_API_VERSION, "Echievements"};
 static E_Config_DD *conf_edd = NULL;
-static Ecore_Event_Handler *handler = NULL;
+static Eina_List *handlers = NULL;
 
 Mod *mod = NULL;
 Config *ech_config = NULL;
@@ -42,8 +42,25 @@ _e_mod_ech_config_load(void)
 static Eina_Bool
 _e_mod_ech_mod_init_end_cb(void *d EINA_UNUSED, int type EINA_UNUSED, void *ev EINA_UNUSED)
 {
-   if (handler) handler = ecore_event_handler_del(handler);
+   ecore_event_handler_del(eina_list_data_get(handlers));
+   handlers = eina_list_remove_list(handlers, handlers);
    mod->module_init_end = 1;
+   return ECORE_CALLBACK_RENEW;
+}
+
+static Eina_Bool
+_e_mod_ech_mouse_move_cb(void *d EINA_UNUSED, int type EINA_UNUSED, Ecore_Event_Mouse_Move *ev)
+{
+   if ((mod->mouse.x != mod->mouse.y) || (mod->mouse.x != -1))
+     {
+        Echievement *ec;
+        Eina_List *l;
+
+        mod->mouse.dx = ev->root.x - mod->mouse.x, mod->mouse.dy = ev->root.y - mod->mouse.y;
+        EINA_LIST_FOREACH(mod->mouse.hooks, l, ec)
+          if (ec->mouse_hook) ec->mouse_hook(ec);
+     }
+   mod->mouse.x = ev->root.x, mod->mouse.y = ev->root.y;
    return ECORE_CALLBACK_RENEW;
 }
 
@@ -68,8 +85,10 @@ e_modapi_init(E_Module *m)
 
    mod = E_NEW(Mod, 1);
    mod->module = m;
+   mod->mouse.x = mod->mouse.y = -1;
 
-   handler = ecore_event_handler_add(E_EVENT_MODULE_INIT_END, _e_mod_ech_mod_init_end_cb, NULL);
+   E_LIST_HANDLER_APPEND(handlers, E_EVENT_MODULE_INIT_END, _e_mod_ech_mod_init_end_cb, NULL);
+   E_LIST_HANDLER_APPEND(handlers, ECORE_EVENT_MOUSE_MOVE, _e_mod_ech_mouse_move_cb, NULL);
 
    _e_mod_ech_config_load();
    ech_init();
@@ -89,8 +108,9 @@ e_modapi_shutdown(E_Module *m EINA_UNUSED)
    e_config_domain_save("module.echievements", conf_edd, ech_config);
    _e_mod_ech_config_free();
    E_CONFIG_DD_FREE(conf_edd);
+   eina_list_free(mod->mouse.hooks);
    E_FREE(mod);
-   if (handler) handler = ecore_event_handler_del(handler);
+   E_FREE_LIST(handlers, ecore_event_handler_del);
    e_notification_shutdown();
    etrophy_shutdown();
    return 1;

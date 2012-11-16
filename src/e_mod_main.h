@@ -41,6 +41,7 @@ typedef struct Echievement
    Echievement_Id id;
    Etrophy_Trophy *trophy;
    Eina_List *handlers;
+   Ecore_Cb mouse_hook;
 } Echievement;
 
 typedef void (*Echievement_Init_Cb)(Echievement*);
@@ -52,6 +53,12 @@ typedef struct Mod
    Eina_Hash *trophies; // for fast lookups
    Echievement *trophies_list; // head for iterating
    Eina_Inlist *itr; // current iterator position if needed
+   struct
+   {
+      int x, y;
+      int dx, dy;
+      Eina_List *hooks;
+   } mouse;
    Eina_Bool module_init_end : 1;
 } Mod;
 
