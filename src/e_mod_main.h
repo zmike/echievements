@@ -35,6 +35,9 @@ typedef enum
    ECH(MOUSE_RUNNER),
    ECH(MOUSE_MARATHONER),
    ECH(MOUSE_HERO),
+   ECH(WINDOW_HAULER),
+   ECH(WINDOW_SLINGER),
+   ECH(WINDOW_SHERPA),
    ECH(LAST)
 } Echievement_Id;
 

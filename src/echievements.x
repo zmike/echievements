@@ -23,6 +23,9 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(MOUSE_RUNNER)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(MOUSE_MARATHONER)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(MOUSE_HERO)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(WINDOW_HAULER)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(WINDOW_SLINGER)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(WINDOW_SHERPA)] = ETROPHY_TROPHY_STATE_VISIBLE,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -40,6 +43,9 @@ static unsigned int Echievement_Goals[] =
    [ECH(MOUSE_RUNNER)] = 50000,
    [ECH(MOUSE_MARATHONER)] = 150000,
    [ECH(MOUSE_HERO)] = 500000,
+   [ECH(WINDOW_HAULER)] = 10000,
+   [ECH(WINDOW_SLINGER)] = 50000,
+   [ECH(WINDOW_SHERPA)] = 250000,
 };
 
 static const char *const Echievement_Strings[] =
@@ -56,6 +62,9 @@ static const char *const Echievement_Strings[] =
    [ECH(MOUSE_RUNNER)] = "Mouse Runner",
    [ECH(MOUSE_MARATHONER)] = "Mouse Marathoner",
    [ECH(MOUSE_HERO)] = "Mouse Hero",
+   [ECH(WINDOW_HAULER)] = "Window Hauler",
+   [ECH(WINDOW_SLINGER)] = "Window Slinger",
+   [ECH(WINDOW_SHERPA)] = "Window Sherpa",
 };
 
 static const char *const Echievement_Descs[] =
@@ -72,6 +81,9 @@ static const char *const Echievement_Descs[] =
    [ECH(MOUSE_RUNNER)] = "Mouse over 50,000 pixels",
    [ECH(MOUSE_MARATHONER)] = "Mouse over 150,000 pixels",
    [ECH(MOUSE_HERO)] = "Mouse over 500,000 pixels",
+   [ECH(WINDOW_HAULER)] = "Move windows 10,000 pixels",
+   [ECH(WINDOW_SLINGER)] = "Move windows 50,000 pixels",
+   [ECH(WINDOW_SHERPA)] = "Move windows 250,000 pixels",
 };
 
 #define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
@@ -88,6 +100,9 @@ ECB(WINDOW_OCD);
 ECB(MOUSE_RUNNER);
 ECB(MOUSE_MARATHONER);
 ECB(MOUSE_HERO);
+ECB(WINDOW_HAULER);
+ECB(WINDOW_SLINGER);
+ECB(WINDOW_SHERPA);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -105,6 +120,9 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB(MOUSE_RUNNER),
    ECB(MOUSE_MARATHONER),
    ECB(MOUSE_HERO),
+   ECB(WINDOW_HAULER),
+   ECB(WINDOW_SLINGER),
+   ECB(WINDOW_SHERPA),
    NULL
 };
 

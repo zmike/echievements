@@ -236,7 +236,41 @@ ECH_MH(MOUSE_RUNNER)
    etrophy_trophy_counter_increment(ec->trophy, abs(mod->mouse.dx) + abs(mod->mouse.dy));
    if (!etrophy_trophy_earned_get(ec->trophy)) return;
    _ech_hook(ec->id, ec);
-   mod->mouse.hooks = eina_list_remove(mod->mouse.hooks, ec);
+   ECH_MH_DEL;
+}
+
+ECH_MH(WINDOW_HAULER)
+{
+   etrophy_trophy_counter_increment(ec->trophy, abs(mod->mouse.dx) + abs(mod->mouse.dy));
+   if (!etrophy_trophy_earned_get(ec->trophy)) return;
+   _ech_hook(ec->id, ec);
+   ECH_MH_DEL;
+   E_FREE_LIST(ec->handlers, e_border_hook_del);
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+/* Echievement border hook callbacks */
+
+ECH_BH(WINDOW_HAULER, MOVE_BEGIN)
+{
+   ECH_MH_ADD(WINDOW_HAULER);
+   (void)bd;
+}
+
+ECH_BH(WINDOW_HAULER, MOVE_END)
+{
+   ECH_MH_DEL;
+   (void)bd;
+}
+
+ECH_BH(WINDOW_MOVER, MOVE_END)
+{
+   etrophy_trophy_counter_increment(ec->trophy, 1);
+   if (!etrophy_trophy_earned_get(ec->trophy)) return;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, e_border_hook_del);
+   (void)bd;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -306,6 +340,24 @@ ECH_INIT(WINDOW_MOVER)
 {
    /* only count windows moved while e is running to prevent cheating */
    ECH_BH_ADD(WINDOW_MOVER, MOVE_END);
+}
+
+ECH_INIT(WINDOW_HAULER)
+{
+   ECH_BH_ADD(WINDOW_HAULER, MOVE_BEGIN);
+   ECH_BH_ADD(WINDOW_HAULER, MOVE_END);
+}
+
+ECH_INIT(WINDOW_SLINGER)
+{
+   ECH_BH_ADD(WINDOW_HAULER, MOVE_BEGIN);
+   ECH_BH_ADD(WINDOW_HAULER, MOVE_END);
+}
+
+ECH_INIT(WINDOW_SHERPA)
+{
+   ECH_BH_ADD(WINDOW_HAULER, MOVE_BEGIN);
+   ECH_BH_ADD(WINDOW_HAULER, MOVE_END);
 }
 
 ECH_INIT(SHELF_POSITIONS)
