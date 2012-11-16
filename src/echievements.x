@@ -20,9 +20,11 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(WINDOW_STALKER)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(WINDOW_MOVER)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(WINDOW_OCD)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(MOUSE_RUNNER)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(MOUSE_MARATHONER)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(MOUSE_HERO)] = ETROPHY_TROPHY_STATE_VISIBLE,
 };
 
-/* ec may be NULL */
 static unsigned int Echievement_Goals[] =
 {
                                       /* LAST - first possible shelf orient */
@@ -35,6 +37,9 @@ static unsigned int Echievement_Goals[] =
    [ECH(WINDOW_STALKER)] = 10000,
    [ECH(WINDOW_MOVER)] = 50,
    [ECH(WINDOW_OCD)] = 200,
+   [ECH(MOUSE_RUNNER)] = 50000,
+   [ECH(MOUSE_MARATHONER)] = 150000,
+   [ECH(MOUSE_HERO)] = 500000,
 };
 
 static const char *const Echievement_Strings[] =
@@ -48,6 +53,9 @@ static const char *const Echievement_Strings[] =
    [ECH(WINDOW_STALKER)] = "Window Stalker",
    [ECH(WINDOW_MOVER)] = "Window Mover",
    [ECH(WINDOW_OCD)] = "Window OCD",
+   [ECH(MOUSE_RUNNER)] = "Mouse Runner",
+   [ECH(MOUSE_MARATHONER)] = "Mouse Marathoner",
+   [ECH(MOUSE_HERO)] = "Mouse Hero",
 };
 
 static const char *const Echievement_Descs[] =
@@ -61,6 +69,9 @@ static const char *const Echievement_Descs[] =
    [ECH(WINDOW_STALKER)] = "Open 10000 windows",
    [ECH(WINDOW_MOVER)] = "Move 50 windows",
    [ECH(WINDOW_OCD)] = "Move 250 windows",
+   [ECH(MOUSE_RUNNER)] = "Mouse over 50,000 pixels",
+   [ECH(MOUSE_MARATHONER)] = "Mouse over 150,000 pixels",
+   [ECH(MOUSE_HERO)] = "Mouse over 500,000 pixels",
 };
 
 #define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
@@ -74,6 +85,9 @@ ECB(WINDOW_LOVER);
 ECB(WINDOW_STALKER);
 ECB(WINDOW_MOVER);
 ECB(WINDOW_OCD);
+ECB(MOUSE_RUNNER);
+ECB(MOUSE_MARATHONER);
+ECB(MOUSE_HERO);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -88,6 +102,9 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB(WINDOW_STALKER),
    ECB(WINDOW_MOVER),
    ECB(WINDOW_OCD),
+   ECB(MOUSE_RUNNER),
+   ECB(MOUSE_MARATHONER),
+   ECB(MOUSE_HERO),
    NULL
 };
 

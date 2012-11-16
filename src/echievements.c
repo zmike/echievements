@@ -3,7 +3,15 @@
 
 #define ECH_INIT(NAME)     void echievement_init_cb_##NAME(Echievement *ec)
 #define ECH_EH_NAME(NAME)  echievement_##NAME##_handler_cb
-#define ECH_EH(NAME, TYPE) static Eina_Bool echievement_##NAME##_handler_cb(Echievement *ec, int type EINA_UNUSED, TYPE *ev)
+#define ECH_EH(NAME, TYPE) static Eina_Bool ECH_EH_NAME(NAME)(Echievement *ec, int type EINA_UNUSED, TYPE *ev)
+#define ECH_MH_NAME(NAME) _ech_##NAME##_mouse_hook
+#define ECH_MH(NAME) static void ECH_MH_NAME(NAME)(Echievement *ec)
+#define ECH_MH_ADD(NAME) \
+ do { \
+    ec->mouse_hook = (Ecore_Cb)ECH_MH_NAME(NAME); \
+    if (!etrophy_trophy_earned_get(ec->trophy)) \
+      mod->mouse.hooks = eina_list_append(mod->mouse.hooks, ec); \
+ } while (0)
 
 static Ecore_Idler *_ech_idler = NULL;
 
@@ -207,6 +215,23 @@ ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
+/* Echievement mouse hook callbacks:
+ *
+ * called every time the mouse moves
+ *
+ * mod->mouse.dx/dy are change since last call
+ */
+
+ECH_MH(MOUSE_RUNNER)
+{
+   etrophy_trophy_counter_increment(ec->trophy, abs(mod->mouse.dx) + abs(mod->mouse.dy));
+   if (!etrophy_trophy_earned_get(ec->trophy)) return;
+   _ech_hook(ec->id, ec);
+   mod->mouse.hooks = eina_list_remove(mod->mouse.hooks, ec);
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
 /* Echievement init callbacks:
  *
  * called every time the module loads upon loading a trophy if the trophy has not been acquired
@@ -283,6 +308,21 @@ ECH_INIT(SHELF_POSITIONS)
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_SHELF_ADD, ECH_EH_NAME(SHELF_POSITIONS), ec);
+}
+
+ECH_INIT(MOUSE_RUNNER)
+{
+   ECH_MH_ADD(MOUSE_RUNNER);
+}
+
+ECH_INIT(MOUSE_MARATHONER)
+{
+   ECH_MH_ADD(MOUSE_RUNNER);
+}
+
+ECH_INIT(MOUSE_HERO)
+{
+   ECH_MH_ADD(MOUSE_RUNNER);
 }
 
 void
