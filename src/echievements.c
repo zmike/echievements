@@ -173,7 +173,7 @@ ECH_EH(NOTHING_ELSE_MATTERS, E_Event_Shelf EINA_UNUSED)
      return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   return ECORE_CALLBACK_CANCEL;
+   return ECORE_CALLBACK_RENEW;
 }
 
 ECH_EH(CAVE_DWELLER, void EINA_UNUSED)
@@ -182,7 +182,7 @@ ECH_EH(CAVE_DWELLER, void EINA_UNUSED)
      return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   return ECORE_CALLBACK_CANCEL;
+   return ECORE_CALLBACK_RENEW;
 }
 
 ECH_EH(WINDOW_ENTHUSIAST, void EINA_UNUSED)
@@ -197,7 +197,7 @@ ECH_EH(WINDOW_ENTHUSIAST, void EINA_UNUSED)
      return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   return ECORE_CALLBACK_CANCEL;
+   return ECORE_CALLBACK_RENEW;
 }
 
 ECH_EH(AFRAID_OF_THE_DARK, void EINA_UNUSED)
@@ -206,7 +206,7 @@ ECH_EH(AFRAID_OF_THE_DARK, void EINA_UNUSED)
      return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   return ECORE_CALLBACK_CANCEL;
+   return ECORE_CALLBACK_RENEW;
 }
 
 ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
@@ -219,7 +219,14 @@ ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
      }
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   return ECORE_CALLBACK_CANCEL;
+   return ECORE_CALLBACK_RENEW;
+}
+
+ECH_EH(PHYSICIST, E_Event_Module_Update)
+{
+   if ((!ev->enabled) || e_util_strcmp(ev->name, "Physics")) return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   return ECORE_CALLBACK_RENEW;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -358,6 +365,14 @@ ECH_INIT(WINDOW_SHERPA)
 {
    ECH_BH_ADD(WINDOW_HAULER, MOVE_BEGIN);
    ECH_BH_ADD(WINDOW_HAULER, MOVE_END);
+}
+
+ECH_INIT(PHYSICIST)
+{
+   if (e_module_find("Physics"))
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(PHYSICIST), ec);
 }
 
 ECH_INIT(SHELF_POSITIONS)
