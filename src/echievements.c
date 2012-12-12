@@ -452,11 +452,17 @@ ech_init(void)
    mod->trophies = eina_hash_int32_new((Eina_Free_Cb)_ech_free);
    if (ech_config->gs)
      {
-        E_LIST_FOREACH(etrophy_gamescore_trophies_list_get(ech_config->gs), _ech_list_add);
-        _ech_idler = ecore_idler_add(_ech_init_check_idler, NULL);
+        const Eina_List *l;
+
+        l = etrophy_gamescore_trophies_list_get(ech_config->gs);
+        if (l)
+          {
+             E_LIST_FOREACH(l, _ech_list_add);
+             _ech_idler = ecore_idler_add(_ech_init_check_idler, NULL);
+             return;
+          }
      }
-   else
-     _ech_idler = ecore_idler_add(_ech_init_add_idler, NULL);
+   _ech_idler = ecore_idler_add(_ech_init_add_idler, NULL);
 }
 
 void
