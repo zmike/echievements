@@ -232,7 +232,7 @@ ECH_EH(KEYBOARD_USER, void EINA_UNUSED)
    if (eina_list_count(e_config->key_bindings) < Echievement_Goals[ec->id])
      {
         etrophy_trophy_counter_set(ec->trophy,
-                                   eina_list_count(e_shelf_list()));
+                                   eina_list_count(e_config->key_bindings));
         return ECORE_CALLBACK_RENEW;
      }
    _ech_hook(ec->id, ec);
