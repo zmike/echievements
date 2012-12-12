@@ -49,6 +49,7 @@ _ech_add(Echievement_Id id)
 
    et = etrophy_trophy_new(Echievement_Strings[id], Echievement_Descs[id],
                            Echievement_Hide_States[id], Echievement_Goals[id]);
+   etrophy_gamescore_trophy_add(ech_config->gs, et);
    _ech_list_add(et);
 }
 
