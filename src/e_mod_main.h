@@ -19,6 +19,9 @@
 #define MOD_CONFIG_FILE_VERSION \
    ((MOD_CONFIG_FILE_EPOCH << 16) | MOD_CONFIG_FILE_GENERATION)
 
+#define XSTR(X) #X
+#define STRINGIFY(X) XSTR(X)
+
 // need to update these whenever default profile updates I guess
 #define DEFAULT_BINDING_COUNT_ACPI 11
 #define DEFAULT_BINDING_COUNT_KEY 65
@@ -47,6 +50,10 @@ typedef enum
    ECH(PHYSICIST),
    ECH(QUICKDRAW),
    ECH(OPAQUE),
+   ECH(KEYBOARD_USER),
+   ECH(KEYBOARD_TAPPER),
+   ECH(KEYBOARD_ABUSER),
+   ECH(KEYBOARD_NINJA),
    ECH(LAST)
 } Echievement_Id;
 

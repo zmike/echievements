@@ -227,6 +227,20 @@ ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
    return ECORE_CALLBACK_RENEW;
 }
 
+ECH_EH(KEYBOARD_USER, void EINA_UNUSED)
+{
+   if (eina_list_count(e_config->key_bindings) < Echievement_Goals[ec->id])
+     {
+        etrophy_trophy_counter_set(ec->trophy,
+                                   eina_list_count(e_shelf_list()));
+        return ECORE_CALLBACK_RENEW;
+     }
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
+   return ECORE_CALLBACK_RENEW;
+}
+
 ECH_EH(PHYSICIST, E_Event_Module_Update)
 {
    if ((!ev->enabled) || e_util_strcmp(ev->name, "Physics")) return ECORE_CALLBACK_RENEW;
@@ -347,32 +361,12 @@ ECH_INIT(CAVE_DWELLER)
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BACKLIGHT_CHANGE, ECH_EH_NAME(CAVE_DWELLER), ec);
 }
 
-ECH_INIT(WINDOW_STALKER)
-{
-   /* only count windows opened while e is running to prevent cheating
-    * reuse same handler
-    */
-   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BORDER_ADD, ECH_EH_NAME(WINDOW_ENTHUSIAST), ec);
-}
-
-ECH_INIT(WINDOW_LOVER)
-{
-   /* only count windows opened while e is running to prevent cheating
-    * reuse same handler
-    */
-   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BORDER_ADD, ECH_EH_NAME(WINDOW_ENTHUSIAST), ec);
-}
-
 ECH_INIT(WINDOW_ENTHUSIAST)
 {
-   /* only count windows opened while e is running to prevent cheating */
-   ECH_BH_ADD(WINDOW_MOVER, MOVE_END);
-}
-
-ECH_INIT(WINDOW_OCD)
-{
-   /* only count windows moved while e is running to prevent cheating */
-   ECH_BH_ADD(WINDOW_MOVER, MOVE_END);
+   /* only count windows opened while e is running to prevent cheating
+    * reuse same handler
+    */
+   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BORDER_ADD, ECH_EH_NAME(WINDOW_ENTHUSIAST), ec);
 }
 
 ECH_INIT(WINDOW_MOVER)
@@ -387,16 +381,12 @@ ECH_INIT(WINDOW_HAULER)
    ECH_BH_ADD(WINDOW_HAULER, MOVE_END);
 }
 
-ECH_INIT(WINDOW_SLINGER)
+ECH_INIT(KEYBOARD_USER)
 {
-   ECH_BH_ADD(WINDOW_HAULER, MOVE_BEGIN);
-   ECH_BH_ADD(WINDOW_HAULER, MOVE_END);
-}
-
-ECH_INIT(WINDOW_SHERPA)
-{
-   ECH_BH_ADD(WINDOW_HAULER, MOVE_BEGIN);
-   ECH_BH_ADD(WINDOW_HAULER, MOVE_END);
+   if (eina_list_count(e_config->key_bindings) >= Echievement_Goals[ec->id])
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(KEYBOARD_USER), ec);
 }
 
 ECH_INIT(PHYSICIST)
@@ -431,16 +421,6 @@ ECH_INIT(SHELF_POSITIONS)
 }
 
 ECH_INIT(MOUSE_RUNNER)
-{
-   ECH_MH_ADD(MOUSE_RUNNER);
-}
-
-ECH_INIT(MOUSE_MARATHONER)
-{
-   ECH_MH_ADD(MOUSE_RUNNER);
-}
-
-ECH_INIT(MOUSE_HERO)
 {
    ECH_MH_ADD(MOUSE_RUNNER);
 }
