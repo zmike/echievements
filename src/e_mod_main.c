@@ -37,6 +37,8 @@ _e_mod_ech_config_load(void)
         ech_config = E_NEW(Config, 1);
         ech_config->config_version = (MOD_CONFIG_FILE_EPOCH << 16);
      }
+   if (!ech_config->gs)
+     ech_config->gs = etrophy_gamescore_new("echievements");
 }
 
 static Eina_Bool
