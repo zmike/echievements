@@ -37,6 +37,8 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(SUPER_CLICKER)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(SUPER_DUPER_CLICKER)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(CLICK_MANIAC)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(SLEEPER)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(HALTER)] = ETROPHY_TROPHY_STATE_HIDDEN,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -68,6 +70,8 @@ static unsigned int Echievement_Goals[] =
    [ECH(SUPER_CLICKER)] = DEFAULT_BINDING_COUNT_MOUSE + 10,
    [ECH(SUPER_DUPER_CLICKER)] = DEFAULT_BINDING_COUNT_MOUSE + 20,
    [ECH(CLICK_MANIAC)] = DEFAULT_BINDING_COUNT_MOUSE + 30,
+   [ECH(SLEEPER)] = DEFAULT_BINDING_COUNT_ACPI + 2,
+   [ECH(HALTER)] = DEFAULT_BINDING_COUNT_ACPI + 5,
 };
 
 static const char *const Echievement_Strings[] =
@@ -98,6 +102,8 @@ static const char *const Echievement_Strings[] =
    [ECH(SUPER_CLICKER)] = "Super Clicker",
    [ECH(SUPER_DUPER_CLICKER)] = "Super Duper Clicker",
    [ECH(CLICK_MANIAC)] = "Click Maniac",
+   [ECH(SLEEPER)] = "Sleeper",
+   [ECH(HALTER)] = "Halter",
 };
 
 static const char *const Echievement_Descs[] =
@@ -128,6 +134,8 @@ static const char *const Echievement_Descs[] =
    [ECH(SUPER_CLICKER)] = "Add 10 mouse bindings to default",
    [ECH(SUPER_DUPER_CLICKER)] = "Add 20 mouse bindings to default",
    [ECH(CLICK_MANIAC)] = "Add 30 mouse bindings to default",
+   [ECH(SLEEPER)] = "Add 2 ACPI bindings to default",
+   [ECH(HALTER)] = "Add 5 ACPI bindings to default",
 };
 
 #define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
@@ -145,6 +153,7 @@ ECB(QUICKDRAW);
 ECB(OPAQUE);
 ECB(KEYBOARD_USER);
 ECB(CLICKER);
+ECB(SLEEPER);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -178,6 +187,8 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB_REUSE(SUPER_CLICKER, CLICKER),
    ECB_REUSE(SUPER_DUPER_CLICKER, CLICKER),
    ECB_REUSE(CLICK_MANIAC, CLICKER),
+   ECB(SLEEPER),
+   ECB_REUSE(HALTER, SLEEPER),
    NULL
 };
 

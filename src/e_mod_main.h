@@ -58,6 +58,8 @@ typedef enum
    ECH(SUPER_CLICKER),
    ECH(SUPER_DUPER_CLICKER),
    ECH(CLICK_MANIAC),
+   ECH(SLEEPER),
+   ECH(HALTER),
    ECH(LAST)
 } Echievement_Id;
 
