@@ -68,7 +68,6 @@ _basic_create(E_Config_Dialog *cfd EINA_UNUSED, Evas *evas, E_Config_Dialog_Data
    /* FIXME it should be scrollable and all initial items should
       be visible */
    list = e_widget_list_add(evas, 1, 0);
-   e_util_size_debug_set(list, 1);
    EINA_INLIST_FOREACH(EINA_INLIST_GET(mod->trophies_list), ec)
      {
         unsigned int goal, counter;
