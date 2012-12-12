@@ -158,6 +158,19 @@ _ech_init_add_idler(void *d EINA_UNUSED)
    return EINA_FALSE;
 }
 
+
+static Eina_Bool
+NOT_SO_INCOGNITO_helper(const char *str)
+{
+   unsigned int x;
+
+   if ((!str) || (!str[0])) return EINA_FALSE;
+   for (x = 0; Echievement_NOT_SO_INCOGNITO_Strings[x]; x++)
+     if (!strncmp(str, Echievement_NOT_SO_INCOGNITO_Strings[x], sizeof(Echievement_NOT_SO_INCOGNITO_Strings[x] - 1)))
+       return EINA_TRUE;
+   return EINA_FALSE;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////
 
 /* Echievement event handler callbacks:
@@ -353,6 +366,14 @@ ECH_BH(WINDOW_HAULER, MOVE_BEGIN)
    (void)bd;
 }
 
+ECH_BH(NOT_SO_INCOGNITO, EVAL_PRE_POST_FETCH)
+{
+   if ((!NOT_SO_INCOGNITO_helper(bd->client.icccm.title)) && (!NOT_SO_INCOGNITO_helper(bd->client.netwm.name)))
+     return;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, e_border_hook_del);
+}
+
 ECH_BH(WINDOW_HAULER, MOVE_END)
 {
    ECH_MH_DEL;
@@ -496,6 +517,22 @@ ECH_INIT(SHELF_POSITIONS)
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_SHELF_ADD, ECH_EH_NAME(SHELF_POSITIONS), ec);
+}
+
+ECH_INIT(NOT_SO_INCOGNITO)
+{
+   Eina_List *l;
+   E_Border *bd;
+
+   EINA_LIST_FOREACH(e_border_client_list(), l, bd)
+     {
+        if (NOT_SO_INCOGNITO_helper(bd->client.icccm.title) || NOT_SO_INCOGNITO_helper(bd->client.netwm.name))
+          {
+             _ech_hook(ec->id, ec);
+             return;
+          }
+     }
+   ECH_BH_ADD(NOT_SO_INCOGNITO, EVAL_PRE_POST_FETCH);
 }
 
 ECH_INIT(MOUSE_RUNNER)

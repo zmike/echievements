@@ -43,6 +43,7 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(EDJIER)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(EDJIEST)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(EDGAR)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(NOT_SO_INCOGNITO)] = ETROPHY_TROPHY_STATE_HIDDEN,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -80,6 +81,31 @@ static unsigned int Echievement_Goals[] =
    [ECH(EDJIER)] = DEFAULT_BINDING_COUNT_SIGNAL + 4,
    [ECH(EDJIEST)] = DEFAULT_BINDING_COUNT_SIGNAL + 6,
    [ECH(EDGAR)] = DEFAULT_BINDING_COUNT_SIGNAL + 10,
+   [ECH(NOT_SO_INCOGNITO)] = 1,
+};
+
+/* sighhh the amount of time it actually took me to build the list below...
+ * update periodically from http://www.ovguide.com/adult-tubesites-visits-alltime.html
+ * to maintain hilarity
+ */
+static const char *const Echievement_NOT_SO_INCOGNITO_Strings[] =
+{
+   "Porn Tube, You Porn, Free Porn Movies", //youjizz
+   "Free Porn Videos - XVIDEOS.COM", //xvideos
+   "Free Porn Sex Videos - Redtube", //redtube
+   "Free sex videos, Sex tube", //tube8
+   "xHamster's Free Porn Videos", //xhamster
+   "Video - Free Porn Videos", //yuvutu <--I guess they just gave up at naming?
+   "Free porno tube site!", //koostube
+   "Alot Porn Tube", //alotporn <--nice grammar, jackasses
+   "Free Porn Videos, Porn Tube, Sex Videos", //mofosex
+   "Free Porn Tube Movies & XXX Sex Pics", //keezmovies
+   "Free Porn Videos, Porn Tube, Free Porn", //tnaflix
+   "Porn Videos, Sex, XXX, Free Porn Tube", //youporn
+   "Free Porn, Sex Videos 4 You", //spankwire
+   "Free Porn Videos, Free Sex, XXX", //empflix
+   "Free Porn Videos & Sex Movies", //pornhub
+   NULL
 };
 
 static const char *const Echievement_Strings[] =
@@ -116,6 +142,7 @@ static const char *const Echievement_Strings[] =
    [ECH(EDJIER)] = "Edjier",
    [ECH(EDJIEST)] = "Edjiest",
    [ECH(EDGAR)] = "Edgar",
+   [ECH(NOT_SO_INCOGNITO)] = "Not So Incognito",
 };
 
 static const char *const Echievement_Descs[] =
@@ -152,6 +179,7 @@ static const char *const Echievement_Descs[] =
    [ECH(EDJIER)] = "Add 4 Edje Signal bindings to default",
    [ECH(EDJIEST)] = "Add 6 Edje Signal bindings to default",
    [ECH(EDGAR)] = "Add 10 Edje Signal bindings to default",
+   [ECH(NOT_SO_INCOGNITO)] = "Watch porn while using E17",
 };
 
 #define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
@@ -171,6 +199,7 @@ ECB(KEYBOARD_USER);
 ECB(CLICKER);
 ECB(SLEEPER);
 ECB(EDJY);
+ECB(NOT_SO_INCOGNITO);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -210,6 +239,7 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB_REUSE(EDJIER, EDJY),
    ECB_REUSE(EDJIEST, EDJY),
    ECB_REUSE(EDGAR, EDJY),
+   ECB(NOT_SO_INCOGNITO),
    NULL
 };
 

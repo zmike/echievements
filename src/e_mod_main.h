@@ -64,6 +64,7 @@ typedef enum
    ECH(EDJIER),
    ECH(EDJIEST),
    ECH(EDGAR),
+   ECH(NOT_SO_INCOGNITO),
    ECH(LAST)
 } Echievement_Id;
 
