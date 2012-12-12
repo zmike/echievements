@@ -104,7 +104,6 @@ _ech_hook(Echievement_Id id, Echievement *ec)
    else
      et = _ech_lookup(id);
    if (!et) return;
-   if (etrophy_trophy_earned_get(et)) return;
    etrophy_trophy_counter_set(et, Echievement_Goals[id]);
    INF("TROPHY EARNED: %s - %s",
        etrophy_trophy_name_get(et),
