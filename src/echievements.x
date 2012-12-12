@@ -39,6 +39,10 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(CLICK_MANIAC)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(SLEEPER)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(HALTER)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(EDJY)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(EDJIER)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(EDJIEST)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(EDGAR)] = ETROPHY_TROPHY_STATE_HIDDEN,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -72,6 +76,10 @@ static unsigned int Echievement_Goals[] =
    [ECH(CLICK_MANIAC)] = DEFAULT_BINDING_COUNT_MOUSE + 30,
    [ECH(SLEEPER)] = DEFAULT_BINDING_COUNT_ACPI + 2,
    [ECH(HALTER)] = DEFAULT_BINDING_COUNT_ACPI + 5,
+   [ECH(EDJY)] = DEFAULT_BINDING_COUNT_SIGNAL + 2,
+   [ECH(EDJIER)] = DEFAULT_BINDING_COUNT_SIGNAL + 4,
+   [ECH(EDJIEST)] = DEFAULT_BINDING_COUNT_SIGNAL + 6,
+   [ECH(EDGAR)] = DEFAULT_BINDING_COUNT_SIGNAL + 10,
 };
 
 static const char *const Echievement_Strings[] =
@@ -104,6 +112,10 @@ static const char *const Echievement_Strings[] =
    [ECH(CLICK_MANIAC)] = "Click Maniac",
    [ECH(SLEEPER)] = "Sleeper",
    [ECH(HALTER)] = "Halter",
+   [ECH(EDJY)] = "Edjy",
+   [ECH(EDJIER)] = "Edjier",
+   [ECH(EDJIEST)] = "Edjiest",
+   [ECH(EDGAR)] = "Edgar",
 };
 
 static const char *const Echievement_Descs[] =
@@ -136,6 +148,10 @@ static const char *const Echievement_Descs[] =
    [ECH(CLICK_MANIAC)] = "Add 30 mouse bindings to default",
    [ECH(SLEEPER)] = "Add 2 ACPI bindings to default",
    [ECH(HALTER)] = "Add 5 ACPI bindings to default",
+   [ECH(EDJY)] = "Add 2 Edje Signal bindings to default",
+   [ECH(EDJIER)] = "Add 4 Edje Signal bindings to default",
+   [ECH(EDJIEST)] = "Add 6 Edje Signal bindings to default",
+   [ECH(EDGAR)] = "Add 10 Edje Signal bindings to default",
 };
 
 #define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
@@ -154,6 +170,7 @@ ECB(OPAQUE);
 ECB(KEYBOARD_USER);
 ECB(CLICKER);
 ECB(SLEEPER);
+ECB(EDJY);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -189,6 +206,10 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB_REUSE(CLICK_MANIAC, CLICKER),
    ECB(SLEEPER),
    ECB_REUSE(HALTER, SLEEPER),
+   ECB(EDJY),
+   ECB_REUSE(EDJIER, EDJY),
+   ECB_REUSE(EDJIEST, EDJY),
+   ECB_REUSE(EDGAR, EDJY),
    NULL
 };
 

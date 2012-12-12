@@ -60,6 +60,10 @@ typedef enum
    ECH(CLICK_MANIAC),
    ECH(SLEEPER),
    ECH(HALTER),
+   ECH(EDJY),
+   ECH(EDJIER),
+   ECH(EDJIEST),
+   ECH(EDGAR),
    ECH(LAST)
 } Echievement_Id;
 
