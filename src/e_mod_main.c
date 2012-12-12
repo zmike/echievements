@@ -4,8 +4,8 @@ EAPI E_Module_Api e_modapi = {E_MODULE_API_VERSION, "Echievements"};
 static E_Config_DD *conf_edd = NULL;
 static Eina_List *handlers = NULL;
 
-Mod *mod = NULL;
-Config *ech_config = NULL;
+EINTERN Mod *mod = NULL;
+EINTERN Config *ech_config = NULL;
 
 static void
 _e_mod_ech_config_free(void)
