@@ -14,10 +14,16 @@
 # define D_(string) (string)
 #endif
 
-#define MOD_CONFIG_FILE_EPOCH 0x0001
+#define MOD_CONFIG_FILE_EPOCH 0x0000
 #define MOD_CONFIG_FILE_GENERATION 0x01
 #define MOD_CONFIG_FILE_VERSION \
    ((MOD_CONFIG_FILE_EPOCH << 16) | MOD_CONFIG_FILE_GENERATION)
+
+// need to update these whenever default profile updates I guess
+#define DEFAULT_BINDING_COUNT_ACPI 11
+#define DEFAULT_BINDING_COUNT_KEY 65
+#define DEFAULT_BINDING_COUNT_MOUSE 6
+#define DEFAULT_BINDING_COUNT_SIGNAL 28
 
 #define ECH(X) ECHIEVEMENT_ID_##X
 /* See instructions in echievements.x for adding new ones */
