@@ -227,6 +227,20 @@ ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
    return ECORE_CALLBACK_RENEW;
 }
 
+ECH_EH(CLICKER, void EINA_UNUSED)
+{
+   if (eina_list_count(e_config->mouse_bindings) < Echievement_Goals[ec->id])
+     {
+        etrophy_trophy_counter_set(ec->trophy,
+                                   eina_list_count(e_config->mouse_bindings));
+        return ECORE_CALLBACK_RENEW;
+     }
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
+   return ECORE_CALLBACK_RENEW;
+}
+
 ECH_EH(KEYBOARD_USER, void EINA_UNUSED)
 {
    if (eina_list_count(e_config->key_bindings) < Echievement_Goals[ec->id])
@@ -379,6 +393,17 @@ ECH_INIT(WINDOW_HAULER)
 {
    ECH_BH_ADD(WINDOW_HAULER, MOVE_BEGIN);
    ECH_BH_ADD(WINDOW_HAULER, MOVE_END);
+}
+
+ECH_INIT(CLICKER)
+{
+   if (eina_list_count(e_config->mouse_bindings) >= Echievement_Goals[ec->id])
+     _ech_hook(ec->id, ec);
+   else
+     {
+        etrophy_trophy_counter_set(ec->trophy, eina_list_count(e_config->mouse_bindings));
+        E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(CLICKER), ec);
+     }
 }
 
 ECH_INIT(KEYBOARD_USER)

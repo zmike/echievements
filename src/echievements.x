@@ -33,6 +33,10 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(KEYBOARD_TAPPER)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(KEYBOARD_ABUSER)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(KEYBOARD_NINJA)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(CLICKER)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(SUPER_CLICKER)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(SUPER_DUPER_CLICKER)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(CLICK_MANIAC)] = ETROPHY_TROPHY_STATE_HIDDEN,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -60,6 +64,10 @@ static unsigned int Echievement_Goals[] =
    [ECH(KEYBOARD_TAPPER)] = DEFAULT_BINDING_COUNT_KEY + 10,
    [ECH(KEYBOARD_ABUSER)] = DEFAULT_BINDING_COUNT_KEY + 20,
    [ECH(KEYBOARD_NINJA)] = DEFAULT_BINDING_COUNT_KEY + 30,
+   [ECH(CLICKER)] = DEFAULT_BINDING_COUNT_MOUSE + 5,
+   [ECH(SUPER_CLICKER)] = DEFAULT_BINDING_COUNT_MOUSE + 10,
+   [ECH(SUPER_DUPER_CLICKER)] = DEFAULT_BINDING_COUNT_MOUSE + 20,
+   [ECH(CLICK_MANIAC)] = DEFAULT_BINDING_COUNT_MOUSE + 30,
 };
 
 static const char *const Echievement_Strings[] =
@@ -86,6 +94,10 @@ static const char *const Echievement_Strings[] =
    [ECH(KEYBOARD_TAPPER)] = "Keyboard Tapper",
    [ECH(KEYBOARD_ABUSER)] = "Keyboard Abuser",
    [ECH(KEYBOARD_NINJA)] = "Keyboard Ninja",
+   [ECH(CLICKER)] = "Clicker",
+   [ECH(SUPER_CLICKER)] = "Super Clicker",
+   [ECH(SUPER_DUPER_CLICKER)] = "Super Duper Clicker",
+   [ECH(CLICK_MANIAC)] = "Click Maniac",
 };
 
 static const char *const Echievement_Descs[] =
@@ -112,6 +124,10 @@ static const char *const Echievement_Descs[] =
    [ECH(KEYBOARD_TAPPER)] = "Add 10 key bindings to default",
    [ECH(KEYBOARD_ABUSER)] = "Add 20 key bindings to default",
    [ECH(KEYBOARD_NINJA)] = "Add 30 key bindings to default",
+   [ECH(CLICKER)] = "Add 5 mouse bindings to default",
+   [ECH(SUPER_CLICKER)] = "Add 10 mouse bindings to default",
+   [ECH(SUPER_DUPER_CLICKER)] = "Add 20 mouse bindings to default",
+   [ECH(CLICK_MANIAC)] = "Add 30 mouse bindings to default",
 };
 
 #define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
@@ -128,6 +144,7 @@ ECB(PHYSICIST);
 ECB(QUICKDRAW);
 ECB(OPAQUE);
 ECB(KEYBOARD_USER);
+ECB(CLICKER);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -157,6 +174,10 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB_REUSE(KEYBOARD_TAPPER, KEYBOARD_USER),
    ECB_REUSE(KEYBOARD_ABUSER, KEYBOARD_USER),
    ECB_REUSE(KEYBOARD_NINJA, KEYBOARD_USER),
+   ECB(CLICKER),
+   ECB_REUSE(SUPER_CLICKER, CLICKER),
+   ECB_REUSE(SUPER_DUPER_CLICKER, CLICKER),
+   ECB_REUSE(CLICK_MANIAC, CLICKER),
    NULL
 };
 
