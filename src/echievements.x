@@ -108,10 +108,10 @@ static const char *const Echievement_Descs[] =
    [ECH(PHYSICIST)] = "Load the Physics module",
    [ECH(QUICKDRAW)] = "Load the Quickaccess module",
    [ECH(OPAQUE)] = "Unload the Composite module",
-   [ECH(KEYBOARD_USER)] = "Set " STRINGIFY(DEFAULT_BINDING_COUNT_KEY + 5) "key bindings",
-   [ECH(KEYBOARD_TAPPER)] = "Set " STRINGIFY(DEFAULT_BINDING_COUNT_KEY + 10) "key bindings",
-   [ECH(KEYBOARD_ABUSER)] = "Set " STRINGIFY(DEFAULT_BINDING_COUNT_KEY + 20) "key bindings",
-   [ECH(KEYBOARD_NINJA)] = "Set " STRINGIFY(DEFAULT_BINDING_COUNT_KEY + 30) "key bindings",
+   [ECH(KEYBOARD_USER)] = "Add 5 key bindings to default",
+   [ECH(KEYBOARD_TAPPER)] = "Add 10 key bindings to default",
+   [ECH(KEYBOARD_ABUSER)] = "Add 20 key bindings to default",
+   [ECH(KEYBOARD_NINJA)] = "Add 30 key bindings to default",
 };
 
 #define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
