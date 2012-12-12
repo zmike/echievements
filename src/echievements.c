@@ -386,7 +386,10 @@ ECH_INIT(KEYBOARD_USER)
    if (eina_list_count(e_config->key_bindings) >= Echievement_Goals[ec->id])
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(KEYBOARD_USER), ec);
+     {
+        etrophy_trophy_counter_set(ec->trophy, eina_list_count(e_config->key_bindings));
+        E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(KEYBOARD_USER), ec);
+     }
 }
 
 ECH_INIT(PHYSICIST)
