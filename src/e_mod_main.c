@@ -105,7 +105,7 @@ e_modapi_shutdown(E_Module *m EINA_UNUSED)
 
    e_configure_registry_category_del("extensions");
 
-   if (mod->cfd) e_object_del(E_OBJECT(mod->cfd));
+   E_FN_DEL(e_object_del, mod->cfd);
    ech_shutdown();
    e_config_domain_save("module.echievements", conf_edd, ech_config);
    _e_mod_ech_config_free();
