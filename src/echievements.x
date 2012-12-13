@@ -58,6 +58,7 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(REAL_ESTATE_MOGUL)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(MAXIMUM_DEFINITION)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(TERMINOLOGIST)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(LIFE_ON_THE_EDGE)] = ETROPHY_TROPHY_STATE_HIDDEN,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -110,6 +111,7 @@ static unsigned int Echievement_Goals[] =
    [ECH(REAL_ESTATE_MOGUL)] = 1920 * 1080 + 1280 * 1024,
    [ECH(MAXIMUM_DEFINITION)] = 2,
    [ECH(TERMINOLOGIST)] = 1,
+   [ECH(LIFE_ON_THE_EDGE)] = 1,
 };
 
 /* sighhh the amount of time it actually took me to build the list below...
@@ -185,6 +187,7 @@ static const char *const Echievement_Strings[] =
    [ECH(REAL_ESTATE_MOGUL)] = "Real Estate Mogul",
    [ECH(MAXIMUM_DEFINITION)] = "Maximum Definition",
    [ECH(TERMINOLOGIST)] = "Terminologist",
+   [ECH(LIFE_ON_THE_EDGE)] = "Life On The Edge",
 };
 
 static const char *const Echievement_Descs[] =
@@ -236,6 +239,7 @@ static const char *const Echievement_Descs[] =
    [ECH(REAL_ESTATE_MOGUL)] = "At least 3,384,320 pixels",
    [ECH(MAXIMUM_DEFINITION)] = "Dual 1080p monitors",
    [ECH(TERMINOLOGIST)] = "Open a Terminology window",
+   [ECH(LIFE_ON_THE_EDGE)] = "Load a module which taints E17",
 };
 
 #define ECB(NAME) EINTERN void echievement_init_cb_##NAME(Echievement *ec)
@@ -263,6 +267,7 @@ ECB(GOING_HD);
 ECB(REAL_ESTATE_MOGUL);
 ECB(MAXIMUM_DEFINITION);
 ECB(TERMINOLOGIST);
+ECB(LIFE_ON_THE_EDGE);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -317,6 +322,7 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB(REAL_ESTATE_MOGUL),
    ECB(MAXIMUM_DEFINITION),
    ECB(TERMINOLOGIST),
+   ECB(LIFE_ON_THE_EDGE),
    NULL
 };
 

@@ -362,6 +362,18 @@ ECH_EH(PHYSICIST, E_Event_Module_Update)
    return ECORE_CALLBACK_RENEW;
 }
 
+ECH_EH(LIFE_ON_THE_EDGE, E_Event_Module_Update EINA_UNUSED)
+{
+   const char *env;
+
+   env = getenv("E17_TAINTED");
+   if (e_util_strcmp(env, "YES")) return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
+   return ECORE_CALLBACK_RENEW;
+}
+
 ECH_EH(QUICKDRAW, E_Event_Module_Update)
 {
    if ((!ev->enabled) || e_util_strcmp(ev->name, "Quickaccess")) return ECORE_CALLBACK_RENEW;
@@ -588,6 +600,17 @@ ECH_INIT(QUICKDRAW)
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(QUICKDRAW), ec);
+}
+
+ECH_INIT(LIFE_ON_THE_EDGE)
+{
+   const char *env;
+
+   env = getenv("E17_TAINTED");
+   if (!e_util_strcmp(env, "YES"))
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(LIFE_ON_THE_EDGE), ec);
 }
 
 ECH_INIT(OPAQUE)

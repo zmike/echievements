@@ -79,6 +79,7 @@ typedef enum
    ECH(REAL_ESTATE_MOGUL),
    ECH(MAXIMUM_DEFINITION),
    ECH(TERMINOLOGIST),
+   ECH(LIFE_ON_THE_EDGE),
    ECH(LAST)
 } Echievement_Id;
 
