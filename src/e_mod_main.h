@@ -73,6 +73,8 @@ typedef enum
    ECH(SIGNAL_MASTER),
    ECH(SIGURD),
    ECH(NOT_SO_INCOGNITO),
+   ECH(DUALIST),
+   ECH(THRICE),
    ECH(LAST)
 } Echievement_Id;
 

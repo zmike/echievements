@@ -227,6 +227,16 @@ ECH_EH(AFRAID_OF_THE_DARK, void EINA_UNUSED)
    return ECORE_CALLBACK_RENEW;
 }
 
+ECH_EH(DUALIST, E_Event_Zone_Add)
+{
+   etrophy_trophy_counter_set(ec->trophy, eina_list_count(ev->zone->container->zones));
+   if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
+   return ECORE_CALLBACK_RENEW;
+}
+
 ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
 {
    if (eina_list_count(e_shelf_list()) != Echievement_Goals[ec->id])
@@ -523,6 +533,19 @@ ECH_INIT(OPAQUE)
 {
    E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(OPAQUE), ec);
    E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_INIT_END, ECH_EH_NAME(OPAQUE), ec);
+}
+
+ECH_INIT(DUALIST)
+{
+   E_Container *con;
+
+   con = e_container_current_get(e_manager_current_get());
+   if (con)
+     etrophy_trophy_counter_set(ec->trophy, eina_list_count(con->zones));
+   if (etrophy_trophy_earned_get(ec->trophy))
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_ZONE_ADD, ECH_EH_NAME(DUALIST), ec);
 }
 
 ECH_INIT(SHELF_POSITIONS)

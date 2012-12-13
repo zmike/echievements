@@ -52,6 +52,8 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(SIGNAL_MASTER)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(SIGURD)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(NOT_SO_INCOGNITO)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(DUALIST)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(THRICE)] = ETROPHY_TROPHY_STATE_HIDDEN,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -98,6 +100,8 @@ static unsigned int Echievement_Goals[] =
    [ECH(SIGNAL_MASTER)] = 20,
    [ECH(SIGURD)] = 30,
    [ECH(NOT_SO_INCOGNITO)] = 1,
+   [ECH(DUALIST)] = 2,
+   [ECH(THRICE)] = 3,
 };
 
 /* sighhh the amount of time it actually took me to build the list below...
@@ -167,6 +171,8 @@ static const char *const Echievement_Strings[] =
    [ECH(SIGNAL_MASTER)] = "Signal Master",
    [ECH(SIGURD)] = "Sigurd",
    [ECH(NOT_SO_INCOGNITO)] = "Not So Incognito",
+   [ECH(DUALIST)] = "Dualist",
+   [ECH(THRICE)] = "Thrice",
 };
 
 static const char *const Echievement_Descs[] =
@@ -212,6 +218,8 @@ static const char *const Echievement_Descs[] =
    [ECH(SIGNAL_MASTER)] = "Change 20 Edje Signal Bindings",
    [ECH(SIGURD)] = "Change 30 Edje Signal Bindings",
    [ECH(NOT_SO_INCOGNITO)] = "Watch porn while using E17",
+   [ECH(DUALIST)] = "Connect two monitors simultaneously",
+   [ECH(THRICE)] = "Connect three monitors simultaneously",
 };
 
 #define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
@@ -234,6 +242,7 @@ ECB(EDGY);
 ECB(WHEELY);
 ECB(SIGNALLER);
 ECB(NOT_SO_INCOGNITO);
+ECB(DUALIST);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -282,6 +291,8 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB_REUSE(SIGNAL_MASTER, SIGNALLER),
    ECB_REUSE(SIGURD, SIGNALLER),
    ECB(NOT_SO_INCOGNITO),
+   ECB(DUALIST),
+   ECB_REUSE(THRICE, DUALIST),
    NULL
 };
 
