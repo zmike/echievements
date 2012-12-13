@@ -239,12 +239,8 @@ ECH_EH(DUALIST, E_Event_Zone_Add)
 
 ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
 {
-   if (eina_list_count(e_shelf_list()) != Echievement_Goals[ec->id])
-     {
-        etrophy_trophy_counter_set(ec->trophy,
-                                   eina_list_count(e_shelf_list()));
-        return ECORE_CALLBACK_RENEW;
-     }
+   etrophy_trophy_counter_set(ec->trophy, eina_list_count(e_shelf_list()));
+   if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
    (void)type;
@@ -550,7 +546,8 @@ ECH_INIT(DUALIST)
 
 ECH_INIT(SHELF_POSITIONS)
 {
-   if (eina_list_count(e_shelf_list()) == Echievement_Goals[ec->id])
+   etrophy_trophy_counter_set(ec->trophy, eina_list_count(e_shelf_list()));
+   if (etrophy_trophy_earned_get(ec->trophy))
      /* number of shelves equals goal, grant trophy and return */
      _ech_hook(ec->id, ec);
    else
