@@ -26,17 +26,19 @@ _basic_check_changed(E_Config_Dialog *cfd EINA_UNUSED, E_Config_Dialog_Data *cfd
 }
 */
 static Evas_Object *
-_item_create(Evas *evas, const char *name, const char *description, unsigned int goal, unsigned int counter)
+_item_create(Evas *evas, Echievement *ec)
 {
    Evas_Object *table, *icon, *label;
    char progress[128];
+   unsigned int goal, counter;
 
-   table = e_widget_frametable_add(evas, name, 1);
+   etrophy_trophy_goal_get(ec->trophy, &goal, &counter);
+   table = e_widget_frametable_add(evas, etrophy_trophy_name_get(ec->trophy), 1);
 
    icon = e_widget_image_add_from_file(evas, PACKAGE_DATA_DIR "/trophy.png",
                                        64, 64);
    e_widget_frametable_object_append(table, icon, 0, 0, 1, 2, 1, 1, 1, 0);
-   label = e_widget_label_add(evas, description);
+   label = e_widget_label_add(evas, etrophy_trophy_description_get(ec->trophy));
    e_widget_frametable_object_append(table, label, 1, 0, 3, 1, 1, 1, 1, 0);
 
    if (goal < 2)
@@ -70,12 +72,8 @@ _basic_create(E_Config_Dialog *cfd EINA_UNUSED, Evas *evas, E_Config_Dialog_Data
    list = e_widget_list_add(evas, 1, 0);
    EINA_INLIST_FOREACH(EINA_INLIST_GET(mod->trophies_list), ec)
      {
-        unsigned int goal, counter;
         if (!etrophy_trophy_earned_get(ec->trophy)) continue;
-        etrophy_trophy_goal_get(ec->trophy, &goal, &counter);
-        item = _item_create(evas, etrophy_trophy_name_get(ec->trophy),
-                            etrophy_trophy_description_get(ec->trophy),
-                            goal, counter);
+        item = _item_create(evas, ec);
         e_widget_list_object_append(list, item, 1, 1, 0.5);
      }
    e_widget_size_min_get(list, &mw, &mh);
@@ -93,12 +91,8 @@ _basic_create(E_Config_Dialog *cfd EINA_UNUSED, Evas *evas, E_Config_Dialog_Data
 
    EINA_INLIST_FOREACH(EINA_INLIST_GET(mod->trophies_list), ec)
      {
-        unsigned int goal, counter;
         if ((!etrophy_trophy_earned_get(ec->trophy)) && (!etrophy_trophy_visibility_get(ec->trophy))) continue;
-        etrophy_trophy_goal_get(ec->trophy, &goal, &counter);
-        item = _item_create(evas, etrophy_trophy_name_get(ec->trophy),
-                            etrophy_trophy_description_get(ec->trophy),
-                            goal, counter);
+        item = _item_create(evas, ec);
         e_widget_list_object_append(list, item, 1, 1, 0.5);
      }
    e_widget_size_min_get(list, &mw, &mh);
