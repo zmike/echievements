@@ -581,7 +581,7 @@ ECH_INIT(DUALIST)
 {
    E_Container *con;
 
-   con = e_container_current_get(e_manager_current_get());
+   con = e_util_container_current_get();
    if (con)
      etrophy_trophy_counter_set(ec->trophy, eina_list_count(con->zones));
    if (etrophy_trophy_earned_get(ec->trophy))
