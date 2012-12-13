@@ -579,7 +579,7 @@ ECH_INIT(NOTHING_ELSE_MATTERS)
 
 ECH_INIT(AFRAID_OF_THE_DARK)
 {
-   if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) > 99.)
+   if (e_backlight_exists() && (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) > 99.))
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BACKLIGHT_CHANGE, ECH_EH_NAME(AFRAID_OF_THE_DARK), ec);
@@ -587,7 +587,7 @@ ECH_INIT(AFRAID_OF_THE_DARK)
 
 ECH_INIT(CAVE_DWELLER)
 {
-   if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) < 1.)
+   if (e_backlight_exists() && (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) < 1.))
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BACKLIGHT_CHANGE, ECH_EH_NAME(CAVE_DWELLER), ec);
