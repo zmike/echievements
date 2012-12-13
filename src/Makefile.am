@@ -12,7 +12,8 @@ module_la_SOURCES = e_mod_main.h \
 		    e_mod_main.c \
                     e_mod_config.c \
                     echievements.c \
-                    echievements_bindings.c
+                    echievements_bindings.c \
+                    echievements_language.c
 
 module_la_LIBADD = @E_LIBS@
 module_la_LDFLAGS = -module -avoid-version

@@ -80,6 +80,8 @@ typedef enum
    ECH(MAXIMUM_DEFINITION),
    ECH(TERMINOLOGIST),
    ECH(LIFE_ON_THE_EDGE),
+   ECH(BILINGUAL),
+   ECH(POLYGLOT),
    ECH(LAST)
 } Echievement_Id;
 
@@ -131,4 +133,6 @@ unsigned int ech_bindings_check_wheel(void);
 unsigned int ech_bindings_check_edge(void);
 unsigned int ech_bindings_check_acpi(void);
 unsigned int ech_bindings_check_signal(void);
+
+EINTERN Eina_List *ech_language_enumerate(void);
 #endif

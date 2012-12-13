@@ -701,6 +701,20 @@ ECH_INIT(NOT_SO_INCOGNITO)
    ECH_BH_ADD(NOT_SO_INCOGNITO, EVAL_PRE_POST_FETCH);
 }
 
+ECH_INIT(BILINGUAL)
+{
+   Eina_List *l;
+
+   // this is very expensive, so don't do it if we don't have to
+   if (ec->id == ECH(POLYGLOT))
+     if (!etrophy_trophy_earned_get(_ech_lookup(ECH(BILINGUAL)))) return;
+   l = ech_language_enumerate();
+   etrophy_trophy_counter_set(ec->trophy, eina_list_count(l));
+   if (etrophy_trophy_earned_get(ec->trophy))
+     _ech_hook(ec->id, ec);
+   eina_list_free(l);
+}
+
 ECH_INIT(MOUSE_RUNNER)
 {
    ECH_MH_ADD(MOUSE_RUNNER);

@@ -59,6 +59,8 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(MAXIMUM_DEFINITION)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(TERMINOLOGIST)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(LIFE_ON_THE_EDGE)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(BILINGUAL)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(POLYGLOT)] = ETROPHY_TROPHY_STATE_HIDDEN,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -112,6 +114,8 @@ static unsigned int Echievement_Goals[] =
    [ECH(MAXIMUM_DEFINITION)] = 2,
    [ECH(TERMINOLOGIST)] = 1,
    [ECH(LIFE_ON_THE_EDGE)] = 1,
+   [ECH(BILINGUAL)] = 2,
+   [ECH(POLYGLOT)] = 4,
 };
 
 /* sighhh the amount of time it actually took me to build the list below...
@@ -188,6 +192,8 @@ static const char *const Echievement_Strings[] =
    [ECH(MAXIMUM_DEFINITION)] = "Maximum Definition",
    [ECH(TERMINOLOGIST)] = "Terminologist",
    [ECH(LIFE_ON_THE_EDGE)] = "Life On The Edge",
+   [ECH(BILINGUAL)] = "Bilingual",
+   [ECH(POLYGLOT)] = "Polyglot",
 };
 
 static const char *const Echievement_Descs[] =
@@ -240,6 +246,8 @@ static const char *const Echievement_Descs[] =
    [ECH(MAXIMUM_DEFINITION)] = "Dual 1080p monitors",
    [ECH(TERMINOLOGIST)] = "Open a Terminology window",
    [ECH(LIFE_ON_THE_EDGE)] = "Load a module which taints E17",
+   [ECH(BILINGUAL)] = "Have two languages available",
+   [ECH(POLYGLOT)] = "Have four languages available",
 };
 
 #define ECB(NAME) EINTERN void echievement_init_cb_##NAME(Echievement *ec)
@@ -268,6 +276,7 @@ ECB(REAL_ESTATE_MOGUL);
 ECB(MAXIMUM_DEFINITION);
 ECB(TERMINOLOGIST);
 ECB(LIFE_ON_THE_EDGE);
+ECB(BILINGUAL);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -323,6 +332,8 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB(MAXIMUM_DEFINITION),
    ECB(TERMINOLOGIST),
    ECB(LIFE_ON_THE_EDGE),
+   ECB(BILINGUAL),
+   ECB_REUSE(POLYGLOT, BILINGUAL),
    NULL
 };
 
