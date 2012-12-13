@@ -450,6 +450,15 @@ ECH_EH(QUICKDRAW, E_Event_Module_Update)
    return ECORE_CALLBACK_RENEW;
 }
 
+ECH_EH(TILED, E_Event_Module_Update)
+{
+   if ((!ev->enabled) || e_util_strcmp(ev->name, "Tiling")) return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
+   return ECORE_CALLBACK_RENEW;
+}
+
 ECH_EH(OPAQUE, E_Event_Module_Update)
 {
    if (type == E_EVENT_MODULE_INIT_END)
@@ -684,6 +693,14 @@ ECH_INIT(QUICKDRAW)
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(QUICKDRAW), ec);
+}
+
+ECH_INIT(TILED)
+{
+   if (e_module_find("Tiling"))
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(TILED), ec);
 }
 
 ECH_INIT(LIFE_ON_THE_EDGE)

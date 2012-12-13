@@ -67,6 +67,7 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(SECURITY_CONSCIOUS)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(SECURITY_NUT)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(CHIEF_OF_SECURITY)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(TILED)] = ETROPHY_TROPHY_STATE_HIDDEN,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -128,6 +129,7 @@ static unsigned int Echievement_Goals[] =
    [ECH(SECURITY_CONSCIOUS)] = 5,
    [ECH(SECURITY_NUT)] = 10,
    [ECH(CHIEF_OF_SECURITY)] = 20,
+   [ECH(TILED)] = 1,
 };
 
 /* sighhh the amount of time it actually took me to build the list below...
@@ -212,6 +214,7 @@ static const char *const Echievement_Strings[] =
    [ECH(SECURITY_CONSCIOUS)] = "Security Conscious",
    [ECH(SECURITY_NUT)] = "Security Nut",
    [ECH(CHIEF_OF_SECURITY)] = "Chief Of Security",
+   [ECH(TILED)] = "Tiled",
 };
 
 static const char *const Echievement_Descs[] =
@@ -272,6 +275,7 @@ static const char *const Echievement_Descs[] =
    [ECH(SECURITY_CONSCIOUS)] = "Desklock 5 times in an hour",
    [ECH(SECURITY_NUT)] = "Desklock 10 times in an hour",
    [ECH(CHIEF_OF_SECURITY)] = "Desklock 20 times in an hour",
+   [ECH(TILED)] = "Load the Tiling module",
 };
 
 #define ECB(NAME) EINTERN void echievement_init_cb_##NAME(Echievement *ec)
@@ -303,6 +307,7 @@ ECB(LIFE_ON_THE_EDGE);
 ECB(BILINGUAL);
 ECB(GADGETEER);
 ECB(SECURITY_CONSCIOUS);
+ECB(TILED);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -366,6 +371,7 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB(SECURITY_CONSCIOUS),
    ECB_REUSE(SECURITY_NUT, SECURITY_CONSCIOUS),
    ECB_REUSE(CHIEF_OF_SECURITY, SECURITY_CONSCIOUS),
+   ECB(TILED),
    NULL
 };
 

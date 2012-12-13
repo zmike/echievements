@@ -88,6 +88,7 @@ typedef enum
    ECH(SECURITY_CONSCIOUS),
    ECH(SECURITY_NUT),
    ECH(CHIEF_OF_SECURITY),
+   ECH(TILED),
    ECH(LAST)
 } Echievement_Id;
 
