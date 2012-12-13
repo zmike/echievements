@@ -82,6 +82,9 @@ typedef enum
    ECH(LIFE_ON_THE_EDGE),
    ECH(BILINGUAL),
    ECH(POLYGLOT),
+   ECH(GADGETEER),
+   ECH(INSPECTOR_GADGET),
+   ECH(GADGET_HACKWRENCH),
    ECH(LAST)
 } Echievement_Id;
 

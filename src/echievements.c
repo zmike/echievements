@@ -353,6 +353,26 @@ ECH_EH(KEYBOARD_USER, void EINA_UNUSED)
    return ECORE_CALLBACK_RENEW;
 }
 
+ECH_EH(GADGETEER, E_Event_Gadcon_Client_Add EINA_UNUSED)
+{
+   E_Config_Gadcon *cf_gc;
+   Eina_List *l;
+   unsigned int gadgets = 0;
+
+   /* not gonna fuck with trying to keep an accurate count here,
+    * gadman/gadcon is too shitty
+    */
+   EINA_LIST_FOREACH(e_config->gadcons, l, cf_gc)
+     if (!e_util_strcmp(cf_gc->name, "gadman"))
+       gadgets += eina_list_count(cf_gc->clients);
+   etrophy_trophy_counter_set(ec->trophy, gadgets);
+   if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
+   return ECORE_CALLBACK_RENEW;
+}
+
 ECH_EH(PHYSICIST, E_Event_Module_Update)
 {
    if ((!ev->enabled) || e_util_strcmp(ev->name, "Physics")) return ECORE_CALLBACK_RENEW;
@@ -713,6 +733,22 @@ ECH_INIT(BILINGUAL)
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    eina_list_free(l);
+}
+
+ECH_INIT(GADGETEER)
+{
+   E_Config_Gadcon *cf_gc;
+   Eina_List *l;
+   unsigned int gadgets = 0;
+
+   EINA_LIST_FOREACH(e_config->gadcons, l, cf_gc)
+     if (!e_util_strcmp(cf_gc->name, "gadman"))
+       gadgets += eina_list_count(cf_gc->clients);
+   etrophy_trophy_counter_set(ec->trophy, gadgets);
+   if (etrophy_trophy_earned_get(ec->trophy))
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_GADCON_CLIENT_ADD, ECH_EH_NAME(GADGETEER), ec);
 }
 
 ECH_INIT(MOUSE_RUNNER)

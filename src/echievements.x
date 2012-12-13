@@ -61,6 +61,9 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(LIFE_ON_THE_EDGE)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(BILINGUAL)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(POLYGLOT)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(GADGETEER)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(INSPECTOR_GADGET)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(GADGET_HACKWRENCH)] = ETROPHY_TROPHY_STATE_HIDDEN,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -116,6 +119,9 @@ static unsigned int Echievement_Goals[] =
    [ECH(LIFE_ON_THE_EDGE)] = 1,
    [ECH(BILINGUAL)] = 2,
    [ECH(POLYGLOT)] = 4,
+   [ECH(GADGETEER)] = 5,
+   [ECH(INSPECTOR_GADGET)] = 10,
+   [ECH(GADGET_HACKWRENCH)] = 15,
 };
 
 /* sighhh the amount of time it actually took me to build the list below...
@@ -194,6 +200,9 @@ static const char *const Echievement_Strings[] =
    [ECH(LIFE_ON_THE_EDGE)] = "Life On The Edge",
    [ECH(BILINGUAL)] = "Bilingual",
    [ECH(POLYGLOT)] = "Polyglot",
+   [ECH(GADGETEER)] = "Gadgeteer",
+   [ECH(INSPECTOR_GADGET)] = "Inspector Gadget",
+   [ECH(GADGET_HACKWRENCH)] = "Gadget Hackwrench",
 };
 
 static const char *const Echievement_Descs[] =
@@ -248,6 +257,9 @@ static const char *const Echievement_Descs[] =
    [ECH(LIFE_ON_THE_EDGE)] = "Load a module which taints E17",
    [ECH(BILINGUAL)] = "Have two languages available",
    [ECH(POLYGLOT)] = "Have four languages available",
+   [ECH(GADGETEER)] = "Have 5 gadgets on the desktop",
+   [ECH(INSPECTOR_GADGET)] = "Have 10 gadgets on the desktop",
+   [ECH(GADGET_HACKWRENCH)] = "Have 15 gadgets on the desktop",
 };
 
 #define ECB(NAME) EINTERN void echievement_init_cb_##NAME(Echievement *ec)
@@ -277,6 +289,7 @@ ECB(MAXIMUM_DEFINITION);
 ECB(TERMINOLOGIST);
 ECB(LIFE_ON_THE_EDGE);
 ECB(BILINGUAL);
+ECB(GADGETEER);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -334,6 +347,9 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB(LIFE_ON_THE_EDGE),
    ECB(BILINGUAL),
    ECB_REUSE(POLYGLOT, BILINGUAL),
+   ECB(GADGETEER),
+   ECB_REUSE(INSPECTOR_GADGET, GADGETEER),
+   ECB_REUSE(GADGET_HACKWRENCH, GADGETEER),
    NULL
 };
 
