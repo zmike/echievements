@@ -129,6 +129,7 @@ _ech_init_check_idler(void *d EINA_UNUSED)
              return EINA_TRUE;
           }
         if (etrophy_trophy_earned_get(ec->trophy)) continue;
+        if (!Echievement_Callbacks[ec->id]) continue;
         Echievement_Callbacks[ec->id](ec);
         count++;
      }
