@@ -54,6 +54,9 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(NOT_SO_INCOGNITO)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(DUALIST)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(THRICE)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(GOING_HD)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(REAL_ESTATE_MOGUL)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(MAXIMUM_DEFINITION)] = ETROPHY_TROPHY_STATE_HIDDEN,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -102,6 +105,9 @@ static unsigned int Echievement_Goals[] =
    [ECH(NOT_SO_INCOGNITO)] = 1,
    [ECH(DUALIST)] = 2,
    [ECH(THRICE)] = 3,
+   [ECH(GOING_HD)] = 1920 * 1080,
+   [ECH(REAL_ESTATE_MOGUL)] = 1920 * 1080 + 1280 * 1024,
+   [ECH(MAXIMUM_DEFINITION)] = 2,
 };
 
 /* sighhh the amount of time it actually took me to build the list below...
@@ -173,6 +179,9 @@ static const char *const Echievement_Strings[] =
    [ECH(NOT_SO_INCOGNITO)] = "Not So Incognito",
    [ECH(DUALIST)] = "Dualist",
    [ECH(THRICE)] = "Thrice",
+   [ECH(GOING_HD)] = "Going HD",
+   [ECH(REAL_ESTATE_MOGUL)] = "Real Estate Mogul",
+   [ECH(MAXIMUM_DEFINITION)] = "Maximum Definition",
 };
 
 static const char *const Echievement_Descs[] =
@@ -220,6 +229,9 @@ static const char *const Echievement_Descs[] =
    [ECH(NOT_SO_INCOGNITO)] = "Watch porn while using E17",
    [ECH(DUALIST)] = "Connect two monitors simultaneously",
    [ECH(THRICE)] = "Connect three monitors simultaneously",
+   [ECH(GOING_HD)] = "Have 1080p on a single monitor",
+   [ECH(REAL_ESTATE_MOGUL)] = "At least 3,384,320 pixels",
+   [ECH(MAXIMUM_DEFINITION)] = "Dual 1080p monitors",
 };
 
 #define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
@@ -243,6 +255,9 @@ ECB(WHEELY);
 ECB(SIGNALLER);
 ECB(NOT_SO_INCOGNITO);
 ECB(DUALIST);
+ECB(GOING_HD);
+ECB(REAL_ESTATE_MOGUL);
+ECB(MAXIMUM_DEFINITION);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -293,6 +308,9 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB(NOT_SO_INCOGNITO),
    ECB(DUALIST),
    ECB_REUSE(THRICE, DUALIST),
+   ECB(GOING_HD),
+   ECB(REAL_ESTATE_MOGUL),
+   ECB(MAXIMUM_DEFINITION),
    NULL
 };
 

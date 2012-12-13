@@ -247,6 +247,52 @@ ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
    return ECORE_CALLBACK_RENEW;
 }
 
+ECH_EH(GOING_HD, E_Event_Zone_Add EINA_UNUSED)
+{
+   E_Screen *es;
+   const Eina_List *l;
+
+   EINA_LIST_FOREACH(e_xinerama_screens_get(), l, es)
+     etrophy_trophy_counter_set(ec->trophy, es->w * es->h);
+   if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
+   return ECORE_CALLBACK_RENEW;
+}
+
+ECH_EH(REAL_ESTATE_MOGUL, E_Event_Zone_Add EINA_UNUSED)
+{
+   E_Screen *es;
+   const Eina_List *l;
+   unsigned int geom = 0;
+
+   EINA_LIST_FOREACH(e_xinerama_screens_get(), l, es)
+     geom += (es->w * es->h);
+   etrophy_trophy_counter_set(ec->trophy, geom);
+   if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
+   return ECORE_CALLBACK_RENEW;
+}
+
+ECH_EH(MAXIMUM_DEFINITION, E_Event_Zone_Add EINA_UNUSED)
+{
+   E_Screen *es;
+   const Eina_List *l;
+   unsigned int geom = 0;
+
+   EINA_LIST_FOREACH(e_xinerama_screens_get(), l, es)
+     geom += ((es->w * es->h) >= (1920 * 1080));
+   etrophy_trophy_counter_set(ec->trophy, geom);
+   if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
+   return ECORE_CALLBACK_RENEW;
+}
+
 ECH_EH(EDGY, void EINA_UNUSED)
 {
    etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_edge());
@@ -552,6 +598,49 @@ ECH_INIT(SHELF_POSITIONS)
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_SHELF_ADD, ECH_EH_NAME(SHELF_POSITIONS), ec);
+}
+
+ECH_INIT(GOING_HD)
+{
+   E_Screen *es;
+   const Eina_List *l;
+
+   EINA_LIST_FOREACH(e_xinerama_screens_get(), l, es)
+     etrophy_trophy_counter_set(ec->trophy, es->w * es->h);
+   if (etrophy_trophy_earned_get(ec->trophy))
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_ZONE_ADD, ECH_EH_NAME(GOING_HD), ec);
+}
+
+ECH_INIT(REAL_ESTATE_MOGUL)
+{
+   E_Screen *es;
+   const Eina_List *l;
+   unsigned int geom = 0;
+
+   EINA_LIST_FOREACH(e_xinerama_screens_get(), l, es)
+     geom += (es->w * es->h);
+   etrophy_trophy_counter_set(ec->trophy, geom);
+   if (etrophy_trophy_earned_get(ec->trophy))
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_ZONE_ADD, ECH_EH_NAME(REAL_ESTATE_MOGUL), ec);
+}
+
+ECH_INIT(MAXIMUM_DEFINITION)
+{
+   E_Screen *es;
+   const Eina_List *l;
+   unsigned int geom = 0;
+
+   EINA_LIST_FOREACH(e_xinerama_screens_get(), l, es)
+     geom += ((es->w * es->h) >= (1920 * 1080));
+   etrophy_trophy_counter_set(ec->trophy, geom);
+   if (etrophy_trophy_earned_get(ec->trophy))
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_ZONE_ADD, ECH_EH_NAME(MAXIMUM_DEFINITION), ec);
 }
 
 ECH_INIT(NOT_SO_INCOGNITO)

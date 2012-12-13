@@ -75,6 +75,9 @@ typedef enum
    ECH(NOT_SO_INCOGNITO),
    ECH(DUALIST),
    ECH(THRICE),
+   ECH(GOING_HD),
+   ECH(REAL_ESTATE_MOGUL),
+   ECH(MAXIMUM_DEFINITION),
    ECH(LAST)
 } Echievement_Id;
 
