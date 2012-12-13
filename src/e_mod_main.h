@@ -89,6 +89,8 @@ typedef enum
    ECH(SECURITY_NUT),
    ECH(CHIEF_OF_SECURITY),
    ECH(TILED),
+   ECH(PERSISTENT), //FIXME: timer does not persist across restarts :/
+   ECH(NEVER_GONNA_GIVE_YOU_UP),
    ECH(LAST)
 } Echievement_Id;
 
@@ -105,6 +107,7 @@ typedef struct Echievement
       Evas_Object *icon;
       Evas_Object *label;
    } dialog;
+   void *data; // echievement data
    Eina_Bool bh_handlers : 1; //handlers are border hooks
 } Echievement;
 

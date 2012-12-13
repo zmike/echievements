@@ -219,6 +219,40 @@ NOT_SO_INCOGNITO_helper(const char *str)
    return EINA_FALSE;
 }
 
+
+static void
+_ech_PERSISTENT_bd_del_cb(Echievement *ec, Evas *e EINA_UNUSED, Evas_Object *obj, void *event_info EINA_UNUSED)
+{
+   Ecore_Timer *timer;
+   char buf[128];
+
+   snprintf(buf, sizeof(buf), "PERSISTENT%u", Echievement_Goals[ec->id]);
+   timer = evas_object_data_del(obj, buf);
+   if (ec->data) ec->data = eina_list_remove(ec->data, timer);
+   ecore_timer_del(timer);
+}
+
+static Eina_Bool
+_ech_PERSISTENT_timer_cb(Echievement *ec)
+{
+   Eina_List *l;
+   E_Border *bd;
+   char buf[128];
+
+   _ech_trophy_counter_increment(ec, 1);
+   if (!etrophy_trophy_earned_get(ec->trophy)) return EINA_TRUE;
+   _ech_hook(ec->id, ec);
+   snprintf(buf, sizeof(buf), "PERSISTENT%u", Echievement_Goals[ec->id]);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   E_FREE_LIST(ec->data, ecore_timer_del);
+   EINA_LIST_FOREACH(e_border_client_list(), l, bd)
+     {
+        evas_object_event_callback_del_full(bd->bg_object, EVAS_CALLBACK_DEL, (Evas_Object_Event_Cb)_ech_PERSISTENT_bd_del_cb, ec);
+        evas_object_data_del(bd->bg_object, buf);
+     }
+   return EINA_FALSE;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////
 
 /* Echievement event handler callbacks:
@@ -227,6 +261,20 @@ NOT_SO_INCOGNITO_helper(const char *str)
  *
  * check conditions, increment/set counter, delete handlers if trophy acquired
  */
+
+ECH_EH(PERSISTENT, E_Event_Border_Add)
+{
+   char buf[128];
+
+   snprintf(buf, sizeof(buf), "PERSISTENT%u", Echievement_Goals[ec->id]);
+   ec->data = eina_list_append(ec->data,
+     ecore_timer_add(Echievement_Goals[ec->id] * 60 * 60, (Ecore_Task_Cb)_ech_PERSISTENT_timer_cb, ec));
+   /* don't try this at home, kids! */
+   evas_object_event_callback_add(ev->border->bg_object, EVAS_CALLBACK_DEL, (Evas_Object_Event_Cb)_ech_PERSISTENT_bd_del_cb, ec);
+   evas_object_data_set(ev->border->bg_object, buf, eina_list_last_data_get(ec->data));
+   (void)type;
+   return ECORE_CALLBACK_RENEW;
+}
 
 ECH_EH(NOTHING_ELSE_MATTERS, E_Event_Shelf EINA_UNUSED)
 {
@@ -830,6 +878,24 @@ ECH_INIT(GADGETEER)
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_GADCON_CLIENT_ADD, ECH_EH_NAME(GADGETEER), ec);
+}
+
+ECH_INIT(PERSISTENT)
+{
+   Eina_List *l;
+   E_Border *bd;
+   char buf[128];
+
+   snprintf(buf, sizeof(buf), "PERSISTENT%u", Echievement_Goals[ec->id]);
+   EINA_LIST_FOREACH(e_border_client_list(), l, bd)
+     {
+        ec->data = eina_list_append(ec->data,
+          ecore_timer_add(60 * 60, (Ecore_Task_Cb)_ech_PERSISTENT_timer_cb, ec));
+        /* don't try this at home, kids! */
+        evas_object_event_callback_add(bd->bg_object, EVAS_CALLBACK_DEL, (Evas_Object_Event_Cb)_ech_PERSISTENT_bd_del_cb, ec);
+        evas_object_data_set(bd->bg_object, buf, eina_list_last_data_get(ec->data));
+     }
+   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BORDER_ADD, ECH_EH_NAME(PERSISTENT), ec);
 }
 
 ECH_INIT(SECURITY_CONSCIOUS)

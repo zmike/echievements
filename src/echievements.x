@@ -68,6 +68,8 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(SECURITY_NUT)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(CHIEF_OF_SECURITY)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(TILED)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(PERSISTENT)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(NEVER_GONNA_GIVE_YOU_UP)] = ETROPHY_TROPHY_STATE_HIDDEN,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -130,6 +132,8 @@ static unsigned int Echievement_Goals[] =
    [ECH(SECURITY_NUT)] = 10,
    [ECH(CHIEF_OF_SECURITY)] = 20,
    [ECH(TILED)] = 1,
+   [ECH(PERSISTENT)] = 24,
+   [ECH(NEVER_GONNA_GIVE_YOU_UP)] = 24 * 7,
 };
 
 /* sighhh the amount of time it actually took me to build the list below...
@@ -215,6 +219,8 @@ static const char *const Echievement_Strings[] =
    [ECH(SECURITY_NUT)] = "Security Nut",
    [ECH(CHIEF_OF_SECURITY)] = "Chief Of Security",
    [ECH(TILED)] = "Tiled",
+   [ECH(PERSISTENT)] = "Persistent",
+   [ECH(NEVER_GONNA_GIVE_YOU_UP)] = "Never Gonna Give You Up",
 };
 
 static const char *const Echievement_Descs[] =
@@ -276,6 +282,8 @@ static const char *const Echievement_Descs[] =
    [ECH(SECURITY_NUT)] = "Desklock 10 times in an hour",
    [ECH(CHIEF_OF_SECURITY)] = "Desklock 20 times in an hour",
    [ECH(TILED)] = "Load the Tiling module",
+   [ECH(PERSISTENT)] = "Keep a window open for 24 hours",
+   [ECH(NEVER_GONNA_GIVE_YOU_UP)] = "Keep a window open for 168 hours",
 };
 
 #define ECB(NAME) EINTERN void echievement_init_cb_##NAME(Echievement *ec)
@@ -308,6 +316,7 @@ ECB(BILINGUAL);
 ECB(GADGETEER);
 ECB(SECURITY_CONSCIOUS);
 ECB(TILED);
+ECB(PERSISTENT);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -372,6 +381,8 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB_REUSE(SECURITY_NUT, SECURITY_CONSCIOUS),
    ECB_REUSE(CHIEF_OF_SECURITY, SECURITY_CONSCIOUS),
    ECB(TILED),
+   ECB(PERSISTENT),
+   ECB_REUSE(NEVER_GONNA_GIVE_YOU_UP, PERSISTENT),
    NULL
 };
 
