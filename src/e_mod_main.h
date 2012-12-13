@@ -60,10 +60,17 @@ typedef enum
    ECH(CLICK_MANIAC),
    ECH(SLEEPER),
    ECH(HALTER),
-   ECH(EDJY),
-   ECH(EDJIER),
-   ECH(EDJIEST),
+   ECH(EDGY),
+   ECH(EDGIER),
+   ECH(EDGIEST),
    ECH(EDGAR),
+   ECH(WHEELY),
+   ECH(ROLLIN),
+   ECH(ROLY_POLY),
+   ECH(SIGNALLER),
+   ECH(SIGNAL_CONTROLLER),
+   ECH(SIGNAL_MASTER),
+   ECH(SIGURD),
    ECH(NOT_SO_INCOGNITO),
    ECH(LAST)
 } Echievement_Id;
@@ -110,4 +117,10 @@ E_Config_Dialog *e_int_config_echievements(E_Container *con, const char *params)
 void ech_init(void);
 void ech_shutdown(void);
 
+unsigned int ech_bindings_check_keys(void);
+unsigned int ech_bindings_check_mouse(void);
+unsigned int ech_bindings_check_wheel(void);
+unsigned int ech_bindings_check_edge(void);
+unsigned int ech_bindings_check_acpi(void);
+unsigned int ech_bindings_check_signal(void);
 #endif

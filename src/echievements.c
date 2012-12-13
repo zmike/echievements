@@ -241,14 +241,10 @@ ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(EDJY, void EINA_UNUSED)
+ECH_EH(EDGY, void EINA_UNUSED)
 {
-   if (eina_list_count(e_config->signal_bindings) < Echievement_Goals[ec->id])
-     {
-        etrophy_trophy_counter_set(ec->trophy,
-                                   eina_list_count(e_config->signal_bindings));
-        return ECORE_CALLBACK_RENEW;
-     }
+   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_edge());
+   if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
    (void)type;
@@ -257,12 +253,28 @@ ECH_EH(EDJY, void EINA_UNUSED)
 
 ECH_EH(SLEEPER, void EINA_UNUSED)
 {
-   if (eina_list_count(e_config->acpi_bindings) < Echievement_Goals[ec->id])
-     {
-        etrophy_trophy_counter_set(ec->trophy,
-                                   eina_list_count(e_config->acpi_bindings));
-        return ECORE_CALLBACK_RENEW;
-     }
+   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_acpi());
+   if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
+   return ECORE_CALLBACK_RENEW;
+}
+
+ECH_EH(SIGNALLER, void EINA_UNUSED)
+{
+   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_signal());
+   if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
+   return ECORE_CALLBACK_RENEW;
+}
+
+ECH_EH(WHEELY, void EINA_UNUSED)
+{
+   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_wheel());
+   if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
    (void)type;
@@ -271,12 +283,8 @@ ECH_EH(SLEEPER, void EINA_UNUSED)
 
 ECH_EH(CLICKER, void EINA_UNUSED)
 {
-   if (eina_list_count(e_config->mouse_bindings) < Echievement_Goals[ec->id])
-     {
-        etrophy_trophy_counter_set(ec->trophy,
-                                   eina_list_count(e_config->mouse_bindings));
-        return ECORE_CALLBACK_RENEW;
-     }
+   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_mouse());
+   if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
    (void)type;
@@ -285,12 +293,8 @@ ECH_EH(CLICKER, void EINA_UNUSED)
 
 ECH_EH(KEYBOARD_USER, void EINA_UNUSED)
 {
-   if (eina_list_count(e_config->key_bindings) < Echievement_Goals[ec->id])
-     {
-        etrophy_trophy_counter_set(ec->trophy,
-                                   eina_list_count(e_config->key_bindings));
-        return ECORE_CALLBACK_RENEW;
-     }
+   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_keys());
+   if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
    (void)type;
@@ -445,48 +449,58 @@ ECH_INIT(WINDOW_HAULER)
    ECH_BH_ADD(WINDOW_HAULER, MOVE_END);
 }
 
-ECH_INIT(EDJY)
+ECH_INIT(EDGY)
 {
-   if (eina_list_count(e_config->signal_bindings) >= Echievement_Goals[ec->id])
+   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_edge());
+   if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     {
-        etrophy_trophy_counter_set(ec->trophy, eina_list_count(e_config->signal_bindings));
-        E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(EDJY), ec);
-     }
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(EDGY), ec);
 }
 
 ECH_INIT(SLEEPER)
 {
-   if (eina_list_count(e_config->acpi_bindings) >= Echievement_Goals[ec->id])
+   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_acpi());
+   if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     {
-        etrophy_trophy_counter_set(ec->trophy, eina_list_count(e_config->acpi_bindings));
-        E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(SLEEPER), ec);
-     }
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(SLEEPER), ec);
+}
+
+ECH_INIT(SIGNALLER)
+{
+   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_signal());
+   if (etrophy_trophy_earned_get(ec->trophy))
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(SIGNALLER), ec);
+}
+
+ECH_INIT(WHEELY)
+{
+   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_wheel());
+   if (etrophy_trophy_earned_get(ec->trophy))
+     _ech_hook(ec->id, ec);
+   else
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(WHEELY), ec);
 }
 
 ECH_INIT(CLICKER)
 {
-   if (eina_list_count(e_config->mouse_bindings) >= Echievement_Goals[ec->id])
+   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_mouse());
+   if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     {
-        etrophy_trophy_counter_set(ec->trophy, eina_list_count(e_config->mouse_bindings));
-        E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(CLICKER), ec);
-     }
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(CLICKER), ec);
 }
 
 ECH_INIT(KEYBOARD_USER)
 {
-   if (eina_list_count(e_config->key_bindings) >= Echievement_Goals[ec->id])
+   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_keys());
+   if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     {
-        etrophy_trophy_counter_set(ec->trophy, eina_list_count(e_config->key_bindings));
-        E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(KEYBOARD_USER), ec);
-     }
+     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(KEYBOARD_USER), ec);
 }
 
 ECH_INIT(PHYSICIST)
