@@ -95,6 +95,11 @@ typedef struct Echievement
    Etrophy_Trophy *trophy;
    Eina_List *handlers;
    Ecore_Cb mouse_hook;
+   struct
+   {
+      Evas_Object *icon;
+      Evas_Object *label;
+   } dialog;
    Eina_Bool bh_handlers : 1; //handlers are border hooks
 } Echievement;
 
@@ -103,6 +108,9 @@ typedef void (*Echievement_Init_Cb)(Echievement*);
 typedef struct Mod
 {
    E_Config_Dialog *cfd;
+   Evas_Object *cfd_list[2]; //list of earned trophies, list of all trophies
+   Evas_Object_Event_Cb obj_del_cb; //for deleting list object callbacks
+
    E_Module *module;
    Eina_Hash *trophies; // for fast lookups
    Echievement *trophies_list; // head for iterating
@@ -126,6 +134,8 @@ extern Mod *mod;
 extern Config *ech_config;
 
 E_Config_Dialog *e_int_config_echievements(E_Container *con, const char *params);
+EINTERN void ech_cfg_ech_update(Echievement *ec);
+EINTERN void ech_cfg_ech_add(Echievement *ec);
 
 void ech_init(void);
 void ech_shutdown(void);

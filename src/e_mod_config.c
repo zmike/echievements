@@ -5,6 +5,7 @@ static void
 _free_data(E_Config_Dialog *cfd EINA_UNUSED, E_Config_Dialog_Data *cfdata EINA_UNUSED)
 {
    mod->cfd = NULL;
+   mod->cfd_list[0] = mod->cfd_list[1] = NULL;
 }
 /*
 static void *
@@ -25,8 +26,18 @@ _basic_check_changed(E_Config_Dialog *cfd EINA_UNUSED, E_Config_Dialog_Data *cfd
    return 0;
 }
 */
+
+static void
+_obj_del(Echievement *ec, Evas *e EINA_UNUSED, Evas_Object *obj, void *event_info EINA_UNUSED)
+{
+   if (obj == ec->dialog.icon)
+     ec->dialog.icon = NULL;
+   else
+     ec->dialog.label = NULL;
+}
+
 static Evas_Object *
-_item_create(Evas *evas, Echievement *ec)
+_item_create(Evas *evas, Echievement *ec, Eina_Bool save)
 {
    Evas_Object *table, *icon, *label;
    char progress[128];
@@ -37,6 +48,8 @@ _item_create(Evas *evas, Echievement *ec)
 
    icon = e_widget_image_add_from_file(evas, PACKAGE_DATA_DIR "/trophy.png",
                                        64, 64);
+   if (save) ec->dialog.icon = icon;
+   evas_object_event_callback_add(icon, EVAS_CALLBACK_DEL, (Evas_Object_Event_Cb)_obj_del, ec);
    e_widget_frametable_object_append(table, icon, 0, 0, 1, 2, 1, 1, 1, 0);
    label = e_widget_label_add(evas, etrophy_trophy_description_get(ec->trophy));
    e_widget_frametable_object_append(table, label, 1, 0, 3, 1, 1, 1, 1, 0);
@@ -53,6 +66,8 @@ _item_create(Evas *evas, Echievement *ec)
         snprintf(progress, sizeof(progress), "Progress: %u/%u", counter, goal);
         label = e_widget_label_add(evas, progress);
      }
+   if (save) ec->dialog.label = label;
+   evas_object_event_callback_add(label, EVAS_CALLBACK_DEL, (Evas_Object_Event_Cb)_obj_del, ec);
    e_widget_frametable_object_append(table, label, 1, 1, 3, 1, 1, 1, 1, 0);
 
    return table;
@@ -63,17 +78,17 @@ _basic_create(E_Config_Dialog *cfd EINA_UNUSED, Evas *evas, E_Config_Dialog_Data
 {
    Evas_Object *toolbook, *list, *item, *sf;
    Echievement *ec;
-   int mw, mh;
+   int mw, mh, mww;
 
    toolbook = e_widget_toolbook_add(evas, 48 * e_scale, 48 * e_scale);
 
    /* FIXME it should be scrollable and all initial items should
       be visible */
-   list = e_widget_list_add(evas, 1, 0);
+   mod->cfd_list[0] = list = e_widget_list_add(evas, 1, 0);
    EINA_INLIST_FOREACH(EINA_INLIST_GET(mod->trophies_list), ec)
      {
         if (!etrophy_trophy_earned_get(ec->trophy)) continue;
-        item = _item_create(evas, ec);
+        item = _item_create(evas, ec, EINA_FALSE);
         e_widget_list_object_append(list, item, 1, 1, 0.5);
      }
    e_widget_size_min_get(list, &mw, &mh);
@@ -87,20 +102,20 @@ _basic_create(E_Config_Dialog *cfd EINA_UNUSED, Evas *evas, E_Config_Dialog_Data
    e_widget_toolbook_page_append(toolbook, NULL, "My Trophies",
                                  sf, 1, 1, 1, 1, 0.5, 0.0);
 
-   list = e_widget_list_add(evas, 1, 0);
+   mod->cfd_list[1] = list = e_widget_list_add(evas, 1, 0);
 
    EINA_INLIST_FOREACH(EINA_INLIST_GET(mod->trophies_list), ec)
      {
         if ((!etrophy_trophy_earned_get(ec->trophy)) && (!etrophy_trophy_visibility_get(ec->trophy))) continue;
-        item = _item_create(evas, ec);
+        item = _item_create(evas, ec, EINA_TRUE);
         e_widget_list_object_append(list, item, 1, 1, 0.5);
      }
-   e_widget_size_min_get(list, &mw, &mh);
+   e_widget_size_min_get(list, &mww, &mh);
 
-   if (mw < 320) mw = 320;
+   if (mww < mw) mww = mw;
    if (mh < 220) mh = 220;
 
-   evas_object_resize(list, mw, mh);
+   evas_object_resize(list, mww, mh);
    sf = e_widget_scrollframe_simple_add(evas, list);
    e_widget_size_min_set(sf, 320, 220);
    e_widget_toolbook_page_append(toolbook, NULL, "All Trophies",
@@ -120,6 +135,7 @@ e_int_config_echievements(E_Container *con, const char *params EINA_UNUSED)
    if (e_config_dialog_find("Echievements", "extensions/echievements"))
      return NULL;
 
+   mod->obj_del_cb = (Evas_Object_Event_Cb)_obj_del;
    v = E_NEW(E_Config_Dialog_View, 1);
    v->free_cfdata = _free_data;
    v->basic.create_widgets = _basic_create;
@@ -137,4 +153,51 @@ e_int_config_echievements(E_Container *con, const char *params EINA_UNUSED)
    e_dialog_resizable_set(cfd->dia, 1);
    mod->cfd = cfd;
    return cfd;
+}
+
+EINTERN void
+ech_cfg_ech_update(Echievement *ec)
+{
+   char progress[128];
+   unsigned int goal, counter;
+
+   if (!mod->cfd) return;
+   if ((!ec->dialog.icon) || (!ec->dialog.label)) return;
+   etrophy_trophy_goal_get(ec->trophy, &goal, &counter);
+   if (goal < 2)
+      e_widget_label_text_set(ec->dialog.label, counter ? "Achieved" : "Not achieved");
+   else
+     {
+        snprintf(progress, sizeof(progress), "Progress: %u/%u", counter, goal);
+        e_widget_label_text_set(ec->dialog.label, progress);
+     }
+   e_widget_frametable_object_repack(e_widget_parent_get(ec->dialog.label), ec->dialog.label, 1, 1, 3, 1, 1, 1, 1, 0);
+}
+
+EINTERN void
+ech_cfg_ech_add(Echievement *ec)
+{
+   Evas *e;
+   Evas_Object *item;
+   int mh;
+   int w;
+
+   if (!mod->cfd) return;
+   /* use "all trophies" list current width
+    * since it's guaranteed to be correct for the moment
+    */
+   evas_object_geometry_get(mod->cfd_list[1], NULL, NULL, &w, NULL);
+   e = evas_object_evas_get(mod->cfd_list[0]);
+   item = _item_create(e, ec, EINA_FALSE);
+   e_widget_list_object_append(mod->cfd_list[0], item, 1, 1, 0.5);
+   e_widget_size_min_get(mod->cfd_list[0], NULL, &mh);
+
+   evas_object_resize(mod->cfd_list[0], w, mh);
+
+   if (ec->dialog.icon || ec->dialog.label) return;
+
+   item = _item_create(e, ec, EINA_TRUE);
+   e_widget_list_object_append(mod->cfd_list[1], item, 1, 1, 0.5);
+   e_widget_size_min_get(mod->cfd_list[1], NULL, &mh);
+   evas_object_resize(mod->cfd_list[1], w, mh);
 }

@@ -62,6 +62,10 @@ _ech_free(Echievement *ec)
    else
      E_FREE_LIST(ec->handlers, ecore_event_handler_del);
    if (ec->mouse_hook) mod->mouse.hooks = eina_list_remove(mod->mouse.hooks, ec);
+   if (ec->dialog.icon)
+     evas_object_event_callback_del_full(ec->dialog.icon, EVAS_CALLBACK_DEL, mod->obj_del_cb, ec);
+   if (ec->dialog.label)
+     evas_object_event_callback_del_full(ec->dialog.label, EVAS_CALLBACK_DEL, mod->obj_del_cb, ec);
    free(ec);
 }
 
@@ -94,6 +98,26 @@ _ech_notify(const char *name, const char *description)
    e_notification_unref(n);
 }
 
+static void
+_ech_trophy_counter_increment(Echievement *ec, unsigned int value)
+{
+   if (etrophy_trophy_earned_get(ec->trophy)) return;
+   etrophy_trophy_counter_increment(ec->trophy, value);
+   ech_cfg_ech_update(ec);
+}
+
+static void
+_ech_trophy_counter_set(Echievement *ec, unsigned int value)
+{
+   unsigned int count;
+
+   if (etrophy_trophy_earned_get(ec->trophy)) return;
+   etrophy_trophy_goal_get(ec->trophy, NULL, &count);
+   if (value == count) return;
+   etrophy_trophy_counter_set(ec->trophy, value);
+   ech_cfg_ech_update(ec);
+}
+
 /* call whenever new echievement is earned, ec may be NULL */
 static void
 _ech_hook(Echievement_Id id, Echievement *ec)
@@ -105,12 +129,16 @@ _ech_hook(Echievement_Id id, Echievement *ec)
    else
      et = _ech_lookup(id);
    if (!et) return;
-   etrophy_trophy_counter_set(et, Echievement_Goals[id]);
+   if (ec)
+     _ech_trophy_counter_set(ec, Echievement_Goals[id]);
+   else //FIXME?
+     etrophy_trophy_counter_set(et, Echievement_Goals[id]);
    INF("TROPHY EARNED: %s - %s",
        etrophy_trophy_name_get(et),
        etrophy_trophy_description_get(et));
    _ech_notify(etrophy_trophy_name_get(et),
                etrophy_trophy_description_get(et));
+   if (ec) ech_cfg_ech_add(ec);
 }
 
 static Eina_Bool
@@ -160,7 +188,6 @@ _ech_init_add_idler(void *d EINA_UNUSED)
    return EINA_FALSE;
 }
 
-
 static Eina_Bool
 NOT_SO_INCOGNITO_helper(const char *str)
 {
@@ -209,7 +236,7 @@ ECH_EH(WINDOW_ENTHUSIAST, void EINA_UNUSED)
     */
    if (!mod->module_init_end) return ECORE_CALLBACK_RENEW;
 
-   etrophy_trophy_counter_increment(ec->trophy, 1);
+   _ech_trophy_counter_increment(ec,  1);
    if (!etrophy_trophy_earned_get(ec->trophy))
      return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
@@ -230,7 +257,7 @@ ECH_EH(AFRAID_OF_THE_DARK, void EINA_UNUSED)
 
 ECH_EH(DUALIST, E_Event_Zone_Add)
 {
-   etrophy_trophy_counter_set(ec->trophy, eina_list_count(ev->zone->container->zones));
+   _ech_trophy_counter_set(ec, eina_list_count(ev->zone->container->zones));
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
@@ -240,7 +267,7 @@ ECH_EH(DUALIST, E_Event_Zone_Add)
 
 ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
 {
-   etrophy_trophy_counter_set(ec->trophy, eina_list_count(e_shelf_list()));
+   _ech_trophy_counter_set(ec, eina_list_count(e_shelf_list()));
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
@@ -254,7 +281,7 @@ ECH_EH(GOING_HD, E_Event_Zone_Add EINA_UNUSED)
    const Eina_List *l;
 
    EINA_LIST_FOREACH(e_xinerama_screens_get(), l, es)
-     etrophy_trophy_counter_set(ec->trophy, es->w * es->h);
+     _ech_trophy_counter_set(ec, es->w * es->h);
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
@@ -270,7 +297,7 @@ ECH_EH(REAL_ESTATE_MOGUL, E_Event_Zone_Add EINA_UNUSED)
 
    EINA_LIST_FOREACH(e_xinerama_screens_get(), l, es)
      geom += (es->w * es->h);
-   etrophy_trophy_counter_set(ec->trophy, geom);
+   _ech_trophy_counter_set(ec, geom);
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
@@ -286,7 +313,7 @@ ECH_EH(MAXIMUM_DEFINITION, E_Event_Zone_Add EINA_UNUSED)
 
    EINA_LIST_FOREACH(e_xinerama_screens_get(), l, es)
      geom += ((es->w * es->h) >= (1920 * 1080));
-   etrophy_trophy_counter_set(ec->trophy, geom);
+   _ech_trophy_counter_set(ec, geom);
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
@@ -296,7 +323,7 @@ ECH_EH(MAXIMUM_DEFINITION, E_Event_Zone_Add EINA_UNUSED)
 
 ECH_EH(EDGY, void EINA_UNUSED)
 {
-   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_edge());
+   _ech_trophy_counter_set(ec, ech_bindings_check_edge());
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
@@ -306,7 +333,7 @@ ECH_EH(EDGY, void EINA_UNUSED)
 
 ECH_EH(SLEEPER, void EINA_UNUSED)
 {
-   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_acpi());
+   _ech_trophy_counter_set(ec, ech_bindings_check_acpi());
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
@@ -316,7 +343,7 @@ ECH_EH(SLEEPER, void EINA_UNUSED)
 
 ECH_EH(SIGNALLER, void EINA_UNUSED)
 {
-   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_signal());
+   _ech_trophy_counter_set(ec, ech_bindings_check_signal());
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
@@ -326,7 +353,7 @@ ECH_EH(SIGNALLER, void EINA_UNUSED)
 
 ECH_EH(WHEELY, void EINA_UNUSED)
 {
-   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_wheel());
+   _ech_trophy_counter_set(ec, ech_bindings_check_wheel());
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
@@ -336,7 +363,7 @@ ECH_EH(WHEELY, void EINA_UNUSED)
 
 ECH_EH(CLICKER, void EINA_UNUSED)
 {
-   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_mouse());
+   _ech_trophy_counter_set(ec, ech_bindings_check_mouse());
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
@@ -346,7 +373,7 @@ ECH_EH(CLICKER, void EINA_UNUSED)
 
 ECH_EH(KEYBOARD_USER, void EINA_UNUSED)
 {
-   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_keys());
+   _ech_trophy_counter_set(ec, ech_bindings_check_keys());
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
@@ -366,7 +393,7 @@ ECH_EH(GADGETEER, E_Event_Gadcon_Client_Add EINA_UNUSED)
    EINA_LIST_FOREACH(e_config->gadcons, l, cf_gc)
      if (!e_util_strcmp(cf_gc->name, "gadman"))
        gadgets += eina_list_count(cf_gc->clients);
-   etrophy_trophy_counter_set(ec->trophy, gadgets);
+   _ech_trophy_counter_set(ec, gadgets);
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
@@ -431,7 +458,7 @@ ECH_EH(OPAQUE, E_Event_Module_Update)
 
 ECH_MH(MOUSE_RUNNER)
 {
-   etrophy_trophy_counter_increment(ec->trophy, abs(mod->mouse.dx) + abs(mod->mouse.dy));
+   _ech_trophy_counter_increment(ec,  abs(mod->mouse.dx) + abs(mod->mouse.dy));
    if (!etrophy_trophy_earned_get(ec->trophy)) return;
    _ech_hook(ec->id, ec);
    ECH_MH_DEL;
@@ -439,7 +466,7 @@ ECH_MH(MOUSE_RUNNER)
 
 ECH_MH(WINDOW_HAULER)
 {
-   etrophy_trophy_counter_increment(ec->trophy, abs(mod->mouse.dx) + abs(mod->mouse.dy));
+   _ech_trophy_counter_increment(ec,  abs(mod->mouse.dx) + abs(mod->mouse.dy));
    if (!etrophy_trophy_earned_get(ec->trophy)) return;
    _ech_hook(ec->id, ec);
    ECH_MH_DEL;
@@ -479,7 +506,7 @@ ECH_BH(WINDOW_HAULER, MOVE_END)
 
 ECH_BH(WINDOW_MOVER, MOVE_END)
 {
-   etrophy_trophy_counter_increment(ec->trophy, 1);
+   _ech_trophy_counter_increment(ec,  1);
    if (!etrophy_trophy_earned_get(ec->trophy)) return;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, e_border_hook_del);
@@ -543,7 +570,7 @@ ECH_INIT(WINDOW_HAULER)
 
 ECH_INIT(EDGY)
 {
-   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_edge());
+   _ech_trophy_counter_set(ec, ech_bindings_check_edge());
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
@@ -552,7 +579,7 @@ ECH_INIT(EDGY)
 
 ECH_INIT(SLEEPER)
 {
-   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_acpi());
+   _ech_trophy_counter_set(ec, ech_bindings_check_acpi());
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
@@ -561,7 +588,7 @@ ECH_INIT(SLEEPER)
 
 ECH_INIT(SIGNALLER)
 {
-   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_signal());
+   _ech_trophy_counter_set(ec, ech_bindings_check_signal());
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
@@ -570,7 +597,7 @@ ECH_INIT(SIGNALLER)
 
 ECH_INIT(WHEELY)
 {
-   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_wheel());
+   _ech_trophy_counter_set(ec, ech_bindings_check_wheel());
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
@@ -579,7 +606,7 @@ ECH_INIT(WHEELY)
 
 ECH_INIT(CLICKER)
 {
-   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_mouse());
+   _ech_trophy_counter_set(ec, ech_bindings_check_mouse());
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
@@ -588,7 +615,7 @@ ECH_INIT(CLICKER)
 
 ECH_INIT(KEYBOARD_USER)
 {
-   etrophy_trophy_counter_set(ec->trophy, ech_bindings_check_keys());
+   _ech_trophy_counter_set(ec, ech_bindings_check_keys());
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
@@ -646,7 +673,7 @@ ECH_INIT(DUALIST)
 
    con = e_util_container_current_get();
    if (con)
-     etrophy_trophy_counter_set(ec->trophy, eina_list_count(con->zones));
+     _ech_trophy_counter_set(ec, eina_list_count(con->zones));
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
@@ -655,7 +682,7 @@ ECH_INIT(DUALIST)
 
 ECH_INIT(SHELF_POSITIONS)
 {
-   etrophy_trophy_counter_set(ec->trophy, eina_list_count(e_shelf_list()));
+   _ech_trophy_counter_set(ec, eina_list_count(e_shelf_list()));
    if (etrophy_trophy_earned_get(ec->trophy))
      /* number of shelves equals goal, grant trophy and return */
      _ech_hook(ec->id, ec);
@@ -669,7 +696,7 @@ ECH_INIT(GOING_HD)
    const Eina_List *l;
 
    EINA_LIST_FOREACH(e_xinerama_screens_get(), l, es)
-     etrophy_trophy_counter_set(ec->trophy, es->w * es->h);
+     _ech_trophy_counter_set(ec, es->w * es->h);
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
@@ -684,7 +711,7 @@ ECH_INIT(REAL_ESTATE_MOGUL)
 
    EINA_LIST_FOREACH(e_xinerama_screens_get(), l, es)
      geom += (es->w * es->h);
-   etrophy_trophy_counter_set(ec->trophy, geom);
+   _ech_trophy_counter_set(ec, geom);
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
@@ -699,7 +726,7 @@ ECH_INIT(MAXIMUM_DEFINITION)
 
    EINA_LIST_FOREACH(e_xinerama_screens_get(), l, es)
      geom += ((es->w * es->h) >= (1920 * 1080));
-   etrophy_trophy_counter_set(ec->trophy, geom);
+   _ech_trophy_counter_set(ec, geom);
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
@@ -730,7 +757,7 @@ ECH_INIT(BILINGUAL)
    if (ec->id == ECH(POLYGLOT))
      if (!etrophy_trophy_earned_get(_ech_lookup(ECH(BILINGUAL)))) return;
    l = ech_language_enumerate();
-   etrophy_trophy_counter_set(ec->trophy, eina_list_count(l));
+   _ech_trophy_counter_set(ec, eina_list_count(l));
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    eina_list_free(l);
@@ -745,7 +772,7 @@ ECH_INIT(GADGETEER)
    EINA_LIST_FOREACH(e_config->gadcons, l, cf_gc)
      if (!e_util_strcmp(cf_gc->name, "gadman"))
        gadgets += eina_list_count(cf_gc->clients);
-   etrophy_trophy_counter_set(ec->trophy, gadgets);
+   _ech_trophy_counter_set(ec, gadgets);
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
