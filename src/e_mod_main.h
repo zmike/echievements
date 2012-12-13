@@ -78,6 +78,7 @@ typedef enum
    ECH(GOING_HD),
    ECH(REAL_ESTATE_MOGUL),
    ECH(MAXIMUM_DEFINITION),
+   ECH(TERMINOLOGIST),
    ECH(LAST)
 } Echievement_Id;
 

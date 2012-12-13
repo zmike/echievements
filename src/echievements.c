@@ -423,6 +423,13 @@ ECH_BH(WINDOW_HAULER, MOVE_BEGIN)
    (void)bd;
 }
 
+ECH_BH(TERMINOLOGIST, EVAL_PRE_POST_FETCH)
+{
+   if (e_util_strcmp(bd->client.icccm.class, "terminology")) return;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, e_border_hook_del);
+}
+
 ECH_BH(NOT_SO_INCOGNITO, EVAL_PRE_POST_FETCH)
 {
    if ((!NOT_SO_INCOGNITO_helper(bd->client.icccm.title)) && (!NOT_SO_INCOGNITO_helper(bd->client.netwm.name)))
@@ -553,6 +560,18 @@ ECH_INIT(KEYBOARD_USER)
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(KEYBOARD_USER), ec);
+}
+
+ECH_INIT(TERMINOLOGIST)
+{
+   Eina_List *l;
+   E_Border *bd;
+
+   EINA_LIST_FOREACH(e_border_client_list(), l, bd)
+     if (!e_util_strcmp(bd->client.icccm.class, "terminology"))
+       _ech_hook(ec->id, ec);
+   if (!etrophy_trophy_earned_get(ec->trophy))
+     ECH_BH_ADD(TERMINOLOGIST, EVAL_PRE_POST_FETCH);
 }
 
 ECH_INIT(PHYSICIST)
