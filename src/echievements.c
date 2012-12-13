@@ -1,7 +1,7 @@
 #include "e_mod_main.h"
 #include "echievements.x"
 
-#define ECH_INIT(NAME)     void echievement_init_cb_##NAME(Echievement *ec)
+#define ECH_INIT(NAME)     EINTERN void echievement_init_cb_##NAME(Echievement *ec)
 #define ECH_EH_NAME(NAME)  echievement_##NAME##_handler_cb
 #define ECH_EH(NAME, TYPE) static Eina_Bool ECH_EH_NAME(NAME)(Echievement *ec, int type, TYPE *ev)
 #define ECH_BH_NAME(NAME, TYPE)  echievement_##NAME##_border_hook_##TYPE

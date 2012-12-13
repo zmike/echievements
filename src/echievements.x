@@ -234,7 +234,7 @@ static const char *const Echievement_Descs[] =
    [ECH(MAXIMUM_DEFINITION)] = "Dual 1080p monitors",
 };
 
-#define ECB(NAME) void echievement_init_cb_##NAME(Echievement *ec)
+#define ECB(NAME) EINTERN void echievement_init_cb_##NAME(Echievement *ec)
 
 ECB(SHELF_POSITIONS);
 ECB(NOTHING_ELSE_MATTERS);
