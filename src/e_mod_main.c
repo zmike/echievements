@@ -66,6 +66,28 @@ _e_mod_ech_mouse_move_cb(void *d EINA_UNUSED, int type EINA_UNUSED, Ecore_Event_
    return ECORE_CALLBACK_RENEW;
 }
 
+static Eina_Bool
+_e_mod_ech_desklock_timer_cb(void *d EINA_UNUSED)
+{
+   Echievement *ec;
+   Eina_List *l;
+
+   EINA_LIST_FOREACH(mod->desklock.timer_hooks, l, ec)
+     if (ec->desklock_timer_hook) ec->desklock_timer_hook(ec);
+   mod->desklock.timers = eina_list_remove_list(mod->desklock.timers, mod->desklock.timers);
+   return EINA_FALSE;
+}
+
+static Eina_Bool
+_e_mod_ech_desklock_cb(void *d EINA_UNUSED, int type EINA_UNUSED, E_Event_Desklock *ev)
+{
+   if (mod->desklock.timer_hooks && (!ev->on))
+     mod->desklock.timers = eina_list_append(mod->desklock.timers,
+       ecore_timer_add(60 * 60, _e_mod_ech_desklock_timer_cb, NULL));
+
+   return ECORE_CALLBACK_RENEW;
+}
+
 EAPI void *
 e_modapi_init(E_Module *m)
 {
@@ -91,6 +113,7 @@ e_modapi_init(E_Module *m)
 
    E_LIST_HANDLER_APPEND(handlers, E_EVENT_MODULE_INIT_END, _e_mod_ech_mod_init_end_cb, NULL);
    E_LIST_HANDLER_APPEND(handlers, ECORE_EVENT_MOUSE_MOVE, _e_mod_ech_mouse_move_cb, NULL);
+   E_LIST_HANDLER_APPEND(handlers, E_EVENT_DESKLOCK, _e_mod_ech_desklock_cb, NULL);
 
    _e_mod_ech_config_load();
    ech_init();
@@ -111,6 +134,7 @@ e_modapi_shutdown(E_Module *m EINA_UNUSED)
    _e_mod_ech_config_free();
    E_CONFIG_DD_FREE(conf_edd);
    eina_list_free(mod->mouse.hooks);
+   E_FREE_LIST(mod->desklock.timers, ecore_timer_del);
    E_FREE(mod);
    E_FREE_LIST(handlers, ecore_event_handler_del);
    e_notification_shutdown();

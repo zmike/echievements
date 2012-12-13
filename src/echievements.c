@@ -4,6 +4,7 @@
 #define ECH_INIT(NAME)     EINTERN void echievement_init_cb_##NAME(Echievement *ec)
 #define ECH_EH_NAME(NAME)  echievement_##NAME##_handler_cb
 #define ECH_EH(NAME, TYPE) static Eina_Bool ECH_EH_NAME(NAME)(Echievement *ec, int type, TYPE *ev)
+
 #define ECH_BH_NAME(NAME, TYPE)  echievement_##NAME##_border_hook_##TYPE
 #define ECH_BH(NAME, TYPE) static void ECH_BH_NAME(NAME, TYPE)(Echievement *ec, E_Border *bd)
 #define ECH_BH_ADD(NAME, TYPE) \
@@ -13,6 +14,7 @@
       ec->handlers = eina_list_append(ec->handlers, \
         e_border_hook_add(E_BORDER_HOOK_##TYPE, (Ecore_End_Cb)ECH_BH_NAME(NAME, TYPE), ec)); \
    } while (0)
+
 #define ECH_MH_NAME(NAME) _ech_##NAME##_mouse_hook
 #define ECH_MH(NAME) static void ECH_MH_NAME(NAME)(Echievement *ec)
 #define ECH_MH_ADD(NAME) \
@@ -25,6 +27,21 @@
    do { \
      ec->mouse_hook = NULL; \
      mod->mouse.hooks = eina_list_remove(mod->mouse.hooks, ec); \
+   } while (0)
+
+#define ECH_DL_TH_NAME(NAME) _ech_##NAME##_desklock_timer_hook
+#define ECH_DL_TH(NAME) static void ECH_DL_TH_NAME(NAME)(Echievement *ec)
+#define ECH_DL_TH_ADD(NAME) \
+   do { \
+      ec->desklock_timer_hook = (Ecore_Cb)ECH_DL_TH_NAME(NAME); \
+      if (!etrophy_trophy_earned_get(ec->trophy)) \
+        mod->desklock.timer_hooks = eina_list_append(mod->desklock.timer_hooks, ec); \
+   } while (0)
+#define ECH_DL_TH_DEL \
+   do { \
+     ec->desklock_timer_hook = NULL; \
+     mod->desklock.timer_hooks = eina_list_remove(mod->desklock.timer_hooks, ec); \
+     if (!mod->desklock.timer_hooks)  E_FREE_LIST(mod->desklock.timers, ecore_timer_del); \
    } while (0)
 
 static Ecore_Idler *_ech_idler = NULL;
@@ -62,6 +79,8 @@ _ech_free(Echievement *ec)
    else
      E_FREE_LIST(ec->handlers, ecore_event_handler_del);
    if (ec->mouse_hook) mod->mouse.hooks = eina_list_remove(mod->mouse.hooks, ec);
+   if (ec->desklock_timer_hook) mod->desklock.timer_hooks = eina_list_remove(mod->desklock.timer_hooks, ec);
+   if (!mod->desklock.timer_hooks) E_FREE_LIST(mod->desklock.timers, ecore_timer_del);
    if (ec->dialog.icon)
      evas_object_event_callback_del_full(ec->dialog.icon, EVAS_CALLBACK_DEL, mod->obj_del_cb, ec);
    if (ec->dialog.label)
@@ -449,6 +468,23 @@ ECH_EH(OPAQUE, E_Event_Module_Update)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
+/* Echievement desklock timer hook callbacks:
+ *
+ * called every time an hour has passed since a desklock resume
+ *
+ * mod->desklock.timers == number of times desklock has resumed in the past 60 minutes
+ */
+
+ECH_DL_TH(SECURITY_CONSCIOUS)
+{
+   _ech_trophy_counter_set(ec,  eina_list_count(mod->desklock.timers));
+   if (!etrophy_trophy_earned_get(ec->trophy)) return;
+   _ech_hook(ec->id, ec);
+   ECH_DL_TH_DEL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
 /* Echievement mouse hook callbacks:
  *
  * called every time the mouse moves
@@ -777,6 +813,11 @@ ECH_INIT(GADGETEER)
      _ech_hook(ec->id, ec);
    else
      E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_GADCON_CLIENT_ADD, ECH_EH_NAME(GADGETEER), ec);
+}
+
+ECH_INIT(SECURITY_CONSCIOUS)
+{
+   ECH_DL_TH_ADD(SECURITY_CONSCIOUS);
 }
 
 ECH_INIT(MOUSE_RUNNER)

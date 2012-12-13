@@ -64,6 +64,9 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
    [ECH(GADGETEER)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(INSPECTOR_GADGET)] = ETROPHY_TROPHY_STATE_HIDDEN,
    [ECH(GADGET_HACKWRENCH)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(SECURITY_CONSCIOUS)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(SECURITY_NUT)] = ETROPHY_TROPHY_STATE_HIDDEN,
+   [ECH(CHIEF_OF_SECURITY)] = ETROPHY_TROPHY_STATE_HIDDEN,
 };
 
 static unsigned int Echievement_Goals[] =
@@ -122,6 +125,9 @@ static unsigned int Echievement_Goals[] =
    [ECH(GADGETEER)] = 5,
    [ECH(INSPECTOR_GADGET)] = 10,
    [ECH(GADGET_HACKWRENCH)] = 15,
+   [ECH(SECURITY_CONSCIOUS)] = 5,
+   [ECH(SECURITY_NUT)] = 10,
+   [ECH(CHIEF_OF_SECURITY)] = 20,
 };
 
 /* sighhh the amount of time it actually took me to build the list below...
@@ -203,6 +209,9 @@ static const char *const Echievement_Strings[] =
    [ECH(GADGETEER)] = "Gadgeteer",
    [ECH(INSPECTOR_GADGET)] = "Inspector Gadget",
    [ECH(GADGET_HACKWRENCH)] = "Gadget Hackwrench",
+   [ECH(SECURITY_CONSCIOUS)] = "Security Conscious",
+   [ECH(SECURITY_NUT)] = "Security Nut",
+   [ECH(CHIEF_OF_SECURITY)] = "Chief Of Security",
 };
 
 static const char *const Echievement_Descs[] =
@@ -260,6 +269,9 @@ static const char *const Echievement_Descs[] =
    [ECH(GADGETEER)] = "Have 5 gadgets on the desktop",
    [ECH(INSPECTOR_GADGET)] = "Have 10 gadgets on the desktop",
    [ECH(GADGET_HACKWRENCH)] = "Have 15 gadgets on the desktop",
+   [ECH(SECURITY_CONSCIOUS)] = "Desklock 5 times in an hour",
+   [ECH(SECURITY_NUT)] = "Desklock 10 times in an hour",
+   [ECH(CHIEF_OF_SECURITY)] = "Desklock 20 times in an hour",
 };
 
 #define ECB(NAME) EINTERN void echievement_init_cb_##NAME(Echievement *ec)
@@ -290,6 +302,7 @@ ECB(TERMINOLOGIST);
 ECB(LIFE_ON_THE_EDGE);
 ECB(BILINGUAL);
 ECB(GADGETEER);
+ECB(SECURITY_CONSCIOUS);
 
 #undef ECB
 #define ECB(NAME) [ECHIEVEMENT_ID_##NAME] = echievement_init_cb_##NAME
@@ -350,6 +363,9 @@ Echievement_Init_Cb Echievement_Callbacks[] =
    ECB(GADGETEER),
    ECB_REUSE(INSPECTOR_GADGET, GADGETEER),
    ECB_REUSE(GADGET_HACKWRENCH, GADGETEER),
+   ECB(SECURITY_CONSCIOUS),
+   ECB_REUSE(SECURITY_NUT, SECURITY_CONSCIOUS),
+   ECB_REUSE(CHIEF_OF_SECURITY, SECURITY_CONSCIOUS),
    NULL
 };
 

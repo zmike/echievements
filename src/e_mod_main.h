@@ -79,12 +79,15 @@ typedef enum
    ECH(REAL_ESTATE_MOGUL),
    ECH(MAXIMUM_DEFINITION),
    ECH(TERMINOLOGIST),
-   ECH(LIFE_ON_THE_EDGE),
+   ECH(LIFE_ON_THE_EDGE), //FIXME: this will be granted immediately until module goes into core :/
    ECH(BILINGUAL),
    ECH(POLYGLOT),
    ECH(GADGETEER),
    ECH(INSPECTOR_GADGET),
    ECH(GADGET_HACKWRENCH),
+   ECH(SECURITY_CONSCIOUS),
+   ECH(SECURITY_NUT),
+   ECH(CHIEF_OF_SECURITY),
    ECH(LAST)
 } Echievement_Id;
 
@@ -95,6 +98,7 @@ typedef struct Echievement
    Etrophy_Trophy *trophy;
    Eina_List *handlers;
    Ecore_Cb mouse_hook;
+   Ecore_Cb desklock_timer_hook;
    struct
    {
       Evas_Object *icon;
@@ -121,6 +125,11 @@ typedef struct Mod
       int dx, dy;
       Eina_List *hooks;
    } mouse;
+   struct
+   {
+      Eina_List *timers;
+      Eina_List *timer_hooks;
+   } desklock;
    Eina_Bool module_init_end : 1;
 } Mod;
 
