@@ -31,10 +31,10 @@ _item_create(Evas *evas, const char *name, const char *description, unsigned int
    Evas_Object *table, *icon, *label;
    char progress[128];
 
-   table = e_widget_frametable_add(evas, name, 0);
+   table = e_widget_frametable_add(evas, name, 1);
 
    icon = e_widget_image_add_from_file(evas, PACKAGE_DATA_DIR "/trophy.png",
-                                       32, 32);
+                                       64, 64);
    e_widget_frametable_object_append(table, icon, 0, 0, 1, 2, 1, 1, 1, 0);
    label = e_widget_label_add(evas, description);
    e_widget_frametable_object_append(table, label, 1, 0, 3, 1, 1, 1, 1, 0);
