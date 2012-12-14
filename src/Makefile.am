@@ -19,5 +19,8 @@ module_la_LIBADD = @E_LIBS@
 module_la_LDFLAGS = -module -avoid-version
 module_la_DEPENDENCIES = $(top_builddir)/config.h
 
+EXTRA_DIST = echievements.x
+
+
 clean-local:
 	rm -rf *~

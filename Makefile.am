@@ -20,7 +20,8 @@ files_DATA = module.desktop e-module-echievements.edj images/trophy.png
 EXTRA_DIST = module.desktop.in \
 	     e_modules-echievements.spec.in \
 	     e-module-echievements.edc \
-	     images/module_icon.png
+	     images/module_icon.png \
+	     images/trophy.png
 
 e-module-echievements.edj: Makefile e-module-echievements.edc images/module_icon.png
 
