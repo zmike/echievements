@@ -77,7 +77,6 @@ _ech_free(Echievement *ec)
    free(ec);
 }
 
-/* returns trophy only if it has not yet been earned */
 static Etrophy_Trophy *
 _ech_lookup(Echievement_Id id)
 {
@@ -85,11 +84,7 @@ _ech_lookup(Echievement_Id id)
 
    ec = eina_hash_find(mod->trophies, &id);
    EINA_SAFETY_ON_NULL_RETURN_VAL(ec, NULL);
-   if (!etrophy_trophy_earned_get(ec->trophy)) return ec->trophy;
-   INF("TROPHY PREVIOUSLY EARNED: %s - %s",
-       etrophy_trophy_name_get(ec->trophy),
-       etrophy_trophy_description_get(ec->trophy));
-   return NULL;
+   return ec->trophy;
 }
 
 static void
