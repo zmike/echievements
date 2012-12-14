@@ -55,6 +55,9 @@ ech_bindings_check_keys(void)
         CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "s",
                          E_BINDING_MODIFIER_CTRL | E_BINDING_MODIFIER_ALT, 0,
                          "window_sticky_toggle", NULL);
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "f",
+                         E_BINDING_MODIFIER_CTRL | E_BINDING_MODIFIER_ALT, 0,
+                         "window_fullscreen_toggle", NULL);
         CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "i",
                          E_BINDING_MODIFIER_CTRL | E_BINDING_MODIFIER_ALT, 0,
                          "window_iconic_toggle", NULL);
@@ -135,7 +138,7 @@ ech_bindings_check_keys(void)
                          "menu_show", "favorites");
         CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "Insert",
                          E_BINDING_MODIFIER_CTRL | E_BINDING_MODIFIER_ALT, 0,
-                         "exec", "Eterm");
+                         "exec", "terminology");
         CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "Tab",
                          E_BINDING_MODIFIER_ALT, 0,
                          "winlist", "next");
@@ -147,7 +150,7 @@ ech_bindings_check_keys(void)
                          "restart", NULL);
         CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "Delete",
                          E_BINDING_MODIFIER_CTRL | E_BINDING_MODIFIER_ALT, 0,
-                         "logout", NULL);
+                         "syscon", NULL);
         CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "Escape",
                          E_BINDING_MODIFIER_ALT, 0,
                          "everything", NULL);
@@ -169,6 +172,55 @@ ech_bindings_check_keys(void)
         CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "F4",
                          E_BINDING_MODIFIER_CTRL | E_BINDING_MODIFIER_SHIFT, 0,
                          "screen_send_to", "3");
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86AudioLowerVolume",
+                         0, 0,
+                         "volume_decrease", NULL);
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86AudioRaiseVolume",
+                         0, 0,
+                         "volume_increase", NULL);
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86AudioMute",
+                         0, 0,
+                         "volume_mute", NULL);
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "Print",
+                         0, 0,
+                         "shot", NULL);
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86Standby",
+                         0, 0,
+                         "suspend", "now");
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86Start",
+                         0, 0,
+                         "menu_show", "all");
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86PowerDown",
+                         0, 0,
+                         "hibernate", "now");
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86PowerOff",
+                         0, 0,
+                         "halt", NULL);
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86Sleep",
+                         0, 0,
+                         "suspend", "now");
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86Suspend",
+                         0, 0,
+                         "suspend", "now");
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86Hibernate",
+                         0, 0,
+                         "hibernate", "now");
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "Execute",
+                         0, 0,
+                         "everything", NULL);
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86MonBrightnessUp",
+                         0, 0,
+                         "backlight_adjust", "0.1");
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86MonBrightnessDown",
+                         0, 0,
+                         "backlight_adjust", "-0.1");
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86LightBulb",
+                         0, 0,
+                         "backlight", NULL);
+        CHK_KEYBIND_DFLT(E_BINDING_CONTEXT_ANY, "XF86BrightnessAdjust",
+                         0, 0,
+                         "backlight", NULL);
+
         ret++;
      }
    return ret;
