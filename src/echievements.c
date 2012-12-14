@@ -154,7 +154,7 @@ _ech_init_check_idler(void *d EINA_UNUSED)
    l = mod->itr ? : EINA_INLIST_GET(mod->trophies_list);
    EINA_INLIST_FOREACH(l, ec)
      {
-        if (count > 20)
+        if (count > 5)
           {
              mod->itr = EINA_INLIST_GET(ec);
              return EINA_TRUE;
