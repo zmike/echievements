@@ -321,7 +321,7 @@ ech_bindings_check_edge(void)
     (bi->edge == _edge) &&                                                                \
     (bi->modifiers == _modifiers) &&                                                      \
     (bi->any_mod == _anymod) &&                                                           \
-    (bi->delay == _delay) &&                                                              \
+    (fabs(bi->delay - _delay) <= DBL_EPSILON) &&                                          \
     _ech_streq(bi->action, _action) &&                                                    \
     _ech_streq(bi->params, _params)                                                       \
     )                                                                                     \
