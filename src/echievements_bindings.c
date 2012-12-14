@@ -293,6 +293,14 @@ ech_bindings_check_wheel(void)
                            "desk_linear_flip_by", "1");
         CHK_WHEELBIND_DFLT(E_BINDING_CONTEXT_WINDOW, 1, 1, E_BINDING_MODIFIER_ALT, 0,
                            "desk_linear_flip_by", "1");
+        CHK_WHEELBIND_DFLT(E_BINDING_CONTEXT_POPUP, 0, -1, E_BINDING_MODIFIER_ALT, 0,
+                           "desk_linear_flip_by", "-1");
+        CHK_WHEELBIND_DFLT(E_BINDING_CONTEXT_POPUP, 1, -1, E_BINDING_MODIFIER_ALT, 0,
+                           "desk_linear_flip_by", "-1");
+        CHK_WHEELBIND_DFLT(E_BINDING_CONTEXT_POPUP, 0, 1, E_BINDING_MODIFIER_ALT, 0,
+                           "desk_linear_flip_by", "1");
+        CHK_WHEELBIND_DFLT(E_BINDING_CONTEXT_POPUP, 1, 1, E_BINDING_MODIFIER_ALT, 0,
+                           "desk_linear_flip_by", "1");
         ret++;
      }
    return ret;
