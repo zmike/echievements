@@ -136,6 +136,73 @@ static unsigned int Echievement_Goals[] =
    [ECH(NEVER_GONNA_GIVE_YOU_UP)] = 24 * 7,
 };
 
+#define EP(X) ETROPHY_TROPHY_POINTS_##X
+
+static unsigned int Echievement_Points[] =
+{
+                                      /* LAST - first possible shelf orient */
+   [ECH(SHELF_POSITIONS)] = EP(FEW),
+   [ECH(NOTHING_ELSE_MATTERS)] = EP(FEW),
+   [ECH(AFRAID_OF_THE_DARK)] = EP(FEW),
+   [ECH(CAVE_DWELLER)] = EP(FEW),
+   [ECH(WINDOW_ENTHUSIAST)] = EP(VERY_FEW),
+   [ECH(WINDOW_LOVER)] = EP(FEW),
+   [ECH(WINDOW_STALKER)] = EP(MANY),
+   [ECH(WINDOW_MOVER)] = EP(VERY_FEW),
+   [ECH(WINDOW_OCD)] = EP(FEW),
+   [ECH(MOUSE_RUNNER)] = EP(VERY_FEW),
+   [ECH(MOUSE_MARATHONER)] = EP(FEW),
+   [ECH(MOUSE_HERO)] = EP(MANY),
+   [ECH(MIGHTY_MOUSE)] = EP(LOTS),
+   [ECH(WINDOW_HAULER)] = EP(FEW),
+   [ECH(WINDOW_SLINGER)] = EP(MANY),
+   [ECH(WINDOW_SHERPA)] = EP(LOTS),
+   [ECH(PHYSICIST)] = EP(VERY_FEW),
+   [ECH(QUICKDRAW)] = EP(VERY_FEW),
+   [ECH(OPAQUE)] = EP(FEW),
+   [ECH(KEYBOARD_USER)] = EP(VERY_FEW),
+   [ECH(KEYBOARD_TAPPER)] = EP(FEW),
+   [ECH(KEYBOARD_ABUSER)] = EP(MANY),
+   [ECH(KEYBOARD_NINJA)] = EP(LOTS),
+   [ECH(CLICKER)] = EP(VERY_FEW),
+   [ECH(SUPER_CLICKER)] = EP(FEW),
+   [ECH(SUPER_DUPER_CLICKER)] = EP(MANY),
+   [ECH(CLICK_MANIAC)] = EP(LOTS),
+   [ECH(SLEEPER)] = EP(FEW),
+   [ECH(HALTER)] = EP(MANY),
+   [ECH(EDGY)] = EP(VERY_FEW),
+   [ECH(EDGIER)] = EP(FEW),
+   [ECH(EDGIEST)] = EP(MANY),
+   [ECH(EDGAR)] = EP(LOTS),
+   [ECH(WHEELY)] = EP(FEW),
+   [ECH(ROLLIN)] = EP(MANY),
+   [ECH(ROLY_POLY)] = EP(LOTS),
+   [ECH(SIGNALLER)] = EP(VERY_FEW),
+   [ECH(SIGNAL_CONTROLLER)] = EP(FEW),
+   [ECH(SIGNAL_MASTER)] = EP(MANY),
+   [ECH(SIGURD)] = EP(LOTS),
+   [ECH(NOT_SO_INCOGNITO)] = EP(MANY),
+   [ECH(DUALIST)] = EP(FEW),
+   [ECH(THRICE)] = EP(LOTS),
+   [ECH(GOING_HD)] = EP(VERY_FEW),
+   [ECH(REAL_ESTATE_MOGUL)] = EP(FEW),
+   [ECH(MAXIMUM_DEFINITION)] = EP(MANY),
+   [ECH(TERMINOLOGIST)] = EP(FEW),
+   [ECH(LIFE_ON_THE_EDGE)] = EP(VERY_FEW),
+   [ECH(BILINGUAL)] = EP(FEW),
+   [ECH(POLYGLOT)] = EP(MANY),
+   [ECH(GADGETEER)] = EP(FEW),
+   [ECH(INSPECTOR_GADGET)] = EP(MANY),
+   [ECH(GADGET_HACKWRENCH)] = EP(LOTS),
+   [ECH(SECURITY_CONSCIOUS)] = EP(FEW),
+   [ECH(SECURITY_NUT)] = EP(MANY),
+   [ECH(CHIEF_OF_SECURITY)] = EP(LOTS),
+   [ECH(TILED)] = EP(VERY_FEW),
+   [ECH(PERSISTENT)] = EP(FEW),
+   [ECH(NEVER_GONNA_GIVE_YOU_UP)] = EP(LOTS),
+};
+#undef EP
+
 /* sighhh the amount of time it actually took me to build the list below...
  * update periodically from http://www.ovguide.com/adult-tubesites-visits-alltime.html
  * to maintain hilarity
