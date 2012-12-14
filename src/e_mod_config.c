@@ -54,13 +54,17 @@ _item_create(Evas *evas, Echievement *ec, Eina_Bool save)
    label = e_widget_label_add(evas, etrophy_trophy_description_get(ec->trophy));
    e_widget_frametable_object_append(table, label, 1, 0, 3, 1, 1, 1, 1, 0);
 
-   if (goal < 2)
+   if (etrophy_trophy_earned_get(ec->trophy))
      {
-        if (!counter)
-          label = e_widget_label_add(evas, "Not achieved");
-        else
-          label = e_widget_label_add(evas, "Achieved");
+        char date[1024];
+        time_t t0;
+
+        t0 = etrophy_trophy_date_get(ec->trophy);
+        strftime(date, sizeof(date), "Achieved: %d %B %Y - %r", localtime(&t0));
+        label = e_widget_label_add(evas, date);
      }
+   else if (goal < 2)
+     label = e_widget_label_add(evas, "Not achieved");
    else
      {
         snprintf(progress, sizeof(progress), "Progress: %u/%u", counter, goal);
@@ -183,8 +187,17 @@ ech_cfg_ech_update(Echievement *ec)
    if (!mod->cfd) return;
    if ((!ec->dialog.icon) || (!ec->dialog.label)) return;
    etrophy_trophy_goal_get(ec->trophy, &goal, &counter);
-   if (goal < 2)
-      e_widget_label_text_set(ec->dialog.label, counter ? "Achieved" : "Not achieved");
+   if (etrophy_trophy_earned_get(ec->trophy))
+     {
+        char date[1024];
+        time_t t0;
+
+        t0 = etrophy_trophy_date_get(ec->trophy);
+        strftime(date, sizeof(date), "Achieved: %d %B %Y - %r", localtime(&t0));
+        e_widget_label_text_set(ec->dialog.label, date);
+     }
+   else if (goal < 2)
+     e_widget_label_text_set(ec->dialog.label, "Not achieved");
    else
      {
         snprintf(progress, sizeof(progress), "Progress: %u/%u", counter, goal);
