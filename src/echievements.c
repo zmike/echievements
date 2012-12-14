@@ -2,8 +2,14 @@
 #include "echievements.x"
 
 #define ECH_INIT(NAME)     EINTERN void echievement_init_cb_##NAME(Echievement *ec)
-#define ECH_EH_NAME(NAME)  echievement_##NAME##_handler_cb
-#define ECH_EH(NAME, TYPE) static Eina_Bool ECH_EH_NAME(NAME)(Echievement *ec, int type, TYPE *ev)
+#define ECH_EH_NAME(NAME, TYPE)  echievement_##NAME##_##TYPE##_handler_cb
+#define ECH_EH(NAME, TYPE) static Eina_Bool ECH_EH_NAME(NAME, TYPE)(Echievement *ec, int type EINA_UNUSED, void *event)
+#define ECH_EH_UNUSED(NAME, TYPE) static Eina_Bool ECH_EH_NAME(NAME, TYPE)(Echievement *ec, int type EINA_UNUSED, void *event EINA_UNUSED)
+#define ECH_EH_ADD(NAME, TYPE) \
+   do { \
+      if (etrophy_trophy_earned_get(ec->trophy)) break; \
+      E_LIST_HANDLER_APPEND(ec->handlers, TYPE, ECH_EH_NAME(NAME, TYPE), ec); \
+   } while (0)
 
 #define ECH_BH_NAME(NAME, TYPE)  echievement_##NAME##_border_hook_##TYPE
 #define ECH_BH(NAME, TYPE) static void ECH_BH_NAME(NAME, TYPE)(Echievement *ec, E_Border *bd)
@@ -245,8 +251,9 @@ _ech_PERSISTENT_timer_cb(Echievement *ec)
  * check conditions, increment/set counter, delete handlers if trophy acquired
  */
 
-ECH_EH(PERSISTENT, E_Event_Border_Add)
+ECH_EH(PERSISTENT, E_EVENT_BORDER_ADD)
 {
+   E_Event_Border_Add *ev = event;
    char buf[128];
 
    snprintf(buf, sizeof(buf), "PERSISTENT%u", Echievement_Goals[ec->id]);
@@ -255,31 +262,30 @@ ECH_EH(PERSISTENT, E_Event_Border_Add)
    /* don't try this at home, kids! */
    evas_object_event_callback_add(ev->border->bg_object, EVAS_CALLBACK_DEL, (Evas_Object_Event_Cb)_ech_PERSISTENT_bd_del_cb, ec);
    evas_object_data_set(ev->border->bg_object, buf, eina_list_last_data_get(ec->data));
-   (void)type;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(NOTHING_ELSE_MATTERS, E_Event_Shelf EINA_UNUSED)
+ECH_EH_UNUSED(NOTHING_ELSE_MATTERS, E_EVENT_SHELF_DEL)
 {
    if (eina_list_count(e_shelf_list()))
      return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(CAVE_DWELLER, void EINA_UNUSED)
+ECH_EH_UNUSED(CAVE_DWELLER, E_EVENT_BACKLIGHT_CHANGE)
 {
    if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) >= 1.)
      return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(WINDOW_ENTHUSIAST, void EINA_UNUSED)
+ECH_EH_UNUSED(WINDOW_ENTHUSIAST, E_EVENT_BORDER_ADD)
 {
    /* ignore all windows added before modules are loaded:
     * these are previously-placed windows
@@ -291,41 +297,41 @@ ECH_EH(WINDOW_ENTHUSIAST, void EINA_UNUSED)
      return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(AFRAID_OF_THE_DARK, void EINA_UNUSED)
+ECH_EH_UNUSED(AFRAID_OF_THE_DARK, E_EVENT_BACKLIGHT_CHANGE)
 {
    if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) <= 99.)
      return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(DUALIST, E_Event_Zone_Add)
+ECH_EH(DUALIST, E_EVENT_ZONE_ADD)
 {
+   E_Event_Zone_Add *ev = event;
    _ech_trophy_counter_set(ec, eina_list_count(ev->zone->container->zones));
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(SHELF_POSITIONS, E_Event_Shelf EINA_UNUSED)
+ECH_EH_UNUSED(SHELF_POSITIONS, E_EVENT_SHELF_ADD)
 {
    _ech_trophy_counter_set(ec, eina_list_count(e_shelf_list()));
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(GOING_HD, E_Event_Zone_Add EINA_UNUSED)
+ECH_EH_UNUSED(GOING_HD, E_EVENT_ZONE_ADD)
 {
    E_Screen *es;
    const Eina_List *l;
@@ -335,11 +341,11 @@ ECH_EH(GOING_HD, E_Event_Zone_Add EINA_UNUSED)
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(REAL_ESTATE_MOGUL, E_Event_Zone_Add EINA_UNUSED)
+ECH_EH_UNUSED(REAL_ESTATE_MOGUL, E_EVENT_ZONE_ADD)
 {
    E_Screen *es;
    const Eina_List *l;
@@ -351,11 +357,11 @@ ECH_EH(REAL_ESTATE_MOGUL, E_Event_Zone_Add EINA_UNUSED)
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(MAXIMUM_DEFINITION, E_Event_Zone_Add EINA_UNUSED)
+ECH_EH_UNUSED(MAXIMUM_DEFINITION, E_EVENT_ZONE_ADD)
 {
    E_Screen *es;
    const Eina_List *l;
@@ -367,71 +373,71 @@ ECH_EH(MAXIMUM_DEFINITION, E_Event_Zone_Add EINA_UNUSED)
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(EDGY, void EINA_UNUSED)
+ECH_EH_UNUSED(EDGY, E_EVENT_MANAGER_KEYS_GRAB)
 {
    _ech_trophy_counter_set(ec, ech_bindings_check_edge());
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(SLEEPER, void EINA_UNUSED)
+ECH_EH_UNUSED(SLEEPER, E_EVENT_MANAGER_KEYS_GRAB)
 {
    _ech_trophy_counter_set(ec, ech_bindings_check_acpi());
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(SIGNALLER, void EINA_UNUSED)
+ECH_EH_UNUSED(SIGNALLER, E_EVENT_MANAGER_KEYS_GRAB)
 {
    _ech_trophy_counter_set(ec, ech_bindings_check_signal());
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(WHEELY, void EINA_UNUSED)
+ECH_EH_UNUSED(WHEELY, E_EVENT_MANAGER_KEYS_GRAB)
 {
    _ech_trophy_counter_set(ec, ech_bindings_check_wheel());
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(CLICKER, void EINA_UNUSED)
+ECH_EH_UNUSED(CLICKER, E_EVENT_MANAGER_KEYS_GRAB)
 {
    _ech_trophy_counter_set(ec, ech_bindings_check_mouse());
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(KEYBOARD_USER, void EINA_UNUSED)
+ECH_EH_UNUSED(KEYBOARD_USER, E_EVENT_MANAGER_KEYS_GRAB)
 {
    _ech_trophy_counter_set(ec, ech_bindings_check_keys());
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(GADGETEER, E_Event_Gadcon_Client_Add EINA_UNUSED)
+ECH_EH_UNUSED(GADGETEER, E_EVENT_GADCON_CLIENT_ADD)
 {
    E_Config_Gadcon *cf_gc;
    Eina_List *l;
@@ -447,20 +453,21 @@ ECH_EH(GADGETEER, E_Event_Gadcon_Client_Add EINA_UNUSED)
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(PHYSICIST, E_Event_Module_Update)
+ECH_EH(PHYSICIST, E_EVENT_MODULE_UPDATE)
 {
+   E_Event_Module_Update *ev = event;
+
    if ((!ev->enabled) || e_util_strcmp(ev->name, "Physics")) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(LIFE_ON_THE_EDGE, E_Event_Module_Update EINA_UNUSED)
+ECH_EH_UNUSED(LIFE_ON_THE_EDGE, E_EVENT_MODULE_UPDATE)
 {
    const char *env;
 
@@ -468,47 +475,52 @@ ECH_EH(LIFE_ON_THE_EDGE, E_Event_Module_Update EINA_UNUSED)
    if (e_util_strcmp(env, "YES")) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
+   (void)event;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(QUICKDRAW, E_Event_Module_Update)
+ECH_EH(QUICKDRAW, E_EVENT_MODULE_UPDATE)
 {
+   E_Event_Module_Update *ev = event;
    if ((!ev->enabled) || e_util_strcmp(ev->name, "Quickaccess")) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(TILED, E_Event_Module_Update)
+ECH_EH(TILED, E_EVENT_MODULE_UPDATE)
 {
+   E_Event_Module_Update *ev = event;
    if ((!ev->enabled) || e_util_strcmp(ev->name, "Tiling")) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(OPAQUE, E_Event_Module_Update)
+ECH_EH(OPAQUE, E_EVENT_MODULE_UPDATE)
 {
-   if (type == E_EVENT_MODULE_INIT_END)
-     {
-        if (e_module_find("Composite")) return ECORE_CALLBACK_RENEW;
-     }
-   else
-     {
-        if ((ev->enabled) || e_util_strcmp(ev->name, "Composite"))
-          return ECORE_CALLBACK_RENEW;
-     }
+   E_Event_Module_Update *ev = event;
+   if ((ev->enabled) || e_util_strcmp(ev->name, "Composite"))
+     return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH(SECURITY_CONSCIOUS, E_Event_Desklock)
+ECH_EH_UNUSED(OPAQUE, E_EVENT_MODULE_INIT_END)
+{
+   if (e_module_find("Composite")) return ECORE_CALLBACK_RENEW;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)event;
+   return ECORE_CALLBACK_RENEW;
+}
+
+ECH_EH(SECURITY_CONSCIOUS, E_EVENT_DESKLOCK)
 {
    unsigned int count;
+   E_Event_Desklock *ev = event;
+
    if (ev->on) return ECORE_CALLBACK_RENEW;
    _ech_trophy_counter_set(ec,  eina_list_count(mod->desklock.timers));
    if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
@@ -517,7 +529,6 @@ ECH_EH(SECURITY_CONSCIOUS, E_Event_Desklock)
    if (count == Echievement_Goals[ECH(CHIEF_OF_SECURITY)])
      E_FREE_LIST(mod->desklock.timers, ecore_timer_del);
    E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)type;
    return ECORE_CALLBACK_RENEW;
 }
 
@@ -603,7 +614,7 @@ ECH_INIT(NOTHING_ELSE_MATTERS)
    if (!eina_list_count(e_shelf_list()))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_SHELF_DEL, ECH_EH_NAME(NOTHING_ELSE_MATTERS), ec);
+     ECH_EH_ADD(NOTHING_ELSE_MATTERS, E_EVENT_SHELF_DEL);
 }
 
 ECH_INIT(AFRAID_OF_THE_DARK)
@@ -611,7 +622,7 @@ ECH_INIT(AFRAID_OF_THE_DARK)
    if (e_backlight_exists() && (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) > 99.))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BACKLIGHT_CHANGE, ECH_EH_NAME(AFRAID_OF_THE_DARK), ec);
+     ECH_EH_ADD(AFRAID_OF_THE_DARK, E_EVENT_BACKLIGHT_CHANGE);
 }
 
 ECH_INIT(CAVE_DWELLER)
@@ -619,7 +630,7 @@ ECH_INIT(CAVE_DWELLER)
    if (e_backlight_exists() && (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) < 1.))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BACKLIGHT_CHANGE, ECH_EH_NAME(CAVE_DWELLER), ec);
+     ECH_EH_ADD(CAVE_DWELLER, E_EVENT_BACKLIGHT_CHANGE);
 }
 
 ECH_INIT(WINDOW_ENTHUSIAST)
@@ -627,7 +638,7 @@ ECH_INIT(WINDOW_ENTHUSIAST)
    /* only count windows opened while e is running to prevent cheating
     * reuse same handler
     */
-   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BORDER_ADD, ECH_EH_NAME(WINDOW_ENTHUSIAST), ec);
+   ECH_EH_ADD(WINDOW_ENTHUSIAST, E_EVENT_BORDER_ADD);
 }
 
 ECH_INIT(WINDOW_MOVER)
@@ -648,7 +659,7 @@ ECH_INIT(EDGY)
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(EDGY), ec);
+     ECH_EH_ADD(EDGY, E_EVENT_MANAGER_KEYS_GRAB);
 }
 
 ECH_INIT(SLEEPER)
@@ -657,7 +668,7 @@ ECH_INIT(SLEEPER)
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(SLEEPER), ec);
+     ECH_EH_ADD(SLEEPER, E_EVENT_MANAGER_KEYS_GRAB);
 }
 
 ECH_INIT(SIGNALLER)
@@ -666,7 +677,7 @@ ECH_INIT(SIGNALLER)
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(SIGNALLER), ec);
+     ECH_EH_ADD(SIGNALLER, E_EVENT_MANAGER_KEYS_GRAB);
 }
 
 ECH_INIT(WHEELY)
@@ -675,7 +686,7 @@ ECH_INIT(WHEELY)
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(WHEELY), ec);
+     ECH_EH_ADD(WHEELY, E_EVENT_MANAGER_KEYS_GRAB);
 }
 
 ECH_INIT(CLICKER)
@@ -684,7 +695,7 @@ ECH_INIT(CLICKER)
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(CLICKER), ec);
+     ECH_EH_ADD(CLICKER, E_EVENT_MANAGER_KEYS_GRAB);
 }
 
 ECH_INIT(KEYBOARD_USER)
@@ -693,7 +704,7 @@ ECH_INIT(KEYBOARD_USER)
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MANAGER_KEYS_GRAB, ECH_EH_NAME(KEYBOARD_USER), ec);
+     ECH_EH_ADD(KEYBOARD_USER, E_EVENT_MANAGER_KEYS_GRAB);
 }
 
 ECH_INIT(TERMINOLOGIST)
@@ -713,7 +724,7 @@ ECH_INIT(PHYSICIST)
    if (e_module_find("Physics"))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(PHYSICIST), ec);
+     ECH_EH_ADD(PHYSICIST, E_EVENT_MODULE_UPDATE);
 }
 
 ECH_INIT(QUICKDRAW)
@@ -721,7 +732,7 @@ ECH_INIT(QUICKDRAW)
    if (e_module_find("Quickaccess"))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(QUICKDRAW), ec);
+     ECH_EH_ADD(QUICKDRAW, E_EVENT_MODULE_UPDATE);
 }
 
 ECH_INIT(TILED)
@@ -729,7 +740,7 @@ ECH_INIT(TILED)
    if (e_module_find("Tiling"))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(TILED), ec);
+     ECH_EH_ADD(TILED, E_EVENT_MODULE_UPDATE);
 }
 
 ECH_INIT(LIFE_ON_THE_EDGE)
@@ -740,13 +751,13 @@ ECH_INIT(LIFE_ON_THE_EDGE)
    if (!e_util_strcmp(env, "YES"))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(LIFE_ON_THE_EDGE), ec);
+     ECH_EH_ADD(LIFE_ON_THE_EDGE, E_EVENT_MODULE_UPDATE);
 }
 
 ECH_INIT(OPAQUE)
 {
-   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_UPDATE, ECH_EH_NAME(OPAQUE), ec);
-   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_MODULE_INIT_END, ECH_EH_NAME(OPAQUE), ec);
+   ECH_EH_ADD(OPAQUE, E_EVENT_MODULE_UPDATE);
+   ECH_EH_ADD(OPAQUE, E_EVENT_MODULE_INIT_END);
 }
 
 ECH_INIT(DUALIST)
@@ -759,7 +770,7 @@ ECH_INIT(DUALIST)
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_ZONE_ADD, ECH_EH_NAME(DUALIST), ec);
+     ECH_EH_ADD(DUALIST, E_EVENT_ZONE_ADD);
 }
 
 ECH_INIT(SHELF_POSITIONS)
@@ -769,7 +780,7 @@ ECH_INIT(SHELF_POSITIONS)
      /* number of shelves equals goal, grant trophy and return */
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_SHELF_ADD, ECH_EH_NAME(SHELF_POSITIONS), ec);
+     ECH_EH_ADD(SHELF_POSITIONS, E_EVENT_SHELF_ADD);
 }
 
 ECH_INIT(GOING_HD)
@@ -782,7 +793,7 @@ ECH_INIT(GOING_HD)
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_ZONE_ADD, ECH_EH_NAME(GOING_HD), ec);
+     ECH_EH_ADD(GOING_HD, E_EVENT_ZONE_ADD);
 }
 
 ECH_INIT(REAL_ESTATE_MOGUL)
@@ -797,7 +808,7 @@ ECH_INIT(REAL_ESTATE_MOGUL)
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_ZONE_ADD, ECH_EH_NAME(REAL_ESTATE_MOGUL), ec);
+     ECH_EH_ADD(REAL_ESTATE_MOGUL, E_EVENT_ZONE_ADD);
 }
 
 ECH_INIT(MAXIMUM_DEFINITION)
@@ -812,7 +823,7 @@ ECH_INIT(MAXIMUM_DEFINITION)
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_ZONE_ADD, ECH_EH_NAME(MAXIMUM_DEFINITION), ec);
+     ECH_EH_ADD(MAXIMUM_DEFINITION, E_EVENT_ZONE_ADD);
 }
 
 ECH_INIT(NOT_SO_INCOGNITO)
@@ -858,7 +869,7 @@ ECH_INIT(GADGETEER)
    if (etrophy_trophy_earned_get(ec->trophy))
      _ech_hook(ec->id, ec);
    else
-     E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_GADCON_CLIENT_ADD, ECH_EH_NAME(GADGETEER), ec);
+     ECH_EH_ADD(GADGETEER, E_EVENT_GADCON_CLIENT_ADD);
 }
 
 ECH_INIT(PERSISTENT)
@@ -876,12 +887,12 @@ ECH_INIT(PERSISTENT)
         evas_object_event_callback_add(bd->bg_object, EVAS_CALLBACK_DEL, (Evas_Object_Event_Cb)_ech_PERSISTENT_bd_del_cb, ec);
         evas_object_data_set(bd->bg_object, buf, eina_list_last_data_get(ec->data));
      }
-   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_BORDER_ADD, ECH_EH_NAME(PERSISTENT), ec);
+   ECH_EH_ADD(PERSISTENT, E_EVENT_BORDER_ADD);
 }
 
 ECH_INIT(SECURITY_CONSCIOUS)
 {
-   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_DESKLOCK, ECH_EH_NAME(SECURITY_CONSCIOUS), ec);
+   ECH_EH_ADD(SECURITY_CONSCIOUS, E_EVENT_DESKLOCK);
 }
 
 ECH_INIT(MOUSE_RUNNER)
