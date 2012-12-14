@@ -5,7 +5,7 @@ static void
 _free_data(E_Config_Dialog *cfd EINA_UNUSED, E_Config_Dialog_Data *cfdata EINA_UNUSED)
 {
    mod->cfd = NULL;
-   mod->cfd_list[0] = mod->cfd_list[1] = NULL;
+   mod->label = mod->cfd_list[0] = mod->cfd_list[1] = NULL;
 }
 /*
 static void *
@@ -122,7 +122,26 @@ _basic_create(E_Config_Dialog *cfd EINA_UNUSED, Evas *evas, E_Config_Dialog_Data
                                  sf, 1, 1, 1, 1, 0.5, 0.0);
 
    e_widget_toolbook_page_show(toolbook, 0);
-   return toolbook;
+   list = e_widget_list_add(evas, 0, 0);
+   e_widget_list_object_append(list, toolbook, 1, 1, 0.5);
+   {
+      char buf[1024];
+
+      /* FIXME: this can look better */
+      snprintf(buf, sizeof(buf), "%u Echievement Points", etrophy_gamescore_trophies_points_get(ech_config->gs));
+      mod->label = item = e_widget_label_add(evas, buf);
+      e_widget_list_object_append(list, item, 0, 0, 0.5);
+   }
+   return list;
+}
+
+static void
+_totals_update(void)
+{
+   char buf[1024];
+
+   snprintf(buf, sizeof(buf), "%u Echievement Points", etrophy_gamescore_trophies_points_get(ech_config->gs));
+   e_widget_label_text_set(mod->label, buf);
 }
 
 E_Config_Dialog *
@@ -172,6 +191,7 @@ ech_cfg_ech_update(Echievement *ec)
         e_widget_label_text_set(ec->dialog.label, progress);
      }
    e_widget_frametable_object_repack(e_widget_parent_get(ec->dialog.label), ec->dialog.label, 1, 1, 3, 1, 1, 1, 1, 0);
+   _totals_update();
 }
 
 EINTERN void
@@ -200,4 +220,5 @@ ech_cfg_ech_add(Echievement *ec)
    e_widget_list_object_append(mod->cfd_list[1], item, 1, 1, 0.5);
    e_widget_size_min_get(mod->cfd_list[1], NULL, &mh);
    evas_object_resize(mod->cfd_list[1], w, mh);
+   _totals_update();
 }

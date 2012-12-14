@@ -117,6 +117,7 @@ typedef struct Mod
 {
    E_Config_Dialog *cfd;
    Evas_Object *cfd_list[2]; //list of earned trophies, list of all trophies
+   Evas_Object *label; //label of total points
    Evas_Object_Event_Cb obj_del_cb; //for deleting list object callbacks
 
    E_Module *module;
