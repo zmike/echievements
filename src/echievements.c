@@ -29,21 +29,6 @@
      mod->mouse.hooks = eina_list_remove(mod->mouse.hooks, ec); \
    } while (0)
 
-#define ECH_DL_TH_NAME(NAME) _ech_##NAME##_desklock_timer_hook
-#define ECH_DL_TH(NAME) static void ECH_DL_TH_NAME(NAME)(Echievement *ec)
-#define ECH_DL_TH_ADD(NAME) \
-   do { \
-      ec->desklock_timer_hook = (Ecore_Cb)ECH_DL_TH_NAME(NAME); \
-      if (!etrophy_trophy_earned_get(ec->trophy)) \
-        mod->desklock.timer_hooks = eina_list_append(mod->desklock.timer_hooks, ec); \
-   } while (0)
-#define ECH_DL_TH_DEL \
-   do { \
-     ec->desklock_timer_hook = NULL; \
-     mod->desklock.timer_hooks = eina_list_remove(mod->desklock.timer_hooks, ec); \
-     if (!mod->desklock.timer_hooks)  E_FREE_LIST(mod->desklock.timers, ecore_timer_del); \
-   } while (0)
-
 static Ecore_Idler *_ech_idler = NULL;
 
 /* helper for init */
@@ -79,8 +64,6 @@ _ech_free(Echievement *ec)
    else
      E_FREE_LIST(ec->handlers, ecore_event_handler_del);
    if (ec->mouse_hook) mod->mouse.hooks = eina_list_remove(mod->mouse.hooks, ec);
-   if (ec->desklock_timer_hook) mod->desklock.timer_hooks = eina_list_remove(mod->desklock.timer_hooks, ec);
-   if (!mod->desklock.timer_hooks) E_FREE_LIST(mod->desklock.timers, ecore_timer_del);
    if (ec->dialog.icon)
      evas_object_event_callback_del_full(ec->dialog.icon, EVAS_CALLBACK_DEL, mod->obj_del_cb, ec);
    if (ec->dialog.label)
@@ -110,7 +93,7 @@ _ech_notify(const char *name, const char *description)
    char summary[128];
 
    snprintf(summary, sizeof(summary), "Echievement: %s", name);
-   n = e_notification_full_new("echievements", 0, PACKAGE_DATA_DIR"/trophy.png",
+   n = e_notification_full_new("echievements", 0, PACKAGE_DATA_DIR "/trophy.png",
                                summary, description, -1);
    e_notification_hint_urgency_set(n, E_NOTIFICATION_URGENCY_NORMAL);
    e_notification_send(n, NULL, NULL);
@@ -523,21 +506,19 @@ ECH_EH(OPAQUE, E_Event_Module_Update)
    return ECORE_CALLBACK_RENEW;
 }
 
-///////////////////////////////////////////////////////////////////////////////////
-
-/* Echievement desklock timer hook callbacks:
- *
- * called every time an hour has passed since a desklock resume
- *
- * mod->desklock.timers == number of times desklock has resumed in the past 60 minutes
- */
-
-ECH_DL_TH(SECURITY_CONSCIOUS)
+ECH_EH(SECURITY_CONSCIOUS, E_Event_Desklock)
 {
+   unsigned int count;
+   if (ev->on) return ECORE_CALLBACK_RENEW;
    _ech_trophy_counter_set(ec,  eina_list_count(mod->desklock.timers));
-   if (!etrophy_trophy_earned_get(ec->trophy)) return;
+   if (!etrophy_trophy_earned_get(ec->trophy)) return ECORE_CALLBACK_RENEW;
    _ech_hook(ec->id, ec);
-   ECH_DL_TH_DEL;
+   etrophy_trophy_goal_get(ec->trophy, &count, NULL);
+   if (count == Echievement_Goals[ECH(CHIEF_OF_SECURITY)])
+     E_FREE_LIST(mod->desklock.timers, ecore_timer_del);
+   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
+   (void)type;
+   return ECORE_CALLBACK_RENEW;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -900,7 +881,7 @@ ECH_INIT(PERSISTENT)
 
 ECH_INIT(SECURITY_CONSCIOUS)
 {
-   ECH_DL_TH_ADD(SECURITY_CONSCIOUS);
+   E_LIST_HANDLER_APPEND(ec->handlers, E_EVENT_DESKLOCK, ECH_EH_NAME(SECURITY_CONSCIOUS), ec);
 }
 
 ECH_INIT(MOUSE_RUNNER)

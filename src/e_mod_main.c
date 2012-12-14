@@ -69,11 +69,6 @@ _e_mod_ech_mouse_move_cb(void *d EINA_UNUSED, int type EINA_UNUSED, Ecore_Event_
 static Eina_Bool
 _e_mod_ech_desklock_timer_cb(void *d EINA_UNUSED)
 {
-   Echievement *ec;
-   Eina_List *l;
-
-   EINA_LIST_FOREACH(mod->desklock.timer_hooks, l, ec)
-     if (ec->desklock_timer_hook) ec->desklock_timer_hook(ec);
    mod->desklock.timers = eina_list_remove_list(mod->desklock.timers, mod->desklock.timers);
    return EINA_FALSE;
 }
@@ -81,7 +76,7 @@ _e_mod_ech_desklock_timer_cb(void *d EINA_UNUSED)
 static Eina_Bool
 _e_mod_ech_desklock_cb(void *d EINA_UNUSED, int type EINA_UNUSED, E_Event_Desklock *ev)
 {
-   if (mod->desklock.timer_hooks && (!ev->on))
+   if (!ev->on)
      mod->desklock.timers = eina_list_append(mod->desklock.timers,
        ecore_timer_add(60 * 60, _e_mod_ech_desklock_timer_cb, NULL));
 

@@ -101,7 +101,6 @@ typedef struct Echievement
    Etrophy_Trophy *trophy;
    Eina_List *handlers;
    Ecore_Cb mouse_hook;
-   Ecore_Cb desklock_timer_hook;
    struct
    {
       Evas_Object *icon;
@@ -133,7 +132,6 @@ typedef struct Mod
    struct
    {
       Eina_List *timers;
-      Eina_List *timer_hooks;
    } desklock;
    Eina_Bool module_init_end : 1;
 } Mod;
