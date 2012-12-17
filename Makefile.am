@@ -24,7 +24,7 @@ EXTRA_DIST = module.desktop.in \
 
 e-module-echievements.edj: Makefile e-module-echievements.edc images/trophy.png
 
-%.edj:  %.edc
+e-module-echievements.edj:  e-module-echievements.edc
 	$(EDJE_CC) $(EDJE_FLAGS) $< $@
 
 clean-local:
