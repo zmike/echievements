@@ -1,18 +1,26 @@
 #ifndef E_MOD_MAIN_H
 #define E_MOD_MAIN_H
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include <e.h>
 #include <Etrophy.h>
 #include <E_Notify.h>
 
 #ifdef ENABLE_NLS
 # include <libintl.h>
-# define D_(string) dgettext(PACKAGE, string)
+# define D_(str) dgettext(PACKAGE, str)
+# define DP_(str, str_p, n) dngettext(PACKAGE, str, str_p, n)
 #else
 # define bindtextdomain(domain,dir)
 # define bind_textdomain_codeset(domain,codeset)
-# define D_(string) (string)
+# define D_(str) (str)
+# define DP_(str, str_p, n) (str_p)
 #endif
+
+#define N_(str) (str)
 
 #define MOD_CONFIG_FILE_EPOCH 0x0000
 #define MOD_CONFIG_FILE_GENERATION 0x01

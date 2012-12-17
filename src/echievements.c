@@ -91,11 +91,11 @@ static void
 _ech_notify(const char *name, const char *description)
 {
    E_Notification *n;
-   char summary[128];
+   char summary[256];
 
-   snprintf(summary, sizeof(summary), "Echievement: %s", name);
+   snprintf(summary, sizeof(summary), D_("Echievement: %s"), D_(name));
    n = e_notification_full_new("echievements", 0, PACKAGE_DATA_DIR "/trophy.png",
-                               summary, description, -1);
+                               summary, D_(description), -1);
    e_notification_hint_urgency_set(n, E_NOTIFICATION_URGENCY_NORMAL);
    e_notification_send(n, NULL, NULL);
    e_notification_unref(n);
@@ -198,7 +198,7 @@ NOT_SO_INCOGNITO_helper(const char *str)
 
    if ((!str) || (!str[0])) return EINA_FALSE;
    for (x = 0; Echievement_NOT_SO_INCOGNITO_Strings[x]; x++)
-     if (!strncmp(str, Echievement_NOT_SO_INCOGNITO_Strings[x], sizeof(Echievement_NOT_SO_INCOGNITO_Strings[x] - 1)))
+     if (!strncmp(str, Echievement_NOT_SO_INCOGNITO_Strings[x], sizeof(Echievement_NOT_SO_INCOGNITO_Strings[x]) - 1))
        return EINA_TRUE;
    return EINA_FALSE;
 }

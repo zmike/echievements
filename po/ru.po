@@ -1,76 +1,533 @@
-# Russian translation for enlightenment
-# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# Russian translation of Echievements module
 # This file is distributed under the same license as the enlightenment package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+# Igor Murzov <e-mail@date.by>, 2012.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: enlightenment\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-12-01 15:38+0800\n"
-"PO-Revision-Date: 2009-12-11 19:59+0000\n"
-"Last-Translator: Black Raven <Unknown>\n"
-"Language-Team: Russian <ru@li.org>\n"
+"Project-Id-Version: echievements 1\n"
+"Report-Msgid-Bugs-To: enlightenment-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2012-12-17 16:48+0400\n"
+"PO-Revision-Date: 2012-12-17 16:48+0400\n"
+"Last-Translator: Igor Murzov <e-mail@date.by>\n"
+"Language-Team: Russian <enlightenment-intl@lists.sourceforge.net>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-12-12 04:43+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#. create our config dialog
-#: ../src/e_mod_config.c:44
-msgid "Echievements Module"
-msgstr "Echievements Module"
+#: src/e_mod_config.c:65 src/e_mod_config.c:202
+#, c-format
+msgid "Achieved: %s"
+msgstr "Достигнуто: %s"
 
-#: ../src/e_mod_config.c:84
-msgid "General"
-msgstr "Общее"
+#: src/e_mod_config.c:69 src/e_mod_config.c:206
+msgid "Not achieved"
+msgstr "Не достигнуто"
 
-#: ../src/e_mod_config.c:86
-msgid "Use Switch 1"
-msgstr "Использовать Переключатель 1"
+#: src/e_mod_config.c:72 src/e_mod_config.c:209
+#, c-format
+msgid "Progress: %u/%u"
+msgstr "Прогресс: %u/%u"
 
-#: ../src/e_mod_main.c:113
-msgid ""
-"Echievements Module Configuration data needed upgrading. Your old "
-"configuration<br> has been wiped and a new set of defaults initialized. "
-"This<br>will happen regularly during development, so don't report a<br>bug. "
-"This simply means the module needs new configuration<br>data by default for "
-"usable functionality that your old<br>configuration simply lacks. This new "
-"set of defaults will fix<br>that by adding it in. You can re-configure "
-"things now to your<br>liking. Sorry for the inconvenience.<br>"
-msgstr ""
-"Echievements Module: Было необходимо обновление настроек. Старые настройки<br> "
-"были удалены и новый набор был инициализирован значениями по "
-"умолчанию.<br>Это будет случаться регулярно, поэтому не нужно сообщать об "
-"ошибках.<br>Это просто означает, что модулю необходимы новые настройки<br>по "
-"умолчанию для использования функций, которые отсутствуют<br> в старых "
-"настройках. Этот новый набор значений по умолчанию <br> исправит это. Вы "
-"можете сейчас все по вашему желанию.<br>Приносим извинения за доставленные "
-"неудобства<br>"
+#: src/e_mod_config.c:108
+msgid "My Trophies"
+msgstr "Мои трофеи"
 
-#: ../src/e_mod_main.c:133
-msgid ""
-"Your Echievements Module configuration is NEWER than the module version. This is "
-"very<br>strange. This should not happen unless you downgraded<br>the module "
-"or copied the configuration from a place where<br>a newer version of the "
-"module was running. This is bad and<br>as a precaution your configuration "
-"has been now restored to<br>defaults. Sorry for the inconvenience.<br>"
-msgstr ""
-"Ваши настройки Echievements Module НОВЕЕ чем версия модуля. Это "
-"очень<br>странно. Это невозможно если только вы не переходили<br>на старую "
-"версию или копировали настройки из места, <br> где использовалась более "
-"новая версия. Это плохо, и<br>на всякий случай ваши настройки сброшены на "
-"значения по умолчанию.<br>Приносим извинения за доставленные неудобства.<br>"
+#: src/e_mod_config.c:127
+msgid "All Trophies"
+msgstr "Все трофеи"
 
-#: ../src/e_mod_main.c:300
+#: src/e_mod_config.c:138 src/e_mod_config.c:151
+#, c-format
+msgid "%u Echievement Point"
+msgid_plural "%u Echievement Points"
+msgstr[0] "%u очко"
+msgstr[1] "%u очка"
+msgstr[2] "%u очков"
+
+#: src/e_mod_config.c:177 src/e_mod_main.c:99
 msgid "Echievements"
-msgstr "Echievements"
+msgstr "Достижения"
 
-#: ../src/e_mod_main.c:385
-msgid "Echievements Configuration Updated"
-msgstr "Настройки Echievements обновлены"
+#: src/e_mod_main.c:97
+msgid "Extensions"
+msgstr "Расширения"
 
-#: ../src/e_mod_main.c:442
-msgid "Configuration"
-msgstr "Настройки"
+#: src/echievements.c:96
+#, c-format
+msgid "Echievement: %s"
+msgstr "Достижение: %s"
+
+#: src/echievements.x:232
+msgid "Shelves Everywhere"
+msgstr "Полки повсюду"
+
+#: src/echievements.x:233
+msgid "Nothing Else Matters"
+msgstr "Всё остальное -- ерунда"
+
+#: src/echievements.x:234
+msgid "Afraid Of The Dark"
+msgstr "Боязнь темноты"
+
+#: src/echievements.x:235
+msgid "Cave Dweller"
+msgstr "Пещерный человек"
+
+#: src/echievements.x:236
+msgid "Window Enthusiast"
+msgstr "Оконный энтузиаст"
+
+#: src/echievements.x:237
+msgid "Window Lover"
+msgstr "Любитель окон"
+
+#: src/echievements.x:238
+msgid "Window Stalker"
+msgstr ""
+
+#: src/echievements.x:239
+msgid "Window Mover"
+msgstr ""
+
+#: src/echievements.x:240
+msgid "Window OCD"
+msgstr ""
+
+#: src/echievements.x:241
+msgid "Mouse Runner"
+msgstr "Мышиный бегун"
+
+#: src/echievements.x:242
+msgid "Mouse Marathoner"
+msgstr "Мышиный марафонец"
+
+#: src/echievements.x:243
+msgid "Mouse Hero"
+msgstr "Мышиный герой"
+
+#: src/echievements.x:244
+msgid "Mighty Mouse"
+msgstr "Могучая мышь"
+
+#: src/echievements.x:245
+msgid "Window Hauler"
+msgstr ""
+
+#: src/echievements.x:246
+msgid "Window Slinger"
+msgstr ""
+
+#: src/echievements.x:247
+msgid "Window Sherpa"
+msgstr ""
+
+#: src/echievements.x:248
+msgid "Physicist"
+msgstr "Физик"
+
+#: src/echievements.x:249
+msgid "Quickdraw"
+msgstr ""
+
+#: src/echievements.x:250
+msgid "Opaque"
+msgstr ""
+
+#: src/echievements.x:251
+msgid "Keyboard User"
+msgstr ""
+
+#: src/echievements.x:252
+msgid "Keyboard Tapper"
+msgstr ""
+
+#: src/echievements.x:253
+msgid "Keyboard Abuser"
+msgstr ""
+
+#: src/echievements.x:254
+msgid "Keyboard Ninja"
+msgstr "Клавиатурные ниндзя"
+
+#: src/echievements.x:255
+msgid "Clicker"
+msgstr "Щелкун"
+
+#: src/echievements.x:256
+msgid "Super Clicker"
+msgstr "Супер щелкун"
+
+#: src/echievements.x:257
+msgid "Super Duper Clicker"
+msgstr "Супер-пупер щелкун"
+
+#: src/echievements.x:258
+msgid "Click Maniac"
+msgstr "Щелкун-маньяк"
+
+#: src/echievements.x:259
+msgid "Sleeper"
+msgstr ""
+
+#: src/echievements.x:260
+msgid "Halter"
+msgstr ""
+
+#: src/echievements.x:261
+msgid "Edgy"
+msgstr ""
+
+#: src/echievements.x:262
+msgid "Edgier"
+msgstr ""
+
+#: src/echievements.x:263
+msgid "Edgiest"
+msgstr ""
+
+#: src/echievements.x:264
+msgid "Edgar"
+msgstr ""
+
+#: src/echievements.x:265
+msgid "Wheely"
+msgstr ""
+
+#: src/echievements.x:266
+msgid "Rollin'"
+msgstr ""
+
+#: src/echievements.x:267
+msgid "Roly Poly"
+msgstr ""
+
+#: src/echievements.x:268
+msgid "Signaller"
+msgstr ""
+
+#: src/echievements.x:269
+msgid "Signal Controller"
+msgstr ""
+
+#: src/echievements.x:270
+msgid "Signal Master"
+msgstr ""
+
+#: src/echievements.x:271
+msgid "Sigurd"
+msgstr ""
+
+#: src/echievements.x:272
+msgid "Not So Incognito"
+msgstr "Я всё вижу >_<"
+
+#: src/echievements.x:273
+msgid "Dualist"
+msgstr "Дуалист"
+
+#: src/echievements.x:274
+msgid "Thrice"
+msgstr "Тройка"
+
+#: src/echievements.x:275
+msgid "Going HD"
+msgstr ""
+
+#: src/echievements.x:276
+msgid "Real Estate Mogul"
+msgstr ""
+
+#: src/echievements.x:277
+msgid "Maximum Definition"
+msgstr ""
+
+#: src/echievements.x:278
+msgid "Terminologist"
+msgstr "Терминолог"
+
+#: src/echievements.x:279
+msgid "Life On The Edge"
+msgstr ""
+
+#: src/echievements.x:280
+msgid "Bilingual"
+msgstr "Двуязычный"
+
+#: src/echievements.x:281
+msgid "Polyglot"
+msgstr "Полиглот"
+
+#: src/echievements.x:282
+msgid "Gadgeteer"
+msgstr "Гаджетёр"
+
+#: src/echievements.x:283
+msgid "Inspector Gadget"
+msgstr "Инспектор гаджет"
+
+#: src/echievements.x:284
+msgid "Gadget Hackwrench"
+msgstr ""
+
+#: src/echievements.x:285
+msgid "Security Conscious"
+msgstr ""
+
+#: src/echievements.x:286
+msgid "Security Nut"
+msgstr ""
+
+#: src/echievements.x:287
+msgid "Chief Of Security"
+msgstr "Начальник безопасности"
+
+#: src/echievements.x:288
+msgid "Tiled"
+msgstr ""
+
+#: src/echievements.x:289
+msgid "Persistent"
+msgstr ""
+
+#: src/echievements.x:290
+msgid "Never Gonna Give You Up"
+msgstr "Никогда не подведёт"
+
+#: src/echievements.x:295
+msgid "Have a shelf in every position"
+msgstr "В каждом углу по полке"
+
+#: src/echievements.x:296
+msgid "Use E17 with no shelves"
+msgstr "E17 используется без полок"
+
+#: src/echievements.x:297
+msgid "Set backlight level to 100%"
+msgstr "Подсветка установлена в 100%"
+
+#: src/echievements.x:298
+msgid "Set backlight level to 0%"
+msgstr "Подсветка установлена в 0%"
+
+#: src/echievements.x:299
+msgid "Open 100 windows"
+msgstr "Открыты 100 окон"
+
+#: src/echievements.x:300
+msgid "Open 1000 windows"
+msgstr "Открыты 1000 окон"
+
+#: src/echievements.x:301
+msgid "Open 10000 windows"
+msgstr "Открыты 10000 окон"
+
+#: src/echievements.x:302
+msgid "Move 50 windows"
+msgstr "Перемещены 50 окон"
+
+#: src/echievements.x:303
+msgid "Move 250 windows"
+msgstr "Перемещены 250 окон"
+
+#: src/echievements.x:304
+msgid "Mouse over 250,000 pixels"
+msgstr ""
+
+#: src/echievements.x:305
+msgid "Mouse over 1,000,000 pixels"
+msgstr ""
+
+#: src/echievements.x:306
+msgid "Mouse over 10,000,000 pixels"
+msgstr ""
+
+#: src/echievements.x:307
+msgid "Mouse over 100,000,000 pixels"
+msgstr ""
+
+#: src/echievements.x:308
+msgid "Move windows 250,000 pixels"
+msgstr ""
+
+#: src/echievements.x:309
+msgid "Move windows 1,000,000 pixels"
+msgstr ""
+
+#: src/echievements.x:310
+msgid "Move windows 10,000,000 pixels"
+msgstr ""
+
+#: src/echievements.x:311
+msgid "Load the Physics module"
+msgstr "Загружен модуль Физика"
+
+#: src/echievements.x:312
+msgid "Load the Quickaccess module"
+msgstr "Загружен модуль Быстрый доступ"
+
+#: src/echievements.x:313
+msgid "Unload the Composite module"
+msgstr "Выгружен модуль для Композитного режима"
+
+#: src/echievements.x:314
+msgid "Change 5 key bindings"
+msgstr "Изменены 5 комбинаций клавиш"
+
+#: src/echievements.x:315
+msgid "Change 10 key bindings"
+msgstr ""
+
+#: src/echievements.x:316
+msgid "Change 20 key bindings"
+msgstr ""
+
+#: src/echievements.x:317
+msgid "Change 30 key bindings"
+msgstr ""
+
+#: src/echievements.x:318
+msgid "Change 5 mouse bindings"
+msgstr ""
+
+#: src/echievements.x:319
+msgid "Change 10 mouse bindings"
+msgstr ""
+
+#: src/echievements.x:320
+msgid "Change 20 mouse bindings"
+msgstr ""
+
+#: src/echievements.x:321
+msgid "Change 30 mouse bindings"
+msgstr ""
+
+#: src/echievements.x:322
+msgid "Change 2 ACPI bindings"
+msgstr ""
+
+#: src/echievements.x:323
+msgid "Change 5 ACPI bindings"
+msgstr ""
+
+#: src/echievements.x:324
+msgid "Change 2 Edge bindings"
+msgstr ""
+
+#: src/echievements.x:325
+msgid "Change 4 Edge bindings"
+msgstr ""
+
+#: src/echievements.x:326
+msgid "Change 6 Edge bindings"
+msgstr ""
+
+#: src/echievements.x:327
+msgid "Change 8 Edge bindings"
+msgstr ""
+
+#: src/echievements.x:328
+msgid "Change 3 Mouse Wheel bindings"
+msgstr ""
+
+#: src/echievements.x:329
+msgid "Change 6 Mouse Wheel bindings"
+msgstr ""
+
+#: src/echievements.x:330
+msgid "Change 10 Mouse Wheel bindings"
+msgstr ""
+
+#: src/echievements.x:331
+msgid "Change 5 Edje Signal Bindings"
+msgstr ""
+
+#: src/echievements.x:332
+msgid "Change 10 Edje Signal Bindings"
+msgstr ""
+
+#: src/echievements.x:333
+msgid "Change 20 Edje Signal Bindings"
+msgstr ""
+
+#: src/echievements.x:334
+msgid "Change 30 Edje Signal Bindings"
+msgstr ""
+
+#: src/echievements.x:335
+msgid "Watch porn while using E17"
+msgstr "Просмотр порно во время использования E17"
+
+#: src/echievements.x:336
+msgid "Connect two monitors simultaneously"
+msgstr "Одновременно подключены два монитора"
+
+#: src/echievements.x:337
+msgid "Connect three monitors simultaneously"
+msgstr "Одновременно подключены три монитора"
+
+#: src/echievements.x:338
+msgid "Have 1080p on a single monitor"
+msgstr ""
+
+#: src/echievements.x:339
+msgid "At least 3,384,320 pixels"
+msgstr ""
+
+#: src/echievements.x:340
+msgid "Dual 1080p monitors"
+msgstr "Два 1080p-монитора"
+
+#: src/echievements.x:341
+msgid "Open a Terminology window"
+msgstr "Открыто окно Terminology"
+
+#: src/echievements.x:342
+msgid "Load a module which taints E17"
+msgstr "Загружен нестандартный модуль для E17"
+
+#: src/echievements.x:343
+msgid "Have two languages available"
+msgstr "Используются два языка"
+
+#: src/echievements.x:344
+msgid "Have four languages available"
+msgstr "Используются четыре языка"
+
+#: src/echievements.x:345
+msgid "Have 5 gadgets on the desktop"
+msgstr "5 гаджетов на рабочем столе"
+
+#: src/echievements.x:346
+msgid "Have 10 gadgets on the desktop"
+msgstr "10 гаджетов на рабочем столе"
+
+#: src/echievements.x:347
+msgid "Have 15 gadgets on the desktop"
+msgstr "15 гаджетов на рабочем столе"
+
+#: src/echievements.x:348
+msgid "Desklock 5 times in an hour"
+msgstr ""
+
+#: src/echievements.x:349
+msgid "Desklock 10 times in an hour"
+msgstr ""
+
+#: src/echievements.x:350
+msgid "Desklock 20 times in an hour"
+msgstr ""
+
+#: src/echievements.x:351
+msgid "Load the Tiling module"
+msgstr "Загружен модуль Мозаичного режима"
+
+#: src/echievements.x:352
+msgid "Keep a window open for 24 hours"
+msgstr "Окно оставалось открытым в течение 24 часов"
+
+#: src/echievements.x:353
+msgid "Keep a window open for 168 hours"
+msgstr "Окно оставалось открытым в течение 168 часов"
