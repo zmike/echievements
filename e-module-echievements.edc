@@ -1,6 +1,6 @@
 images 
 {
-   image: "module_icon.png" COMP;
+   image: "trophy.png" COMP;
 }
 
 collections 
@@ -21,7 +21,7 @@ collections
 		       state: "default" 0.0;
 		       aspect: 1.0 1.0;
 		       aspect_preference: BOTH;
-		       image.normal: "module_icon.png";
+		       image.normal: "trophy.png";
 		    }
 	       }
 	  }
@@ -44,7 +44,7 @@ collections
 		       aspect_preference: BOTH;
 		       rel1.offset: 2 2;
 		       rel2.offset: -3 -3;
-		       image.normal: "module_icon.png";
+		       image.normal: "trophy.png";
 		    }
 		  description 
 		    {
