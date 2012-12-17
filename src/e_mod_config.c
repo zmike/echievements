@@ -44,30 +44,32 @@ _item_create(Evas *evas, Echievement *ec, Eina_Bool save)
    unsigned int goal, counter;
 
    etrophy_trophy_goal_get(ec->trophy, &goal, &counter);
-   table = e_widget_frametable_add(evas, etrophy_trophy_name_get(ec->trophy), 1);
+   table = e_widget_frametable_add(evas, D_(etrophy_trophy_name_get(ec->trophy)), 1);
 
    icon = e_widget_image_add_from_file(evas, PACKAGE_DATA_DIR "/trophy.png",
                                        64, 64);
    if (save) ec->dialog.icon = icon;
    evas_object_event_callback_add(icon, EVAS_CALLBACK_DEL, (Evas_Object_Event_Cb)_obj_del, ec);
    e_widget_frametable_object_append(table, icon, 0, 0, 1, 2, 1, 1, 1, 0);
-   label = e_widget_label_add(evas, etrophy_trophy_description_get(ec->trophy));
+   label = e_widget_label_add(evas, D_(etrophy_trophy_description_get(ec->trophy)));
    e_widget_frametable_object_append(table, label, 1, 0, 3, 1, 1, 1, 1, 0);
 
    if (etrophy_trophy_earned_get(ec->trophy))
      {
-        char date[1024];
+        char date[256];
+        char buf[512];
         time_t t0;
 
         t0 = etrophy_trophy_date_get(ec->trophy);
-        strftime(date, sizeof(date), "Achieved: %d %B %Y - %r", localtime(&t0));
-        label = e_widget_label_add(evas, date);
+        strftime(date, sizeof(date), "%d %B %Y - %r", localtime(&t0));
+        snprintf(buf, sizeof(buf), D_("Achieved: %s"), date);
+        label = e_widget_label_add(evas, buf);
      }
    else if (goal < 2)
-     label = e_widget_label_add(evas, "Not achieved");
+     label = e_widget_label_add(evas, D_("Not achieved"));
    else
      {
-        snprintf(progress, sizeof(progress), "Progress: %u/%u", counter, goal);
+        snprintf(progress, sizeof(progress), D_("Progress: %u/%u"), counter, goal);
         label = e_widget_label_add(evas, progress);
      }
    if (save) ec->dialog.label = label;
@@ -103,7 +105,7 @@ _basic_create(E_Config_Dialog *cfd EINA_UNUSED, Evas *evas, E_Config_Dialog_Data
    evas_object_resize(list, mw, mh);
    sf = e_widget_scrollframe_simple_add(evas, list);
    e_widget_size_min_set(sf, 320, 220);
-   e_widget_toolbook_page_append(toolbook, NULL, "My Trophies",
+   e_widget_toolbook_page_append(toolbook, NULL, D_("My Trophies"),
                                  sf, 1, 1, 1, 1, 0.5, 0.0);
 
    mod->cfd_list[1] = list = e_widget_list_add(evas, 1, 0);
@@ -122,7 +124,7 @@ _basic_create(E_Config_Dialog *cfd EINA_UNUSED, Evas *evas, E_Config_Dialog_Data
    evas_object_resize(list, mww, mh);
    sf = e_widget_scrollframe_simple_add(evas, list);
    e_widget_size_min_set(sf, 320, 220);
-   e_widget_toolbook_page_append(toolbook, NULL, "All Trophies",
+   e_widget_toolbook_page_append(toolbook, NULL, D_("All Trophies"),
                                  sf, 1, 1, 1, 1, 0.5, 0.0);
 
    e_widget_toolbook_page_show(toolbook, 0);
@@ -130,9 +132,10 @@ _basic_create(E_Config_Dialog *cfd EINA_UNUSED, Evas *evas, E_Config_Dialog_Data
    e_widget_list_object_append(list, toolbook, 1, 1, 0.5);
    {
       char buf[1024];
+      unsigned score = etrophy_gamescore_trophies_points_get(ech_config->gs);
 
       /* FIXME: this can look better */
-      snprintf(buf, sizeof(buf), "%u Echievement Points", etrophy_gamescore_trophies_points_get(ech_config->gs));
+      snprintf(buf, sizeof(buf), DP_("%u Echievement Point", "%u Echievement Points", score), score);
       mod->label = item = e_widget_label_add(evas, buf);
       e_widget_list_object_append(list, item, 0, 0, 0.5);
    }
@@ -143,8 +146,9 @@ static void
 _totals_update(void)
 {
    char buf[1024];
+   unsigned score = etrophy_gamescore_trophies_points_get(ech_config->gs);
 
-   snprintf(buf, sizeof(buf), "%u Echievement Points", etrophy_gamescore_trophies_points_get(ech_config->gs));
+   snprintf(buf, sizeof(buf), DP_("%u Echievement Point", "%u Echievement Points", score), score);
    e_widget_label_text_set(mod->label, buf);
 }
 
@@ -189,18 +193,20 @@ ech_cfg_ech_update(Echievement *ec)
    etrophy_trophy_goal_get(ec->trophy, &goal, &counter);
    if (etrophy_trophy_earned_get(ec->trophy))
      {
-        char date[1024];
+        char date[256];
+        char buf[512];
         time_t t0;
 
         t0 = etrophy_trophy_date_get(ec->trophy);
-        strftime(date, sizeof(date), "Achieved: %d %B %Y - %r", localtime(&t0));
-        e_widget_label_text_set(ec->dialog.label, date);
+        strftime(date, sizeof(date), "%d %B %Y - %r", localtime(&t0));
+        snprintf(buf, sizeof(buf), D_("Achieved: %s"), date);
+        e_widget_label_text_set(ec->dialog.label, buf);
      }
    else if (goal < 2)
-     e_widget_label_text_set(ec->dialog.label, "Not achieved");
+     e_widget_label_text_set(ec->dialog.label, D_("Not achieved"));
    else
      {
-        snprintf(progress, sizeof(progress), "Progress: %u/%u", counter, goal);
+        snprintf(progress, sizeof(progress), D_("Progress: %u/%u"), counter, goal);
         e_widget_label_text_set(ec->dialog.label, progress);
      }
    e_widget_frametable_object_repack(e_widget_parent_get(ec->dialog.label), ec->dialog.label, 1, 1, 3, 1, 1, 1, 1, 0);
