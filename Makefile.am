@@ -14,7 +14,7 @@ endif
 EDJE_FLAGS = -v \
 	     -id $(top_srcdir)/images
 
-filesdir = $(datadir)
+filesdir = $(libdir)/enlightenment/modules/echievements
 files_DATA = module.desktop e-module-echievements.edj images/trophy.png
 
 EXTRA_DIST = module.desktop.in \
@@ -30,6 +30,6 @@ e-module-echievements.edj: Makefile e-module-echievements.edc images/trophy.png
 clean-local:
 	 rm -rf *.edj module.desktop e_modules-echievements.spec *~
 
-uninstall:
-	 rm -rf $(DESTDIR)$(datadir)
+uninstall-local:
+	 rm -rf $(DESTDIR)$(libdir)/enlightenment/modules/echievements
 

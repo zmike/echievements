@@ -3,10 +3,10 @@ MAINTAINERCLEANFILES = Makefile.in
 AM_CPPFLAGS = -I. \
 	   -I$(top_srcdir) \
 	   -I$(includedir) \
-	   -DPACKAGE_DATA_DIR=\"$(datadir)\" \
+	   -DPACKAGE_DATA_DIR=\"$(libdir)/enlightenment/modules/echievements\" \
 	   @E_CFLAGS@
 
-pkgdir = $(datadir)/$(MODULE_ARCH)
+pkgdir = $(libdir)/enlightenment/modules/echievements/$(MODULE_ARCH)
 pkg_LTLIBRARIES = module.la
 module_la_SOURCES = e_mod_main.h \
 		    e_mod_main.c \
