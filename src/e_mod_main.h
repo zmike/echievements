@@ -1,6 +1,10 @@
 #ifndef E_MOD_MAIN_H
 #define E_MOD_MAIN_H
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include <e.h>
 #include <Etrophy.h>
 #include <E_Notify.h>
