@@ -7,5 +7,6 @@ Name[eo]=Echievementseto
 Name[el]=Echievements
 Icon=e-module-echievements
 Comment=Achievements for E17
+Comment[it]=Traguardi per E17
 Comment[ru]=Достижения для E17
 X-Enlightenment-ModuleType=utils
