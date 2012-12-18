@@ -543,7 +543,10 @@ ech_language_enumerate(void)
         locale_parts = e_intl_locale_parts_get(line);
 
         if (!locale_parts) continue;
-        basic_language = e_intl_locale_parts_combine(locale_parts, E_INTL_LOC_LANG | E_INTL_LOC_REGION);
+        if (locale_parts->mask & E_INTL_LOC_REGION)
+          basic_language = e_intl_locale_parts_combine(locale_parts, E_INTL_LOC_LANG | E_INTL_LOC_REGION);
+        else
+          basic_language = strdup(locale_parts->lang);
         e_intl_locale_parts_free(locale_parts);
         if (!basic_language) continue;
         while (basic_language_predefined_pairs[i].locale_key)
