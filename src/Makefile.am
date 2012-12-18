@@ -6,10 +6,10 @@ AM_CPPFLAGS = -I. \
 	   -I$(top_srcdir) \
 	   -I$(includedir) \
 	   -DLOCALEDIR=\"$(datadir)/locale\" \
-	   -DPACKAGE_DATA_DIR=\"$(libdir)/enlightenment/modules/echievements\" \
+	   -DPACKAGE_DATA_DIR=\"$(module_dir)/$(PACKAGE)\" \
 	   @E_CFLAGS@
 
-pkgdir = $(libdir)/enlightenment/modules/echievements/$(MODULE_ARCH)
+pkgdir = $(module_dir)/$(PACKAGE)/$(MODULE_ARCH)
 pkg_LTLIBRARIES = module.la
 module_la_SOURCES = e_mod_main.h \
 		    e_mod_main.c \
