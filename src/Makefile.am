@@ -1,8 +1,11 @@
 MAINTAINERCLEANFILES = Makefile.in
 
+
+
 AM_CPPFLAGS = -I. \
 	   -I$(top_srcdir) \
 	   -I$(includedir) \
+	   -DLOCALEDIR=\"$(datadir)/locale\" \
 	   -DPACKAGE_DATA_DIR=\"$(libdir)/enlightenment/modules/echievements\" \
 	   @E_CFLAGS@
 

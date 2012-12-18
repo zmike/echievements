@@ -88,8 +88,7 @@ e_modapi_init(E_Module *m)
 {
    char buf[4096];
 
-   snprintf(buf, sizeof(buf), "%s/locale", e_module_dir_get(m));
-   bindtextdomain(PACKAGE, buf);
+   bindtextdomain(PACKAGE, LOCALEDIR);
    bind_textdomain_codeset(PACKAGE, "UTF-8");
 
    snprintf(buf, sizeof(buf), "%s/e-module-echievements.edj", m->dir);
