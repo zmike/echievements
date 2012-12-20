@@ -292,7 +292,7 @@ ECH_EH_UNUSED(WINDOW_ENTHUSIAST, E_EVENT_BORDER_ADD)
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH_UNUSED(AFRAID_OF_THE_DARK, E_EVENT_BACKLIGHT_CHANGE)
+ECH_EH_UNUSED(FEAR_OF_THE_DARK, E_EVENT_BACKLIGHT_CHANGE)
 {
    if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) <= 99.)
      return ECORE_CALLBACK_RENEW;
@@ -608,12 +608,12 @@ ECH_INIT(NOTHING_ELSE_MATTERS)
      ECH_EH_ADD(NOTHING_ELSE_MATTERS, E_EVENT_SHELF_DEL);
 }
 
-ECH_INIT(AFRAID_OF_THE_DARK)
+ECH_INIT(FEAR_OF_THE_DARK)
 {
    if (e_backlight_exists() && (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) > 99.))
      _ech_hook(ec->id, ec);
    else
-     ECH_EH_ADD(AFRAID_OF_THE_DARK, E_EVENT_BACKLIGHT_CHANGE);
+     ECH_EH_ADD(FEAR_OF_THE_DARK, E_EVENT_BACKLIGHT_CHANGE);
 }
 
 ECH_INIT(CAVE_DWELLER)

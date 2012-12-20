@@ -13,7 +13,7 @@ static Etrophy_Trophy_Visibility Echievement_Hide_States[] =
 {
    [ECH(SHELF_POSITIONS)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(NOTHING_ELSE_MATTERS)] = ETROPHY_TROPHY_STATE_VISIBLE,
-   [ECH(AFRAID_OF_THE_DARK)] = ETROPHY_TROPHY_STATE_VISIBLE,
+   [ECH(FEAR_OF_THE_DARK)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(CAVE_DWELLER)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(WINDOW_ENTHUSIAST)] = ETROPHY_TROPHY_STATE_VISIBLE,
    [ECH(WINDOW_LOVER)] = ETROPHY_TROPHY_STATE_VISIBLE,
@@ -77,7 +77,7 @@ static unsigned int Echievement_Goals[] =
                                       /* LAST - first possible shelf orient */
    [ECH(SHELF_POSITIONS)] = E_GADCON_ORIENT_LAST - E_GADCON_ORIENT_LEFT,
    [ECH(NOTHING_ELSE_MATTERS)] = 1,
-   [ECH(AFRAID_OF_THE_DARK)] = 1,
+   [ECH(FEAR_OF_THE_DARK)] = 1,
    [ECH(CAVE_DWELLER)] = 1,
    [ECH(WINDOW_ENTHUSIAST)] = 100,
    [ECH(WINDOW_LOVER)] = 1000,
@@ -143,7 +143,7 @@ static unsigned int Echievement_Points[] =
                                       /* LAST - first possible shelf orient */
    [ECH(SHELF_POSITIONS)] = EP(FEW),
    [ECH(NOTHING_ELSE_MATTERS)] = EP(FEW),
-   [ECH(AFRAID_OF_THE_DARK)] = EP(FEW),
+   [ECH(FEAR_OF_THE_DARK)] = EP(FEW),
    [ECH(CAVE_DWELLER)] = EP(FEW),
    [ECH(WINDOW_ENTHUSIAST)] = EP(VERY_FEW),
    [ECH(WINDOW_LOVER)] = EP(FEW),
@@ -231,7 +231,7 @@ static const char *const Echievement_Strings[] =
 {
    [ECH(SHELF_POSITIONS)] = N_("Shelves Everywhere"),
    [ECH(NOTHING_ELSE_MATTERS)] = N_("Nothing Else Matters"),
-   [ECH(AFRAID_OF_THE_DARK)] = N_("Afraid Of The Dark"),
+   [ECH(FEAR_OF_THE_DARK)] = N_("Fear Of The Dark"),
    [ECH(CAVE_DWELLER)] = N_("Cave Dweller"),
    [ECH(WINDOW_ENTHUSIAST)] = N_("Window Enthusiast"),
    [ECH(WINDOW_LOVER)] = N_("Window Lover"),
@@ -294,7 +294,7 @@ static const char *const Echievement_Descs[] =
 {
    [ECH(SHELF_POSITIONS)] = N_("Have a shelf in every position"),
    [ECH(NOTHING_ELSE_MATTERS)] = N_("Use E17 with no shelves"),
-   [ECH(AFRAID_OF_THE_DARK)] = N_("Set backlight level to 100%"),
+   [ECH(FEAR_OF_THE_DARK)] = N_("Set backlight level to 100%"),
    [ECH(CAVE_DWELLER)] = N_("Set backlight level to 0%"),
    [ECH(WINDOW_ENTHUSIAST)] = N_("Open 100 windows"),
    [ECH(WINDOW_LOVER)] = N_("Open 1000 windows"),
@@ -357,7 +357,7 @@ static const char *const Echievement_Descs[] =
 
 ECB(SHELF_POSITIONS);
 ECB(NOTHING_ELSE_MATTERS);
-ECB(AFRAID_OF_THE_DARK);
+ECB(FEAR_OF_THE_DARK);
 ECB(CAVE_DWELLER);
 ECB(WINDOW_ENTHUSIAST);
 ECB(WINDOW_MOVER);
@@ -393,7 +393,7 @@ Echievement_Init_Cb Echievement_Callbacks[] =
 {
    ECB(SHELF_POSITIONS),
    ECB(NOTHING_ELSE_MATTERS),
-   ECB(AFRAID_OF_THE_DARK),
+   ECB(FEAR_OF_THE_DARK),
    ECB(CAVE_DWELLER),
    ECB(WINDOW_ENTHUSIAST),
    ECB_REUSE(WINDOW_LOVER, WINDOW_ENTHUSIAST),
