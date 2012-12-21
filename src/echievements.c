@@ -239,7 +239,7 @@ ECH_EH(PERSISTENT, E_EVENT_BORDER_REMOVE)
    snprintf(buf, sizeof(buf), "PERSISTENT%u", Echievement_Goals[ec->id]);
    timer = evas_object_data_del(ev->border->bg_object, buf);
    if (ec->data) ec->data = eina_list_remove(ec->data, timer);
-   ecore_timer_del(timer);
+   if (timer) ecore_timer_del(timer);
    return ECORE_CALLBACK_RENEW;
 }
 
