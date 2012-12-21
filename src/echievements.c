@@ -198,7 +198,7 @@ NOT_SO_INCOGNITO_helper(const char *str)
 
    if ((!str) || (!str[0])) return EINA_FALSE;
    for (x = 0; Echievement_NOT_SO_INCOGNITO_Strings[x]; x++)
-     if (!strncmp(str, Echievement_NOT_SO_INCOGNITO_Strings[x], sizeof(Echievement_NOT_SO_INCOGNITO_Strings[x]) - 1))
+     if (!strncmp(str, Echievement_NOT_SO_INCOGNITO_Strings[x], strlen(Echievement_NOT_SO_INCOGNITO_Strings[x])))
        return EINA_TRUE;
    return EINA_FALSE;
 }
