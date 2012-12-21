@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: echievements 1\n"
 "Report-Msgid-Bugs-To: enlightenment-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2012-12-17 16:48+0400\n"
+"POT-Creation-Date: 2012-12-21 17:33+0400\n"
 "PO-Revision-Date: 2012-12-17 16:48+0400\n"
 "Last-Translator: Igor Murzov <e-mail@date.by>\n"
 "Language-Team: Russian <enlightenment-intl@lists.sourceforge.net>\n"
@@ -47,11 +47,11 @@ msgstr[0] "%u очко"
 msgstr[1] "%u очка"
 msgstr[2] "%u очков"
 
-#: src/e_mod_config.c:177 src/e_mod_main.c:99
+#: src/e_mod_config.c:177 src/e_mod_main.c:98
 msgid "Echievements"
 msgstr "Достижения"
 
-#: src/e_mod_main.c:97
+#: src/e_mod_main.c:96
 msgid "Extensions"
 msgstr "Расширения"
 
@@ -66,10 +66,10 @@ msgstr "Полки повсюду"
 
 #: src/echievements.x:233
 msgid "Nothing Else Matters"
-msgstr "Всё остальное -- ерунда"
+msgstr "Всё остальное — ерунда"
 
 #: src/echievements.x:234
-msgid "Afraid Of The Dark"
+msgid "Fear Of The Dark"
 msgstr "Боязнь темноты"
 
 #: src/echievements.x:235
@@ -86,11 +86,11 @@ msgstr "Любитель окон"
 
 #: src/echievements.x:238
 msgid "Window Stalker"
-msgstr ""
+msgstr "Ловец окон"
 
 #: src/echievements.x:239
 msgid "Window Mover"
-msgstr ""
+msgstr "Переместитель окон"
 
 #: src/echievements.x:240
 msgid "Window OCD"
@@ -130,11 +130,11 @@ msgstr "Физик"
 
 #: src/echievements.x:249
 msgid "Quickdraw"
-msgstr ""
+msgstr "Быстрая рука"
 
 #: src/echievements.x:250
 msgid "Opaque"
-msgstr ""
+msgstr "Матовый"
 
 #: src/echievements.x:251
 msgid "Keyboard User"
@@ -234,15 +234,15 @@ msgstr "Тройка"
 
 #: src/echievements.x:275
 msgid "Going HD"
-msgstr ""
+msgstr "Жизнь в HD"
 
 #: src/echievements.x:276
 msgid "Real Estate Mogul"
-msgstr ""
+msgstr "Магнат недвижимости"
 
 #: src/echievements.x:277
 msgid "Maximum Definition"
-msgstr ""
+msgstr "Максимальная чёткость"
 
 #: src/echievements.x:278
 msgid "Terminologist"
@@ -250,7 +250,7 @@ msgstr "Терминолог"
 
 #: src/echievements.x:279
 msgid "Life On The Edge"
-msgstr ""
+msgstr "Жизнь на грани"
 
 #: src/echievements.x:280
 msgid "Bilingual"
@@ -286,15 +286,15 @@ msgstr "Начальник безопасности"
 
 #: src/echievements.x:288
 msgid "Tiled"
-msgstr ""
+msgstr "Мозай"
 
 #: src/echievements.x:289
 msgid "Persistent"
-msgstr ""
+msgstr "Постоянный"
 
 #: src/echievements.x:290
 msgid "Never Gonna Give You Up"
-msgstr "Никогда не подведёт"
+msgstr "Никогда тебя не брошу"
 
 #: src/echievements.x:295
 msgid "Have a shelf in every position"
@@ -334,19 +334,19 @@ msgstr "Перемещены 250 окон"
 
 #: src/echievements.x:304
 msgid "Mouse over 250,000 pixels"
-msgstr ""
+msgstr "Мышь прошла более 250 000 пикселей"
 
 #: src/echievements.x:305
 msgid "Mouse over 1,000,000 pixels"
-msgstr ""
+msgstr "Мышь прошла более 1 000 000 пикселей"
 
 #: src/echievements.x:306
 msgid "Mouse over 10,000,000 pixels"
-msgstr ""
+msgstr "Мышь прошла более 10 000 000 пикселей"
 
 #: src/echievements.x:307
 msgid "Mouse over 100,000,000 pixels"
-msgstr ""
+msgstr "Мышь прошла более 100 000 000 пикселей"
 
 #: src/echievements.x:308
 msgid "Move windows 250,000 pixels"
@@ -470,11 +470,11 @@ msgstr "Одновременно подключены три монитора"
 
 #: src/echievements.x:338
 msgid "Have 1080p on a single monitor"
-msgstr ""
+msgstr "1080p на одном мониторе"
 
 #: src/echievements.x:339
 msgid "At least 3,384,320 pixels"
-msgstr ""
+msgstr "По крайней мере 3 384 320 пикселей на мониторах"
 
 #: src/echievements.x:340
 msgid "Dual 1080p monitors"
@@ -510,15 +510,15 @@ msgstr "15 гаджетов на рабочем столе"
 
 #: src/echievements.x:348
 msgid "Desklock 5 times in an hour"
-msgstr ""
+msgstr "Рабочий стол за час заблокирован 5 раз"
 
 #: src/echievements.x:349
 msgid "Desklock 10 times in an hour"
-msgstr ""
+msgstr "Рабочий стол за час заблокирован 10 раз"
 
 #: src/echievements.x:350
 msgid "Desklock 20 times in an hour"
-msgstr ""
+msgstr "Рабочий стол за час заблокирован 20 раз"
 
 #: src/echievements.x:351
 msgid "Load the Tiling module"
