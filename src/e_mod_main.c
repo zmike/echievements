@@ -105,7 +105,9 @@ e_modapi_init(E_Module *m)
    mod->module = m;
    mod->mouse.x = mod->mouse.y = -1;
 
-   E_LIST_HANDLER_APPEND(handlers, E_EVENT_MODULE_INIT_END, _e_mod_ech_mod_init_end_cb, NULL);
+   mod->module_init_end = !e_module_loading_get();
+   if (!mod->module_init_end)
+     E_LIST_HANDLER_APPEND(handlers, E_EVENT_MODULE_INIT_END, _e_mod_ech_mod_init_end_cb, NULL);
    E_LIST_HANDLER_APPEND(handlers, ECORE_EVENT_MOUSE_MOVE, _e_mod_ech_mouse_move_cb, NULL);
    E_LIST_HANDLER_APPEND(handlers, E_EVENT_DESKLOCK, _e_mod_ech_desklock_cb, NULL);
 
