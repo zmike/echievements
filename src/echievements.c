@@ -276,22 +276,6 @@ ECH_EH_UNUSED(CAVE_DWELLER, E_EVENT_BACKLIGHT_CHANGE)
    return ECORE_CALLBACK_RENEW;
 }
 
-ECH_EH_UNUSED(WINDOW_ENTHUSIAST, E_EVENT_BORDER_ADD)
-{
-   /* ignore all windows added before modules are loaded:
-    * these are previously-placed windows
-    */
-   if (!mod->module_init_end) return ECORE_CALLBACK_RENEW;
-
-   _ech_trophy_counter_increment(ec,  1);
-   if (!etrophy_trophy_earned_get(ec->trophy))
-     return ECORE_CALLBACK_RENEW;
-   _ech_hook(ec->id, ec);
-   E_FREE_LIST(ec->handlers, ecore_event_handler_del);
-   (void)event;
-   return ECORE_CALLBACK_RENEW;
-}
-
 ECH_EH_UNUSED(FEAR_OF_THE_DARK, E_EVENT_BACKLIGHT_CHANGE)
 {
    if (e_backlight_level_get(e_util_zone_current_get(e_manager_current_get())) <= 99.)
@@ -553,6 +537,21 @@ ECH_MH(WINDOW_HAULER)
 
 /* Echievement border hook callbacks */
 
+ECH_BH(WINDOW_ENTHUSIAST, NEW_BORDER)
+{
+   /* ignore all windows added before modules are loaded:
+    * these are previously-placed windows
+    */
+   if (!mod->module_init_end) return;
+
+   _ech_trophy_counter_increment(ec,  1);
+   if (!etrophy_trophy_earned_get(ec->trophy))
+     return;
+   _ech_hook(ec->id, ec);
+   E_FREE_LIST(ec->handlers, e_border_hook_del);
+   (void)bd;
+}
+
 ECH_BH(WINDOW_HAULER, MOVE_BEGIN)
 {
    ECH_MH_ADD(WINDOW_HAULER);
@@ -629,7 +628,7 @@ ECH_INIT(WINDOW_ENTHUSIAST)
    /* only count windows opened while e is running to prevent cheating
     * reuse same handler
     */
-   ECH_EH_ADD(WINDOW_ENTHUSIAST, E_EVENT_BORDER_ADD);
+   ECH_BH_ADD(WINDOW_ENTHUSIAST, NEW_BORDER);
 }
 
 ECH_INIT(WINDOW_MOVER)
