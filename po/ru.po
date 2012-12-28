@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: echievements 1\n"
 "Report-Msgid-Bugs-To: enlightenment-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2012-12-21 17:33+0400\n"
-"PO-Revision-Date: 2012-12-17 16:48+0400\n"
+"POT-Creation-Date: 2012-12-28 03:18+0400\n"
+"PO-Revision-Date: 2012-12-28 03:18+0400\n"
 "Last-Translator: Igor Murzov <e-mail@date.by>\n"
 "Language-Team: Russian <enlightenment-intl@lists.sourceforge.net>\n"
 "Language: ru\n"
@@ -16,6 +16,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: src/e_mod_config.c:64 src/e_mod_config.c:201
+msgid "%d %B %Y - %r"
+msgstr "%d %B %Y - %T"
 
 #: src/e_mod_config.c:65 src/e_mod_config.c:202
 #, c-format
@@ -94,7 +98,7 @@ msgstr "Переместитель окон"
 
 #: src/echievements.x:240
 msgid "Window OCD"
-msgstr ""
+msgstr "Оконный главнокомандующий"
 
 #: src/echievements.x:241
 msgid "Mouse Runner"
@@ -114,11 +118,11 @@ msgstr "Могучая мышь"
 
 #: src/echievements.x:245
 msgid "Window Hauler"
-msgstr ""
+msgstr "Оконный буксировщик"
 
 #: src/echievements.x:246
 msgid "Window Slinger"
-msgstr ""
+msgstr "Оконный погрузчик"
 
 #: src/echievements.x:247
 msgid "Window Sherpa"
@@ -138,19 +142,19 @@ msgstr "Матовый"
 
 #: src/echievements.x:251
 msgid "Keyboard User"
-msgstr ""
+msgstr "Клавиатурный пользователь"
 
 #: src/echievements.x:252
 msgid "Keyboard Tapper"
-msgstr ""
+msgstr "Клавиатурный стучальщик"
 
 #: src/echievements.x:253
 msgid "Keyboard Abuser"
-msgstr ""
+msgstr "Клавиатурный маньяк"
 
 #: src/echievements.x:254
 msgid "Keyboard Ninja"
-msgstr "Клавиатурные ниндзя"
+msgstr "Клавиатурный ниндзя"
 
 #: src/echievements.x:255
 msgid "Clicker"
@@ -170,11 +174,11 @@ msgstr "Щелкун-маньяк"
 
 #: src/echievements.x:259
 msgid "Sleeper"
-msgstr ""
+msgstr "Соня"
 
 #: src/echievements.x:260
 msgid "Halter"
-msgstr ""
+msgstr "Выключальщик"
 
 #: src/echievements.x:261
 msgid "Edgy"
@@ -194,31 +198,31 @@ msgstr ""
 
 #: src/echievements.x:265
 msgid "Wheely"
-msgstr ""
+msgstr "Колёсник"
 
 #: src/echievements.x:266
 msgid "Rollin'"
-msgstr ""
+msgstr "Вращатель"
 
 #: src/echievements.x:267
 msgid "Roly Poly"
-msgstr ""
+msgstr "Скрутень"
 
 #: src/echievements.x:268
 msgid "Signaller"
-msgstr ""
+msgstr "Сигнальщик"
 
 #: src/echievements.x:269
 msgid "Signal Controller"
-msgstr ""
+msgstr "Управляющий сигналами"
 
 #: src/echievements.x:270
 msgid "Signal Master"
-msgstr ""
+msgstr "Повелитель сигналов"
 
 #: src/echievements.x:271
 msgid "Sigurd"
-msgstr ""
+msgstr "Сигал"
 
 #: src/echievements.x:272
 msgid "Not So Incognito"
@@ -274,11 +278,11 @@ msgstr ""
 
 #: src/echievements.x:285
 msgid "Security Conscious"
-msgstr ""
+msgstr "Озабоченный безопасностью"
 
 #: src/echievements.x:286
 msgid "Security Nut"
-msgstr ""
+msgstr "Знаток безопасности"
 
 #: src/echievements.x:287
 msgid "Chief Of Security"
@@ -350,15 +354,15 @@ msgstr "Мышь прошла более 100 000 000 пикселей"
 
 #: src/echievements.x:308
 msgid "Move windows 250,000 pixels"
-msgstr ""
+msgstr "Окна перемещены на 250 000 пикселей"
 
 #: src/echievements.x:309
 msgid "Move windows 1,000,000 pixels"
-msgstr ""
+msgstr "Окна перемещены на 1 000 000 пикселей"
 
 #: src/echievements.x:310
 msgid "Move windows 10,000,000 pixels"
-msgstr ""
+msgstr "Окна перемещены на 10 000 000 пикселей"
 
 #: src/echievements.x:311
 msgid "Load the Physics module"
@@ -374,87 +378,87 @@ msgstr "Выгружен модуль для Композитного режим
 
 #: src/echievements.x:314
 msgid "Change 5 key bindings"
-msgstr "Изменены 5 комбинаций клавиш"
+msgstr "Изменено 5 привязок клавиш"
 
 #: src/echievements.x:315
 msgid "Change 10 key bindings"
-msgstr ""
+msgstr "Изменено 10 привязок клавиш"
 
 #: src/echievements.x:316
 msgid "Change 20 key bindings"
-msgstr ""
+msgstr "Изменено 20 привязок клавиш"
 
 #: src/echievements.x:317
 msgid "Change 30 key bindings"
-msgstr ""
+msgstr "Изменено 30 привязок клавиш"
 
 #: src/echievements.x:318
 msgid "Change 5 mouse bindings"
-msgstr ""
+msgstr "Изменено 5 привязок мыши"
 
 #: src/echievements.x:319
 msgid "Change 10 mouse bindings"
-msgstr ""
+msgstr "Изменено 10 привязок мыши"
 
 #: src/echievements.x:320
 msgid "Change 20 mouse bindings"
-msgstr ""
+msgstr "Изменено 20 привязок мыши"
 
 #: src/echievements.x:321
 msgid "Change 30 mouse bindings"
-msgstr ""
+msgstr "Изменено 30 привязок мыши"
 
 #: src/echievements.x:322
 msgid "Change 2 ACPI bindings"
-msgstr ""
+msgstr "Изменены 2 привязки к ACPI"
 
 #: src/echievements.x:323
 msgid "Change 5 ACPI bindings"
-msgstr ""
+msgstr "Изменено 5 привязок к ACPI"
 
 #: src/echievements.x:324
 msgid "Change 2 Edge bindings"
-msgstr ""
+msgstr "Изменены 2 привязки к краям"
 
 #: src/echievements.x:325
 msgid "Change 4 Edge bindings"
-msgstr ""
+msgstr "Изменены 4 привязки к краям"
 
 #: src/echievements.x:326
 msgid "Change 6 Edge bindings"
-msgstr ""
+msgstr "Изменено 6 привязок к краям"
 
 #: src/echievements.x:327
 msgid "Change 8 Edge bindings"
-msgstr ""
+msgstr "Изменено 8 привязок к краям"
 
 #: src/echievements.x:328
 msgid "Change 3 Mouse Wheel bindings"
-msgstr ""
+msgstr "Изменены 3 привязки для колеса мыши"
 
 #: src/echievements.x:329
 msgid "Change 6 Mouse Wheel bindings"
-msgstr ""
+msgstr "Изменено 6 привязок для колеса мыши"
 
 #: src/echievements.x:330
 msgid "Change 10 Mouse Wheel bindings"
-msgstr ""
+msgstr "Изменено 10 привязок для колеса мыши"
 
 #: src/echievements.x:331
 msgid "Change 5 Edje Signal Bindings"
-msgstr ""
+msgstr "Изменено 5 привязок сигналов Edje"
 
 #: src/echievements.x:332
 msgid "Change 10 Edje Signal Bindings"
-msgstr ""
+msgstr "Изменено 10 привязок сигналов Edje"
 
 #: src/echievements.x:333
 msgid "Change 20 Edje Signal Bindings"
-msgstr ""
+msgstr "Изменено 20 привязок сигналов Edje"
 
 #: src/echievements.x:334
 msgid "Change 30 Edje Signal Bindings"
-msgstr ""
+msgstr "Изменено 30 привязок сигналов Edje"
 
 #: src/echievements.x:335
 msgid "Watch porn while using E17"
