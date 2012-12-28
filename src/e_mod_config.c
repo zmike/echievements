@@ -61,7 +61,7 @@ _item_create(Evas *evas, Echievement *ec, Eina_Bool save)
         time_t t0;
 
         t0 = etrophy_trophy_date_get(ec->trophy);
-        strftime(date, sizeof(date), "%d %B %Y - %r", localtime(&t0));
+        strftime(date, sizeof(date), D_("%d %B %Y - %r"), localtime(&t0));
         snprintf(buf, sizeof(buf), D_("Achieved: %s"), date);
         label = e_widget_label_add(evas, buf);
      }
@@ -198,7 +198,7 @@ ech_cfg_ech_update(Echievement *ec)
         time_t t0;
 
         t0 = etrophy_trophy_date_get(ec->trophy);
-        strftime(date, sizeof(date), "%d %B %Y - %r", localtime(&t0));
+        strftime(date, sizeof(date), D_("%d %B %Y - %r"), localtime(&t0));
         snprintf(buf, sizeof(buf), D_("Achieved: %s"), date);
         e_widget_label_text_set(ec->dialog.label, buf);
      }
