@@ -28,7 +28,7 @@ _e_mod_ech_config_load(void)
    ech_config = e_config_domain_load("module.echievements", conf_edd);
    if (ech_config)
      {
-        if (!e_util_module_config_check("Echievements", ech_config->config_version, MOD_CONFIG_FILE_VERSION))
+        if (!e_util_module_config_check(D_("Echievements"), ech_config->config_version, MOD_CONFIG_FILE_VERSION))
           _e_mod_ech_config_free();
      }
 
